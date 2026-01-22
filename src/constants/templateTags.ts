@@ -39,7 +39,6 @@ import {
   genNeighborhood,
   genCity,
   genStateUf,
-  genCountry,
   genTimezone
 } from '../generators/address';
 
@@ -309,13 +308,6 @@ export const templateTags: TemplateTag[] = [
     description: 'Estado (UF)',
     args: [],
     run: async () => genStateUf()
-  },
-  {
-    name: 'pais',
-    displayName: 'dados-falsos → pais',
-    description: 'País',
-    args: [],
-    run: async () => genCountry()
   },
 
   // ========================================================================

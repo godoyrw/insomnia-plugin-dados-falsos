@@ -124,22 +124,16 @@ export function calcCpfDigit(digits: string): number {
 
 /**
  * Calcula dígito verificador de CNPJ
- * Algoritmo: multiplicação decrescente com reset + módulo 11
+ * Algoritmo: multiplicação com sequência fixa + módulo 11
  *
- * @param {string} digits - Primeiros 8 ou 12 dígitos do CNPJ
+ * @param {number[]} digits - Array de dígitos
+ * @param {number[]} weights - Array de pesos
  * @returns {number} Dígito verificador (0-9)
- * @example
- * calcCnpjDigit('12345678') // 0
  */
-export function calcCnpjDigit(digits: string): number {
-  let sum = 0;
-  let multiplier = digits.length === 8 ? 5 : 6;
-  for (let i = 0; i < digits.length; i++) {
-    sum += parseInt(digits[i]) * multiplier--;
-    if (multiplier === 0) multiplier = digits.length === 8 ? 9 : 10;
-  }
-  const remainder = sum % 11;
-  return remainder < 2 ? 0 : 11 - remainder;
+function calcCnpjCheckDigit(digits: number[], weights: number[]): number {
+  const sum = digits.reduce((acc, d, i) => acc + d * weights[i], 0);
+  const mod = sum % 11;
+  return mod < 2 ? 0 : 11 - mod;
 }
 
 /**
@@ -162,18 +156,27 @@ export function generateValidCpf(): string {
 
 /**
  * Gera CNPJ válido com dígitos verificadores
- * Cria 8 dígitos aleatórios e calcula os 2 dígitos verificadores
+ * Cria 12 dígitos aleatórios (8 raiz + 4 filial) e calcula os 2 dígitos verificadores
  *
  * @returns {string} CNPJ válido com 14 dígitos
  * @example
  * generateValidCnpj() // "12345678000195"
  */
 export function generateValidCnpj(): string {
-  let cnpj = '';
-  for (let i = 0; i < 8; i++) {
-    cnpj += String(randInt(0, 9));
+  // Gera 12 dígitos aleatórios (raiz 8 + filial 4)
+  let base = '';
+  for (let i = 0; i < 12; i++) {
+    base += String(randInt(0, 9));
   }
-  const digit1 = calcCnpjDigit(cnpj);
-  const digit2 = calcCnpjDigit(cnpj + digit1);
-  return cnpj + digit1 + digit2;
+  
+  const digits12 = base.split('').map((c) => Number(c));
+  
+  // Pesos padrão do CNPJ
+  const weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  
+  const d1 = calcCnpjCheckDigit(digits12, weights1);
+  const d2 = calcCnpjCheckDigit([...digits12, d1], weights2);
+  
+  return [...digits12, d1, d2].join('');
 }

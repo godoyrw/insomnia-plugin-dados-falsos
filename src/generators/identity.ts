@@ -12,7 +12,7 @@
  * @module generators/identity
  */
 
-import { randInt, pickRandom, pad, calcCpfDigit, calcCnpjDigit, parseNumbersByLength } from '../utils';
+import { randInt, pickRandom, pad, calcCpfDigit, parseNumbersByLength, generateValidCnpj, generateValidCpf } from '../utils';
 import { FIRST_NAMES, LAST_NAMES, NICKNAMES, GENDERS } from '../constants/names';
 import { InsomniaContext } from '../types';
 import { getEnvValue } from '../utils';
@@ -102,6 +102,7 @@ export function genUsername(): string {
 
 /**
  * Gera CPF válido com dígitos verificadores
+ * Importa a função de utils.ts para evitar duplicação
  * Cria 9 dígitos aleatórios e calcula os 2 dígitos verificadores
  * usando o algoritmo oficial de validação de CPF
  *
@@ -109,18 +110,11 @@ export function genUsername(): string {
  * @example
  * generateValidCpf() // "12345678901"
  */
-export function generateValidCpf(): string {
-  let cpf = '';
-  for (let i = 0; i < 9; i++) {
-    cpf += String(randInt(0, 9));
-  }
-  const digit1 = calcCpfDigit(cpf);
-  const digit2 = calcCpfDigit(cpf + digit1);
-  return cpf + digit1 + digit2;
-}
+export { generateValidCpf } from '../utils';
 
 /**
  * Gera CNPJ válido com dígitos verificadores
+ * Importa a função de utils.ts para evitar duplicação
  * Cria 8 dígitos aleatórios e calcula os 2 dígitos verificadores
  * usando o algoritmo oficial de validação de CNPJ
  *
@@ -128,15 +122,7 @@ export function generateValidCpf(): string {
  * @example
  * generateValidCnpj() // "12345678000195"
  */
-export function generateValidCnpj(): string {
-  let cnpj = '';
-  for (let i = 0; i < 8; i++) {
-    cnpj += String(randInt(0, 9));
-  }
-  const digit1 = calcCnpjDigit(cnpj);
-  const digit2 = calcCnpjDigit(cnpj + digit1);
-  return cnpj + digit1 + digit2;
-}
+export { generateValidCnpj } from '../utils';
 
 /**
  * Gera CPF com suporte a lista de variáveis de ambiente

@@ -121,18 +121,6 @@ export function genStateUf(): string {
 }
 
 /**
- * Gera país
- * Sempre retorna "BR" (Brasil) - útil para manter consistência em testes
- *
- * @returns {string} Código de país "BR"
- * @example
- * genCountry() // "BR"
- */
-export function genCountry(): string {
-  return 'BR';
-}
-
-/**
  * Gera fuso horário brasileiro
  * Seleciona um dos 8 fusos horários do Brasil
  * Formato: America/Sao_Paulo, America/Manaus, etc
