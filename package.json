@@ -1,0 +1,103 @@
+{
+  "name": "insomnia-plugin-dados-falsos",
+  "version": "1.0.0",
+  "main": "src/main.js",
+  "description": "Plugin Insomnia para gerar Dados Falsos realistas para testes de APIs brasileiras",
+  "author": "godoyrw",
+  "maintainers": [
+    {
+      "name": "Roberto Godoy",
+      "email": "godoyrw@github.com",
+      "url": "https://github.com/godoyrw"
+    }
+  ],
+  "license": "AGPL-3.0",
+  "keywords":
+   [
+    "dados",
+    "falsos",
+    "insomnia",
+    "plugin",
+    "brasil",
+    "brazilian",
+    "cpf",
+    "cnpj",
+    "dados-falsos",
+    "dados-teste",
+    "mock-data",
+    "test-data",
+    "api-testing",
+    "teste-api",
+    "gerador-dados",
+    "data-generator",
+    "template-tags",
+    "rg",
+    "cnh",
+    "endereco",
+    "telefone",
+    "email",
+    "uuid",
+    "jwt",
+    "api-key",
+    "ecommerce",
+    "pedidos",
+    "pagamento",
+    "validacao",
+    "desenvolvimento",
+    "qa",
+    "testing",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/godoyrw/insomnia-plugin-dados-falsos.git"
+  },
+  "bugs": {
+    "url": "https://github.com/godoyrw/insomnia-plugin-dados-falsos/issues"
+  },
+  "homepage": "https://github.com/godoyrw/insomnia-plugin-dados-falsos#readme",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/godoyrw"
+  },
+  "files": [
+    "dist/insomnia-plugin-dados-falsos",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc && npm run copy-package",
+    "copy-package": "cp package.json dist/insomnia-plugin-dados-falsos/package.json",
+    "dev": "tsc --watch",
+    "test": "tsc test/quality.ts --outDir dist && node dist/quality.js",
+    "test:watch": "tsc test/quality.ts --outDir dist --watch",
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "insomnia": {
+    "name": "Dados Falsos",
+    "displayName": "Dados Falsos",
+    "description": "Plugin Insomnia para gerar dados falsos realistas em português para testes de APIs brasileiras. Suporta 60+ template tags incluindo CPF, CNPJ, nomes, endereços, emails, telefones, UUIDs, JWTs e muito mais.",
+    "version": "1.0.0",
+    "category": "data-generation",
+    "tags": [
+      "dados-falsos",
+      "mock-data",
+      "test-data",
+      "brasil",
+      "cpf",
+      "cnpj",
+      "faker",
+      "generator"
+    ]
+  },
+  "engines": {
+    "insomnia": ">=2021.7.0",
+    "node": ">=12.0.0"
+  }
+}
