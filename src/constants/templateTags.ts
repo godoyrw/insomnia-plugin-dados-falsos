@@ -284,7 +284,14 @@ export const templateTags: TemplateTag[] = [
   {
     name: 'endereco',
     displayName: 'dados-falsos → endereco',
-    description: 'Endereço completo',
+    description: 'Endereço (somente logradouro)',
+    args: [],
+    run: async () => genStreet()
+  },
+  {
+    name: 'enderecoNumero',
+    displayName: 'dados-falsos → endereco → numero',
+    description: 'Endereço completo com número',
     args: [],
     run: async () => genAddress()
   },

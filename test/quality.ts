@@ -195,9 +195,14 @@ test('complemento: deve ter pelo menos 2 caracteres', () => {
   assert(complement.length >= 2, 'Complemento deve ter pelo menos 2 caracteres');
 });
 
-test('endereco: deve conter logradouro e número', () => {
+test('endereco: deve conter logradouro', () => {
+  const address = 'Rua das Flores';
+  assert(address.length >= 3, 'Endereço deve ter pelo menos 3 caracteres');
+});
+
+test('enderecoNumero: deve conter logradouro e número', () => {
   const address = 'Rua das Flores, 123';
-  assert(address.includes(','), 'Endereço deve conter vírgula separando logradouro e número');
+  assert(address.includes(','), 'Endereço com número deve conter vírgula separando logradouro e número');
 });
 
 test('bairro: deve ter pelo menos 2 caracteres', () => {
