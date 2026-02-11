@@ -1,7 +1,7 @@
 {
   "name": "insomnia-plugin-dados-falsos",
   "version": "1.0.0",
-  "main": "src/main.js",
+  "main": "dist/insomnia-plugin-dados-falsos/src/main.js",
   "description": "Plugin Insomnia para gerar Dados Falsos realistas para testes de APIs brasileiras",
   "author": "godoyrw",
   "maintainers": [
