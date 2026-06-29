@@ -11,7 +11,9 @@
 
 Plugin para Insomnia focado em massa sintética pt-BR com consistência e validação (CPF/CNPJ), reduzindo risco de uso de dados reais em testes. Entrega 50+ tags, formatos de data, e geradores de identificadores e credenciais de teste (JWT, idempotência, API keys, hashes), com override por Environment para cenários determinísticos.
 
-![Insomnia Logo]()
+<div align="center">
+  <img src="./assets/images/insomnia-plugin-dados-falsos.jpg" alt="Node Ecosystem Doctor">
+</div>
 
 ## Instalação
 
