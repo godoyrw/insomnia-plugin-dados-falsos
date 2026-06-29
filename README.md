@@ -84,11 +84,11 @@ Use qualquer um dos template tags abaixo em seus campos de requisição:
 - `{% logradouro %}` - Logradouro (Rua/Avenida/etc)
 - `{% numero %}` - Número do endereço
 - `{% complemento %}` - Complemento (Apto, Bloco, etc)
-- `{% endereco %}` - Endereço completo: Rua X, 123
+- `{% endereco %}` - Logradouro (somente rua/avenida)
+- `{% enderecoNumero %}` - Endereço completo com número: Rua X, 123
 - `{% bairro %}` - Bairro aleatório
 - `{% cidade %}` - Cidade aleatória
 - `{% estado %}` - UF (sigla do estado)
-- `{% pais %}` - País (BR)
 
 ### Empresa e Trabalho
 
@@ -190,8 +190,7 @@ Use qualquer um dos template tags abaixo em seus campos de requisição:
     "complemento": "{% complemento %}",
     "bairro": "{% bairro %}",
     "cidade": "{% cidade %}",
-    "estado": "{% estado %}",
-    "pais": "{% pais %}"
+    "estado": "{% estado %}"
   },
   "empresa": {
     "razao_social": "{% razaoSocial %}",
@@ -414,7 +413,7 @@ Executa testes de qualidade dos geradores de dados.
 
 ## Versão
 
-1.0.0
+1.1.0
 
 ## Licença
 
