@@ -1,6 +1,6 @@
 {
   "name": "insomnia-plugin-dados-falsos",
-  "version": "1.2.0",
+  "version": "1.0.0",
   "description": "Plugin Insomnia para gerar Dados Falsos realistas para testes de APIs brasileiras",
   "main": "src/main.js",
   "exports": {
@@ -91,7 +91,7 @@
     "name": "Dados Falsos",
     "displayName": "Dados Falsos",
     "description": "Plugin Insomnia para gerar dados falsos realistas em português para testes de APIs brasileiras. Suporta mais de 60 template tags incluindo CPF, CNPJ, nomes, endereços, emails, telefones, UUIDs, JWTs e muito mais.",
-    "version": "1.1.0",
+    "version": "1.0.0",
     "category": "data-generation",
     "tags": [
       "dados-falsos",
