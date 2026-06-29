@@ -1,5 +1,5 @@
 # Dados Falsos - Plugin Insomnia
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPLv3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/insomnia-plugin-dados-falsos.svg)](https://www.npmjs.com/package/insomnia-plugin-dados-falsos)
 [![npm downloads](https://img.shields.io/npm/dt/insomnia-plugin-dados-falsos.svg)](https://www.npmjs.com/package/insomnia-plugin-dados-falsos)
 [![GitHub stars](https://img.shields.io/github/stars/godoyrw/insomnia-plugin-dados-falsos.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos)
@@ -417,7 +417,7 @@ Executa testes de qualidade dos geradores de dados.
 
 ## Licença
 
-AGPL-3.0 - Veja o arquivo LICENSE para detalhes
+MIT - Veja o arquivo LICENSE para detalhes
 
 ## Autor
 

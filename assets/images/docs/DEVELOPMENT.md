@@ -36,7 +36,7 @@
 ├── DEVELOPMENT.md               # Este arquivo
 ├── CONTRIBUTING.md              # Guia de contribuição
 ├── TESTING.md                   # Documentação de testes
-└── LICENSE                      # Licença AGPL-3.0
+└── LICENSE                      # Licença MIT
 ```
 
 ## Tecnologias
@@ -255,4 +255,4 @@ Veja `CONTRIBUTING.md` para diretrizes completas.
 
 ## Licença
 
-AGPL-3.0 - Veja LICENSE para detalhes
+MIT - Veja LICENSE para detalhes
