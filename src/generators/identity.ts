@@ -12,10 +12,11 @@
  * @module generators/identity
  */
 
-import { randInt, pickRandom, pad, calcCpfDigit, parseNumbersByLength, generateValidCnpj, generateValidCpf } from '../utils';
+import { randInt, pickRandom, pad, parseNumbersByLength, getEnvValue } from '../utils';
+import { generateValidCpf } from './cpf';
+import { generateValidCnpj } from './cnpj';
 import { FIRST_NAMES, LAST_NAMES, NICKNAMES, GENDERS } from '../constants/names';
 import { InsomniaContext } from '../types';
-import { getEnvValue } from '../utils';
 
 /**
  * Gera primeiro nome aleatório
@@ -82,47 +83,30 @@ export function genGender(): string {
 }
 
 /**
- * Gera nome de usuário aleatório
+ * Gera nome de usuário aleatório sem acentos
  * Combina primeiro nome + sobrenome + número aleatório
+ * Remove acentos e caracteres especiais para compatibilidade com sistemas externos
  * Formato: primeironome.sobrenome.numero ou primeironome_sobrenome_numero
  * Usa separadores aleatórios (ponto ou underscore) para variedade
  *
- * @returns {string} Nome de usuário aleatório
+ * @returns {string} Nome de usuário aleatório sem acentos
  * @example
  * genUsername() // "mariana.silva.4521"
  * genUsername() // "joao_santos_8932"
  */
 export function genUsername(): string {
-  const first = genFirstName().toLowerCase();
-  const last = genLastName().toLowerCase();
+  const first = genFirstName()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+  const last = genLastName()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
   const number = randInt(100, 9999);
   const separator = Math.random() < 0.5 ? '.' : '_';
   return `${first}${separator}${last}${separator}${number}`;
 }
-
-/**
- * Gera CPF válido com dígitos verificadores
- * Importa a função de utils.ts para evitar duplicação
- * Cria 9 dígitos aleatórios e calcula os 2 dígitos verificadores
- * usando o algoritmo oficial de validação de CPF
- *
- * @returns {string} CPF válido com 11 dígitos
- * @example
- * generateValidCpf() // "12345678901"
- */
-export { generateValidCpf } from '../utils';
-
-/**
- * Gera CNPJ válido com dígitos verificadores
- * Importa a função de utils.ts para evitar duplicação
- * Cria 8 dígitos aleatórios e calcula os 2 dígitos verificadores
- * usando o algoritmo oficial de validação de CNPJ
- *
- * @returns {string} CNPJ válido com 14 dígitos
- * @example
- * generateValidCnpj() // "12345678000195"
- */
-export { generateValidCnpj } from '../utils';
 
 /**
  * Gera CPF com suporte a lista de variáveis de ambiente
@@ -146,20 +130,32 @@ export function genCpf(context?: InsomniaContext): string {
 /**
  * Gera CNPJ com suporte a lista de variáveis de ambiente
  * Se CNPJ_LIST estiver definida no contexto Insomnia, seleciona um CNPJ da lista
- * Caso contrário, gera um CNPJ válido aleatório
+ * Caso contrário, gera um CNPJ válido aleatório no formato alfanumérico (2026)
  *
- * @param {InsomniaContext} [context] - Contexto do Insomnia com variáveis de ambiente
+ * Suporta duas assinaturas:
+ * - genCnpj(alphanumeric?) — uso direto sem contexto (testes)
+ * - genCnpj(context?, alphanumeric?) — uso com contexto Insomnia
+ *
+ * @param {boolean} [alphanumeric=true] - true para formato alfanumérico (2026), false para numérico (tradicional)
  * @returns {string} CNPJ válido (da lista ou gerado)
  * @example
- * genCnpj(context) // Usa CNPJ_LIST se disponível, senão gera novo
+ * genCnpj()               // Alfanumérico, sem contexto
+ * genCnpj(false)          // Numérico, sem contexto
+ * genCnpj(context)        // Alfanumérico, com contexto Insomnia
+ * genCnpj(context, false) // Numérico, com contexto Insomnia
  */
-export function genCnpj(context?: InsomniaContext): string {
-  const list = getEnvValue(context, 'CNPJ_LIST');
+export function genCnpj(alphanumeric?: boolean): string;
+export function genCnpj(context?: InsomniaContext, alphanumeric?: boolean): string;
+export function genCnpj(contextOrAlphanumeric?: InsomniaContext | boolean, alphanumeric = true): string {
+  if (typeof contextOrAlphanumeric === 'boolean') {
+    return generateValidCnpj(contextOrAlphanumeric);
+  }
+  const list = getEnvValue(contextOrAlphanumeric, 'CNPJ_LIST');
   if (list && list.trim()) {
     const values = parseNumbersByLength(list, 14);
     if (values.length > 0) return pickRandom(values);
   }
-  return generateValidCnpj();
+  return generateValidCnpj(alphanumeric);
 }
 
 /**
@@ -174,7 +170,6 @@ export function genCnpj(context?: InsomniaContext): string {
 export function genCnh(): string {
   let s = '';
   for (let i = 0; i < 11; i++) s += String(randInt(0, 9));
-  // Evita sequências onde todos os dígitos são iguais (padrão inválido)
   if (/^(\d)\1{10}$/.test(s)) return genCnh();
   return s;
 }
@@ -199,7 +194,7 @@ export function genBirthdate(format?: string): string {
   const yyyy = String(year);
   const mm = pad(month, 2);
   const dd = pad(day, 2);
-  
+
   switch ((format || 'YYYY-MM-DD').toUpperCase()) {
     case 'DD/MM/YYYY': return `${dd}/${mm}/${yyyy}`;
     case 'YYYYMMDD': return `${yyyy}${mm}${dd}`;
@@ -208,3 +203,7 @@ export function genBirthdate(format?: string): string {
     default: return `${yyyy}-${mm}-${dd}`;
   }
 }
+
+// Re-exporta para quem importava diretamente de identity
+export { generateValidCpf } from './cpf';
+export { generateValidCnpj } from './cnpj';

@@ -139,7 +139,7 @@ export function genMeuDado(): string {
 
 ## Licença
 
-Ao contribuir, você concorda que suas contribuições serão licenciadas sob AGPL-3.0.
+Ao contribuir, você concorda que suas contribuições serão licenciadas sob MIT.
 
 ## Contribuidores
 

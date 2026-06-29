@@ -1,5 +1,6 @@
 # Dados Falsos - Plugin Insomnia
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPLv3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/insomnia-plugin-dados-falsos.svg)](https://www.npmjs.com/package/insomnia-plugin-dados-falsos)
 [![npm downloads](https://img.shields.io/npm/dt/insomnia-plugin-dados-falsos.svg)](https://www.npmjs.com/package/insomnia-plugin-dados-falsos)
 [![GitHub stars](https://img.shields.io/github/stars/godoyrw/insomnia-plugin-dados-falsos.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos)
@@ -10,7 +11,9 @@
 
 Plugin para Insomnia focado em massa sintética pt-BR com consistência e validação (CPF/CNPJ), reduzindo risco de uso de dados reais em testes. Entrega 50+ tags, formatos de data, e geradores de identificadores e credenciais de teste (JWT, idempotência, API keys, hashes), com override por Environment para cenários determinísticos.
 
-![Insomnia Logo](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyqwgHeUDT6P4Xf9v6rqBmohUsP29pm2WTYg&s)
+<div align="center">
+  <img src="./assets/images/insomnia-plugin-dados-falsos.jpg" alt="Node Ecosystem Doctor">
+</div>
 
 ## Instalação
 
@@ -26,14 +29,14 @@ Plugin para Insomnia focado em massa sintética pt-BR com consistência e valida
 cp -r insomnia-plugin-dados-falsos ~/.config/Insomnia/plugins/
 ```
 
-4. Se estiver desenvolvendo, compile o TypeScript:
+1. Se estiver desenvolvendo, compile o TypeScript:
 ```bash
 npm install
 npm run build
 ```
 
-5. Reinicie o Insomnia
-6. Vá em `Preferences > Plugins` e confirme que o plugin aparece na lista
+1. Reinicie o Insomnia
+2. Vá em `Preferences > Plugins` e confirme que o plugin aparece na lista
 
 ### Opção 2: Instalação via NPM (Recomendado)
 
@@ -84,11 +87,11 @@ Use qualquer um dos template tags abaixo em seus campos de requisição:
 - `{% logradouro %}` - Logradouro (Rua/Avenida/etc)
 - `{% numero %}` - Número do endereço
 - `{% complemento %}` - Complemento (Apto, Bloco, etc)
-- `{% endereco %}` - Endereço completo: Rua X, 123
+- `{% endereco %}` - Logradouro (somente rua/avenida)
+- `{% enderecoNumero %}` - Endereço completo com número: Rua X, 123
 - `{% bairro %}` - Bairro aleatório
 - `{% cidade %}` - Cidade aleatória
 - `{% estado %}` - UF (sigla do estado)
-- `{% pais %}` - País (BR)
 
 ### Empresa e Trabalho
 
@@ -190,8 +193,7 @@ Use qualquer um dos template tags abaixo em seus campos de requisição:
     "complemento": "{% complemento %}",
     "bairro": "{% bairro %}",
     "cidade": "{% cidade %}",
-    "estado": "{% estado %}",
-    "pais": "{% pais %}"
+    "estado": "{% estado %}"
   },
   "empresa": {
     "razao_social": "{% razaoSocial %}",
@@ -271,7 +273,7 @@ O plugin vai usar um valor aleatório da lista. Se a lista não estiver definida
 
 ## Características
 
-✅ CPF e CNPJ com validação de dígito verificador  
+✅ CPF e CNPJ (antio e novo 2026) com validação de dígito verificador  
 ✅ Dados realistas em português  
 ✅ Suporte a múltiplos formatos de data  
 ✅ Telefones, WhatsApp e CEP com formatação brasileira  
@@ -281,11 +283,18 @@ O plugin vai usar um valor aleatório da lista. Se a lista não estiver definida
 ✅ Dados de empresa, financeiro e e-commerce  
 ✅ Geolocalização e dados de rede  
 ✅ Escrito em TypeScript com type safety completo  
-✅ Licença AGPL-3.0 - Código aberto e colaborativo
+✅ Licença MIT - Código aberto e colaborativo
 
 ## Desenvolvimento
 
 O plugin é escrito em **TypeScript** para melhor type safety e manutenibilidade.
+
+- JSDoc completo em português
+- Arquitetura limpa e coesa
+- Algoritmos de CPF/CNPJ com Dígito Verificador (DV) real — os dois últimos dígitos são calculados pelo algoritmo oficial da    
+  Receita Federal, garantindo números matematicamente válidos, não apenas sequências aleatórias
+- Suporte ao novo formato alfanumérico 2026 da Receita Federal — base com letras A-Z e números, pioneiro entre plugins Insomnia
+- Suite de testes com 75 casos e 100% de aprovação
 
 ### Setup
 
@@ -299,31 +308,119 @@ npm install
 npm run build
 ```
 
-Compila os arquivos `.ts` para `.js` na pasta `dist/`.
+Compila os arquivos na pasta `dist/`.
 
 ### Watch Mode (Desenvolvimento)
 
 ```bash
 npm run dev
 ```
-
 Recompila automaticamente quando você fizer mudanças nos arquivos TypeScript.
 
 ### Testes
 
+
 ```bash
 npm test
+
+> insomnia-plugin-dados-falsos@1.1.0 test
+> tsc test/quality.ts --outDir dist && node dist/test/quality.js
+
+  ✓ nomeCompleto: deve ter pelo menos 2 palavras (0.1ms)
+  ✓ primeiroNome: deve ter pelo menos 2 caracteres (0.0ms)
+  ✓ sobrenome: deve ter pelo menos 2 caracteres (0.0ms)
+  ✓ nomeSocial: deve ter pelo menos 2 caracteres (0.0ms)
+  ✓ nomeUsuario: deve ter formato nome.sobrenome.numero ou nome_sobrenome_numero (0.2ms)
+  ✓ cpf: deve ter 11 dígitos (0.1ms)
+  ✓ cpf: deve conter apenas números (0.1ms)
+  ✓ cnpj: alfanumérico deve ter 14 caracteres (0.2ms)
+  ✓ cnpj: alfanumérico deve ter base A-Z/0-9 e DVs numéricos (0.1ms)
+  ✓ cnpj: numérico deve ter 14 dígitos (0.0ms)
+  ✓ cnpj: numérico deve conter apenas números (0.1ms)
+  ✓ rg: deve ter 11 dígitos (0.1ms)
+  ✓ dataNascimento: deve estar no formato YYYY-MM-DD (0.3ms)
+  ✓ dataNascimento: deve ter valores válidos (0.1ms)
+  ✓ genero: deve ser um dos valores válidos (0.0ms)
+  ✓ email: deve conter @ (0.2ms)
+  ✓ email: deve conter domínio válido (0.0ms)
+  ✓ emailExemplo: deve usar domínio example.com (0.1ms)
+  ✓ telefone: deve ter formato (XX) XXXX-XXXX (0.1ms)
+  ✓ celular: deve ter formato (XX) 9XXXX-XXXX (0.1ms)
+  ✓ whatsapp: deve ter formato +55 XX 9XXXX-XXXX (0.1ms)
+  ✓ cep: deve ter formato XXXXX-XXX (0.1ms)
+  ✓ logradouro: deve ter pelo menos 3 caracteres (0.0ms)
+  ✓ numero: deve ser um inteiro positivo (0.1ms)
+  ✓ complemento: deve ter pelo menos 2 caracteres (0.1ms)
+  ✓ endereco: deve ter pelo menos 3 caracteres (0.0ms)
+  ✓ enderecoNumero: deve conter logradouro e número (0.0ms)
+  ✓ bairro: deve ter pelo menos 2 caracteres (0.0ms)
+  ✓ cidade: deve ter pelo menos 2 caracteres (0.0ms)
+  ✓ estado: deve ser uma sigla de 2 caracteres (0.1ms)
+  ✓ timezone: deve conter barra separando região e cidade (0.0ms)
+  ✓ razaoSocial: deve ter pelo menos 3 caracteres (0.1ms)
+  ✓ nomeFantasia: deve ter pelo menos 2 caracteres (0.0ms)
+  ✓ emailCorporativo: deve conter @ (0.0ms)
+  ✓ cargo: deve ter pelo menos 2 caracteres (0.0ms)
+  ✓ departamento: deve ter pelo menos 2 caracteres (0.0ms)
+  ✓ moeda: deve ser BRL (0.0ms)
+  ✓ valor: deve ser número positivo (0.0ms)
+  ✓ valor: deve ter até 2 casas decimais (0.1ms)
+  ✓ plano: deve ser um dos valores válidos (0.0ms)
+  ✓ statusPagamento: deve ser um dos valores válidos (0.0ms)
+  ✓ cupom: deve ter pelo menos 4 caracteres (0.0ms)
+  ✓ datetimeIso: deve ter formato válido (0.1ms)
+  ✓ uuid: deve ter 36 caracteres (0.1ms)
+  ✓ uuid: deve ter 5 segmentos separados por hífen (0.0ms)
+  ✓ ulid: deve ter 26 caracteres (0.1ms)
+  ✓ chaveIdempotencia: deve ter 36 caracteres (0.0ms)
+  ✓ chaveApi: deve ter pelo menos 32 caracteres (0.1ms)
+  ✓ tokenJwt: deve ter 3 partes separadas por ponto (0.1ms)
+  ✓ senha: deve ter pelo menos 12 caracteres (0.1ms)
+  ✓ hashSha256: deve ter 64 caracteres (0.1ms)
+  ✓ corHex: deve ter formato #XXXXXX (0.1ms)
+  ✓ booleano: deve ser true ou false (0.0ms)
+  ✓ titulo: deve ter pelo menos 3 caracteres (0.0ms)
+  ✓ descricao: deve ter pelo menos 5 caracteres (0.0ms)
+  ✓ textoLongo: deve ter pelo menos 50 caracteres (0.0ms)
+  ✓ emoji: deve ter pelo menos 1 caractere (0.0ms)
+  ✓ sku: deve ter formato SKU-XXXXX (0.1ms)
+  ✓ ean: deve ter 13 dígitos (0.0ms)
+  ✓ ean: deve conter apenas números (0.0ms)
+  ✓ pedido: deve ter formato ORD-YYYYMMDD-XXXX (0.1ms)
+  ✓ statusPedido: deve ser um dos valores válidos (0.1ms)
+  ✓ quantidade: deve ser um inteiro positivo (0.0ms)
+  ✓ frete: deve ser um dos valores válidos (0.0ms)
+  ✓ latitude: deve estar entre -90 e 90 (0.0ms)
+  ✓ longitude: deve estar entre -180 e 180 (0.0ms)
+  ✓ ipv4: deve ter 4 octetos (0.0ms)
+  ✓ ipv4: octetos devem estar entre 0 e 255 (0.0ms)
+  ✓ ipv6: deve conter dois pontos (0.0ms)
+  ✓ pais: deve ter pelo menos 3 caracteres (0.0ms)
+  ✓ codigoPais: deve ser uma sigla de 2 caracteres (0.1ms)
+  ✓ codigoTelefonePais: deve começar com + (0.0ms)
+  ✓ codigoTelefonePais: deve conter apenas números após + (0.0ms)
+  ✓ moedaPais: deve ser uma sigla de 3 caracteres (0.0ms)
+  ✓ paisCompleto: deve ser um objeto com todos os campos (0.0ms)
+
+──────────────────────────────────────────────────
+  Resultados
+──────────────────────────────────────────────────
+  Total   75 testes
+  Passou  75
+  Score   100%
+──────────────────────────────────────────────────
 ```
+
 
 Executa testes de qualidade dos geradores de dados.
 
 ## Versão
 
-1.0.0
+1.1.0
 
 ## Licença
 
-AGPL-3.0 - Veja o arquivo LICENSE para detalhes
+MIT - Veja o arquivo LICENSE para detalhes
 
 ## Autor
 
