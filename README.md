@@ -1,4 +1,5 @@
 # Dados Falsos - Plugin Insomnia
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/insomnia-plugin-dados-falsos.svg)](https://www.npmjs.com/package/insomnia-plugin-dados-falsos)
 [![npm downloads](https://img.shields.io/npm/dt/insomnia-plugin-dados-falsos.svg)](https://www.npmjs.com/package/insomnia-plugin-dados-falsos)
@@ -10,7 +11,7 @@
 
 Plugin para Insomnia focado em massa sintética pt-BR com consistência e validação (CPF/CNPJ), reduzindo risco de uso de dados reais em testes. Entrega 50+ tags, formatos de data, e geradores de identificadores e credenciais de teste (JWT, idempotência, API keys, hashes), com override por Environment para cenários determinísticos.
 
-![Insomnia Logo](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyqwgHeUDT6P4Xf9v6rqBmohUsP29pm2WTYg&s)
+![Insomnia Logo]()
 
 ## Instalação
 
@@ -26,14 +27,14 @@ Plugin para Insomnia focado em massa sintética pt-BR com consistência e valida
 cp -r insomnia-plugin-dados-falsos ~/.config/Insomnia/plugins/
 ```
 
-4. Se estiver desenvolvendo, compile o TypeScript:
+1. Se estiver desenvolvendo, compile o TypeScript:
 ```bash
 npm install
 npm run build
 ```
 
-5. Reinicie o Insomnia
-6. Vá em `Preferences > Plugins` e confirme que o plugin aparece na lista
+1. Reinicie o Insomnia
+2. Vá em `Preferences > Plugins` e confirme que o plugin aparece na lista
 
 ### Opção 2: Instalação via NPM (Recomendado)
 
@@ -280,7 +281,7 @@ O plugin vai usar um valor aleatório da lista. Se a lista não estiver definida
 ✅ Dados de empresa, financeiro e e-commerce  
 ✅ Geolocalização e dados de rede  
 ✅ Escrito em TypeScript com type safety completo  
-✅ Licença AGPL-3.0 - Código aberto e colaborativo
+✅ Licença MIT - Código aberto e colaborativo
 
 ## Desenvolvimento
 
