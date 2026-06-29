@@ -1,8 +1,11 @@
 {
   "name": "insomnia-plugin-dados-falsos",
-  "version": "1.2.1",
-  "main": "dist/insomnia-plugin-dados-falsos/src/main.js",
+  "version": "1.1.0",
   "description": "Plugin Insomnia para gerar Dados Falsos realistas para testes de APIs brasileiras",
+  "main": "src/main.js",
+  "exports": {
+    ".": "./src/main.js"
+  },
   "author": "godoyrw",
   "maintainers": [
     {
@@ -12,24 +15,37 @@
     }
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/godoyrw/insomnia-plugin-dados-falsos.git"
+  },
+  "homepage": "https://github.com/godoyrw/insomnia-plugin-dados-falsos#readme",
+  "bugs": {
+    "url": "https://github.com/godoyrw/insomnia-plugin-dados-falsos/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/godoyrw"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
-    "dados",
-    "falsos",
     "insomnia",
+    "insomnia-plugin",
     "plugin",
+    "dados-falsos",
+    "fake-data",
+    "mock-data",
+    "test-data",
+    "faker",
+    "faker-br",
     "brasil",
     "brazilian",
     "cpf",
+    "cpf-generator",
     "cnpj",
-    "dados-falsos",
-    "dados-teste",
-    "mock-data",
-    "test-data",
-    "api-testing",
-    "teste-api",
-    "gerador-dados",
-    "data-generator",
-    "template-tags",
+    "cnpj-generator",
     "rg",
     "cnh",
     "endereco",
@@ -38,68 +54,54 @@
     "uuid",
     "jwt",
     "api-key",
-    "ecommerce",
-    "pedidos",
-    "pagamento",
-    "validacao",
-    "desenvolvimento",
+    "pix",
+    "boleto",
+    "api-testing",
+    "rest",
+    "graphql",
+    "typescript",
     "qa",
     "testing",
-    "typescript"
+    "ecommerce"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/godoyrw/insomnia-plugin-dados-falsos.git"
-  },
-  "bugs": {
-    "url": "https://github.com/godoyrw/insomnia-plugin-dados-falsos/issues"
-  },
-  "homepage": "https://github.com/godoyrw/insomnia-plugin-dados-falsos#readme",
-  "funding": {
-    "type": "github",
-    "url": "https://github.com/sponsors/godoyrw"
-  },
   "files": [
     "dist/insomnia-plugin-dados-falsos",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc && npm run copy-package",
-    "copy-package": "cp package.json dist/insomnia-plugin-dados-falsos/package.json",
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean",
+    "build": "npm run clean && npx tsc",
+    "copy-package": "mkdir -p dist/insomnia-plugin-dados-falsos && cp package.json dist/insomnia-plugin-dados-falsos/package.json",
     "dev": "tsc --watch",
     "test": "tsc test/quality.ts --outDir dist && node dist/test/quality.js",
     "test:watch": "tsc test/quality.ts --outDir dist --watch",
-    "clean": "rm -rf dist",
-    "prebuild": "npm run clean",
-    "prepare": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
-    "@types/node": "^20.0.0"
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18",
+    "insomnia": ">=2021.7.0"
   },
   "insomnia": {
     "name": "Dados Falsos",
     "displayName": "Dados Falsos",
-    "description": "Plugin Insomnia para gerar dados falsos realistas em português para testes de APIs brasileiras. Suporta 60+ template tags incluindo CPF, CNPJ, nomes, endereços, emails, telefones, UUIDs, JWTs e muito mais.",
-    "version": "1.0.0",
+    "description": "Plugin Insomnia para gerar dados falsos realistas em português para testes de APIs brasileiras. Suporta mais de 60 template tags incluindo CPF, CNPJ, nomes, endereços, emails, telefones, UUIDs, JWTs e muito mais.",
+    "version": "1.1.0",
     "category": "data-generation",
     "tags": [
       "dados-falsos",
       "mock-data",
       "test-data",
+      "fake-data",
       "brasil",
       "cpf",
       "cnpj",
-      "novo cnpj",
-      "cnpj 2026",
-      "cnpj",
-      "data fake",
       "generator"
     ]
-  },
-  "engines": {
-    "insomnia": ">=2021.7.0",
-    "node": ">=12.0.0"
   }
 }
