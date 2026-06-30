@@ -1,0 +1,31 @@
+name: test
+
+on:
+  workflow_call:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - run: npm ci
+
+      - name: Run quality tests
+        run: npx ts-node test/quality.ts | tee /tmp/test-output.log
+
+      - name: Verify 100% pass rate
+        run: |
+          if ! grep -q "Score   100%" /tmp/test-output.log; then
+            echo "❌ Testes não atingiram 100% — abortando workflow."
+            exit 1
+          fi
+          echo "✅ 100% dos testes passaram."

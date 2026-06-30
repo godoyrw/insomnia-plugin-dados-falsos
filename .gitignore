@@ -10,4 +10,4 @@ yarn-error.log*
 test/**/*.js
 test/**/*.d.ts
 *.tgz
-publish_release.sh
+.dev/*

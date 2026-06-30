@@ -9,7 +9,11 @@ permissions:
   contents: write
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
   release:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,6 +36,12 @@ jobs:
             git log "${GITHUB_REF_NAME}" --pretty=format:"- %s (%h)" --no-merges > /tmp/changelog.md
           fi
           echo "" >> /tmp/changelog.md
+
+      - name: Delete existing release for this tag (if any)
+        run: |
+          gh release delete "${GITHUB_REF_NAME}" --yes --cleanup-tag=false 2>/dev/null || echo "Nenhuma release existente para ${GITHUB_REF_NAME}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
