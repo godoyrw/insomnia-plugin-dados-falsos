@@ -20,7 +20,7 @@ jobs:
       - run: npm ci
 
       - name: Run quality tests
-        run: npx ts-node test/quality.ts | tee /tmp/test-output.log
+        run: npx ts-node test/generators.test.ts | tee /tmp/test-output.log
 
       - name: Verify 100% pass rate
         run: |
