@@ -5,7 +5,6 @@
   "main": "dist/insomnia-plugin-dados-falsos/src/main.js",
   "exports": {
     ".": "./dist/insomnia-plugin-dados-falsos/src/main.js"
-
   },
   "author": "godoyrw",
   "maintainers": [
@@ -18,7 +17,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/godoyrw/insomnia-plugin-dados-falsos.git"
+    "url": "git+https://github.com/godoyrw/insomnia-plugin-dados-falsos.git"
   },
   "homepage": "https://github.com/godoyrw/insomnia-plugin-dados-falsos#readme",
   "bugs": {
