@@ -25,6 +25,14 @@ import { genHexColor, genBoolean, genContentTitle, genContentDescription, genLon
 import { genSku, genEan, genOrderId, genOrderStatus, genQuantity, genShippingType } from '../src/generators/ecommerce';
 import { genLatitude, genLongitude, genIpv4, genIpv6 } from '../src/generators/geo';
 import { genCountryName, genCountryCode, genCountryPhoneCode, genCountryCurrency, genCountryFull } from '../src/generators/countries';
+import { genBloodType } from '../src/generators/bloodType';
+
+// Importa geradores de saúde
+import { genHealthPlan } from '../src/generators/healthPlan';
+import { genAllergy } from '../src/generators/allergy';
+import { genMedicalRecordNumber } from '../src/generators/medicalRecordNumber';
+import { genCNS } from '../src/generators/cns';
+import { genProfessionalRegistration } from '../src/generators/professionalRegistration';
 
 
 /**
@@ -762,7 +770,76 @@ test('paisCompleto: código deve bater com nome do país', () => {
 });
 
 // ============================================================================
-// RELATÓRIO
+// SAÚDE
+// ============================================================================
+
+test('tipoSanguineo: deve ser um dos tipos sanguíneos válidos', () => {
+  const validos = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+  const v = genBloodType();
+  assert(validos.includes(v), `Tipo sanguíneo inválido: "${v}"`);
+});
+
+test('tipoSanguineo: deve seguir o formato Letra+/- ou AB+/-', () => {
+  const v = genBloodType();
+  assert(/^(A|B|AB|O)[+-]$/.test(v), `Formato inválido: "${v}"`);
+});
+
+// ============================================================================
+// SAÚDE - TESTES ADICIONAIS
+// ============================================================================
+
+test('numeroProntuario: deve ter formato com prefixo e números', () => {
+  const v = genMedicalRecordNumber();
+  // Deve ter padrão como "PRONT 123456" ou similar
+  assert(/^[A-Z]+[A-Z ]* [0-9]+$/.test(v), `Formato inválido: "${v}"`);
+});
+
+test('numeroCNS: deve ter exatamente 1550-9 digits', () => {
+  const v = genCNS();
+  assert(/^\d{15}$/.test(v), `CNS deve ter 15 dígitos: "${v}"`);
+});
+
+test('convenio: deve ser uma string não vazia', () => {
+  const v = genHealthPlan();
+  assert(typeof v === 'string' && v.length > 0, `Convênio inválido: "${v}"`);
+  // Verificar se é um dos planos conhecidos
+  const planosConhecidos = ['Amil', 'SulAmérica', 'Bradesco Saúde', 'Unimed', 'NotreDame Intermédica', 'Hapvida', 'Santa Casa', 'Biomédica', 'Freedom Health', 'GNDI', 'Golden Cross', 'Filipenson', 'Qualicorp', 'Porto Seguro Saúde', 'Allianz Saúde'];
+  assert(planosConhecidos.includes(v), `Convênio não reconhecido: "${v}"`);
+});
+
+test('alergia: deve ser uma string não vazia', () => {
+  const v = genAllergy();
+  assert(typeof v === 'string' && v.length > 0, `Alergia inválida: "${v}"`);
+  // Verificar se é uma das alergias conhecidas
+  const alergiasConhecidas = ['Penicilina', 'Lactose', 'Glúten', 'Pólen', 'Ácaro', 'Marisco (camarão, lagosta, etc.)', 'Amendoim', 'Castanhas', 'Ovos', 'Leite', 'Soja', 'Trigo', 'Peixe', 'Frutas cítricas', 'Álcool', 'Latex', 'Picada de inseto', 'Poeira', 'Mofo', 'Medicamentos à base de sulfa'];
+  assert(alergiasConhecidas.includes(v), `Alergia não reconhecida: "${v}"`);
+});
+
+test('conselhoProfissional: deve gerar CRM quando especificado', () => {
+  const v = genProfessionalRegistration('CRM');
+  // Format: CRM-UF XXXXX or CRM/UF XXXXX
+  assert(/^CRM-[A-Z]{2} [0-9]+$|^CRM\/[A-Z]{2} [0-9]+$/.test(v), `Formato CRM inválido: "${v}"`);
+});
+
+test('conselhoProfissional: deve gerar CREA quando especificado', () => {
+  const v = genProfessionalRegistration('CREA');
+  // Format: CREA-UF XXXXX-D (com dígito verificador)
+  assert(/^CREA-[A-Z]{2} [0-9]+-[0-9]$|^CREA\/[A-Z]{2} [0-9]+-[0-9]$/.test(v), `Formato CREA inválido: "${v}"`);
+});
+
+test('conselhoProfissional: deve gerar OAB quando especificado', () => {
+  const v = genProfessionalRegistration('OAB');
+  // Format: OAB/UF XXXXX or OAB-UF XXXXX or com letra sufixo
+  assert(/^OAB\/[A-Z]{2} [0-9]+(-[A-Z])?$|^OAB-[A-Z]{2} [0-9]+(-[A-Z])?$/.test(v), `Formato OAB inválido: "${v}"`);
+});
+
+test('conselhoProfissional: deve funcionar sem parâmetro (qualquer conselho)', () => {
+  const v = genProfessionalRegistration();
+  // Deve corresponder a algum formato de conselho
+  const formatoValido = /^(CRM|CREA|OAB|CRO|COREN)[\-\/][A-Z]{2} [0-9]+(-[0-9A-Z])?$/.test(v);
+  assert(formatoValido, `Formato de conselho profissional inválido: "${v}"`);
+});
+
 // ============================================================================
 
 const passed = results.filter(r => r.passed).length;

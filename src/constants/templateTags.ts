@@ -113,9 +113,29 @@ import {
   genCountryFull
 } from '../generators/countries';
 
+// Importa geradores de saúde
+import {
+  genBloodType
+} from '../generators/bloodType';
+import {
+  genHealthPlan
+} from '../generators/healthPlan';
+import {
+  genAllergy
+} from '../generators/allergy';
+import {
+  genMedicalRecordNumber
+} from '../generators/medicalRecordNumber';
+import {
+  genCNS
+} from '../generators/cns';
+import {
+  genProfessionalRegistration
+} from '../generators/professionalRegistration';
+
 /**
  * Array de template tags exportado para o Insomnia
- * Contém todas as 59 tags organizadas por categoria
+ * Contém todas as 60 tags organizadas por categoria
  */
 export const templateTags: TemplateTag[] = [
   // ========================================================================
@@ -631,5 +651,64 @@ export const templateTags: TemplateTag[] = [
     description: 'Dados completos do país',
     args: [],
     run: async () => JSON.stringify(genCountryFull())
+  },
+  // ========================================================================
+  // SAÚDE
+  // ========================================================================
+  {
+    name: 'tipoSanguineo',
+    displayName: 'dados-falsos → tipoSanguineo',
+    description: 'Tipo sanguíneo',
+    args: [],
+    run: async () => genBloodType()
+  },
+  {
+    name: 'numeroProntuario',
+    displayName: 'dados-falsos → numeroProntuario',
+    description: 'Número de prontuário médico',
+    args: [],
+    run: async () => genMedicalRecordNumber()
+  },
+  {
+    name: 'numeroCNS',
+    displayName: 'dados-falsos → numeroCNS',
+    description: 'Número do Cartão Nacional de Saúde (CNS)',
+    args: [],
+    run: async () => genCNS()
+  },
+  {
+    name: 'convenio',
+    displayName: 'dados-falsos → convenio',
+    description: 'Nome de convênio de saúde',
+    args: [],
+    run: async () => genHealthPlan()
+  },
+  {
+    name: 'alergia',
+    displayName: 'dados-falsos → alergia',
+    description: 'Alergia',
+    args: [],
+    run: async () => genAllergy()
+  },
+  {
+    name: 'conselhoProfissional',
+    displayName: 'dados-falsos → conselhoProfissional',
+    description: 'Número do conselho profissional (CRM, CREA, OAB, etc.)',
+    args: [
+      {
+        displayName: 'Tipo de conselho',
+        type: 'enum',
+        options: [
+          { displayName: 'Qualquer (aleatório)', value: '' },
+          { displayName: 'CRM (Medicina)', value: 'CRM' },
+          { displayName: 'CREA (Engenharia)', value: 'CREA' },
+          { displayName: 'OAB (Direito)', value: 'OAB' },
+          { displayName: 'CRO (Odontologia)', value: 'CRO' },
+          { displayName: 'COREN (Enfermagem)', value: 'COREN' }
+        ],
+        defaultValue: ''
+      }
+    ],
+    run: async (_context, tipo) => genProfessionalRegistration(tipo)
   }
 ];
