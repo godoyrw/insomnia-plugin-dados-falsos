@@ -9,7 +9,7 @@
 [![Insomnia](https://img.shields.io/badge/Insomnia-Plugin-purple)](https://insomnia.rest/)
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0003--2100--4772-green.svg)](https://orcid.org/0009-0003-2100-4772)
 
-Plugin para Insomnia focado em massa sintética pt-BR com consistência e validação real de CPF/CNPJ, reduzindo o risco de uso de dados reais em testes. Oferece 64+ template tags cobrindo identidade, contato, endereço, empresa, financeiro, e-commerce, geolocalização e mais — com suporte ao novo formato alfanumérico CNPJ 2026 da Receita Federal.
+Plugin para Insomnia focado em massa sintética pt-BR com consistência e validação real de RG, CNH, CPF, CNPJ, entre outros. Reduzindo o risco de uso de dados reais em testes. Oferece 80+ template tags cobrindo identidade, contato, endereço, empresa, financeiro, e-commerce, geolocalização e mais — com suporte ao novo formato alfanumérico CNPJ 2026 da Receita Federal.
 
 <div align="center">
   <img src="./assets/images/insomnia-plugin-dados-falsos.jpg" alt="Dados Falsos - Plugin Insomnia">
@@ -69,6 +69,18 @@ npm install && npm run build
 - `{% dataNascimento YYYYMMDD %}` — Data sem separadores
 - `{% dataNascimento ISO %}` — Data ISO com timestamp
 - `{% genero %}` — masculino, feminino, nao_binario, prefiro_nao_dizer
+- `{% tipoSanguineo %}` — Tipo sanguíneo (A+, A-, B+, B-, AB+, AB-, O+, O-)
+
+### Saúde
+
+- `{% numeroProntuario %}` — Número de prontuário médico
+- `{% numeroCNS %}` — Número do Cartão Nacional de Saúde (CNS)
+- `{% convenio %}` — Nome de convênio de saúde
+- `{% alergia %}` — Alergia
+- `{% conselhoProfissional %}` — Número do conselho profissional (CRM, CREA, OAB, etc.)
+- `{% conselhoProfissional CRM %}` — CRM (Medicina)
+- `{% conselhoProfissional CREA %}` — CREA (Engenharia)
+- `{% conselhoProfissional OAB %}` — OAB (Direito)
 
 ### Contato
 
@@ -246,6 +258,14 @@ npm install && npm run build
   "utilitarios": {
     "cor_hex": "{% corHex %}",
     "booleano": "{% booleano %}"
+  },
+  "saúde": {
+    "tipoSanguineo": "{% tipoSanguineo %}",
+    "numeroProntuario": "{% numeroProntuario %}",
+    "numeroCNS": "{% numeroCNS %}",
+    "convenio": "{% convenio %}",
+    "alergia": "{% alergia %}",
+    "conselhoProfissional": "{% conselhoProfissional %}"
   }
 }
 ```
@@ -272,11 +292,11 @@ O plugin seleciona um valor aleatório da lista. Se não estiver definida, gera 
 
 ## Características
 
-✅ CPF e CNPJ (formato antigo e novo alfanumérico 2026) com Dígito Verificador real  
+✅ CNH, CPF e CNPJ (formato antigo e novo alfanumérico 2026) com Dígito Verificador real  
 ✅ Dados realistas em português brasileiro  
 ✅ Suporte a múltiplos formatos de data  
 ✅ Telefones, WhatsApp e CEP com formatação brasileira  
-✅ 50+ template tags  
+✅ 76+ template tags  
 ✅ Listas customizadas via Environment para cenários determinísticos  
 ✅ Identificadores únicos (UUID, ULID, API Keys, JWT)  
 ✅ Dados de empresa, financeiro e e-commerce  
@@ -293,7 +313,7 @@ O plugin é escrito em **TypeScript** para melhor type safety e manutenibilidade
 
 - JSDoc completo em português
 - Arquitetura limpa e coesa, separada por domínio
-- Algoritmos de CPF/CNPJ com Dígito Verificador (DV) real — calculados pelo algoritmo oficial da Receita Federal, garantindo números matematicamente válidos, não apenas sequências aleatórias
+- Algoritmos de RG, CNH, CPF e CNPJ com Dígito Verificador (DV) real — calculados pelo algoritmo oficial da Receita Federal, garantindo números matematicamente válidos, não apenas sequências aleatórias
 - Suporte ao novo formato alfanumérico 2026 da Receita Federal — base com letras A-Z e números, pioneiro entre plugins Insomnia
 - Suite de testes com 110 casos e 100% de aprovação
 
@@ -366,7 +386,7 @@ npm test
 ──────────────────────────────────────────────────
   Resultados
 ──────────────────────────────────────────────────
-  Total   110 testes
+  Total   120 testes
   Passou  110
   Score   100%
 ──────────────────────────────────────────────────
