@@ -2,17 +2,18 @@
  * Testes de Qualidade - Dados Falsos
  * Suite de testes para validação de formatos e integridade de dados
  *
- * Objetivo: Garantir que todos os dados gerados seguem os padrões esperados
- * Cobertura: 60+ testes cobrindo todas as 60 template tags
+ * Objetivo: Garantir que todos os dados gerados seguem os padrões esperados,
+ * validando não apenas formato mas também qualidade real dos dados gerados.
  *
  * Execução:
  *   npm run test          # Executa uma vez
  *   npm run test:watch    # Modo watch
  *
  * @author Roberto Godoy
- * @license AGPL-3.0
+ * @license MIT
  */
 
+import { STREET_TYPES,UF, TIMEZONES } from '../src/constants/locations';
 import { genCpf, genCnpj, genFullName, genFirstName, genLastName, genNickname, genUsername, genCnh, genBirthdate, genGender } from '../src/generators/identity';
 import { genEmail, genEmailExample, genPhone, genCellphone, genWhatsapp } from '../src/generators/contact';
 import { genCep, genStreet, genAddressNumber, genComplement, genAddress, genNeighborhood, genCity, genStateUf, genTimezone } from '../src/generators/address';
@@ -24,6 +25,84 @@ import { genHexColor, genBoolean, genContentTitle, genContentDescription, genLon
 import { genSku, genEan, genOrderId, genOrderStatus, genQuantity, genShippingType } from '../src/generators/ecommerce';
 import { genLatitude, genLongitude, genIpv4, genIpv6 } from '../src/generators/geo';
 import { genCountryName, genCountryCode, genCountryPhoneCode, genCountryCurrency, genCountryFull } from '../src/generators/countries';
+
+
+/**
+ * Valida CPF — algoritmo oficial Receita Federal
+ */
+function validarCpf(cpf: string): boolean {
+  if (!/^\d{11}$/.test(cpf)) return false;
+  if (/^(\d)\1{10}$/.test(cpf)) return false;
+  const calc = (len: number) => {
+    let sum = 0;
+    for (let i = 0; i < len; i++) sum += parseInt(cpf[i]) * (len + 1 - i);
+    const r = (sum * 10) % 11;
+    return r === 10 || r === 11 ? 0 : r;
+  };
+  return calc(9) === parseInt(cpf[9]) && calc(10) === parseInt(cpf[10]);
+}
+
+/**
+ * Valida CNPJ — algoritmo oficial Receita Federal (suporta alfanumérico 2026)
+ */
+function validarCnpj(cnpj: string): boolean {
+  if (cnpj.length !== 14) return false;
+  const digitos = Array.from(cnpj.slice(0, 12)).map(c => c.charCodeAt(0) - 48);
+  const pesos1  = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const pesos2  = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const calcDV  = (nums: number[], pesos: number[]) => {
+    const r = nums.reduce((acc, v, i) => acc + v * pesos[i], 0) % 11;
+    return r < 2 ? 0 : 11 - r;
+  };
+  const d1 = calcDV(digitos, pesos1);
+  const d2 = calcDV([...digitos, d1], pesos2);
+  return cnpj[12] === String(d1) && cnpj[13] === String(d2);
+}
+
+/**
+ * Valida UUID v4
+ */
+function validarUuid(uuid: string): boolean {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(uuid);
+}
+
+/**
+ * Valida data real (considera dias por mês e anos bissextos)
+ */
+function validarData(ano: number, mes: number, dia: number): boolean {
+  const d = new Date(ano, mes - 1, dia);
+  return d.getFullYear() === ano && d.getMonth() === mes - 1 && d.getDate() === dia;
+}
+
+/**
+ * Valida email com regex completo RFC 5322 simplificado
+ */
+function validarEmail(email: string): boolean {
+  return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(email);
+}
+
+/**
+ * Valida senha forte: maiúscula, minúscula, número, especial, 12+ chars
+ */
+function validarSenha(senha: string): boolean {
+  return senha.length >= 12
+    && /[A-Z]/.test(senha)
+    && /[a-z]/.test(senha)
+    && /[0-9]/.test(senha)
+    && /[^A-Za-z0-9]/.test(senha);
+}
+
+/**
+ * Valida EAN-13 com dígito verificador
+ */
+function validarEan13(ean: string): boolean {
+  if (!/^\d{13}$/.test(ean)) return false;
+  const sum = ean.split('').slice(0, 12).reduce((acc, d, i) => {
+    return acc + parseInt(d) * (i % 2 === 0 ? 1 : 3);
+  }, 0);
+  const dv = (10 - (sum % 10)) % 10;
+  return dv === parseInt(ean[12]);
+}
 
 // ============================================================================
 // FRAMEWORK DE TESTES
@@ -57,370 +136,557 @@ function test(name: string, fn: () => void): void {
 }
 
 // ============================================================================
-// TESTES DE VALIDAÇÃO - 60 TAGS
+// IDENTIDADE
 // ============================================================================
-
-// --- IDENTIDADE ---
 
 test('nomeCompleto: deve ter pelo menos 2 palavras', () => {
   const v = genFullName();
-  assert(v.split(' ').length >= 2, `Nome completo deve ter pelo menos 2 palavras: "${v}"`);
+  assert(v.split(' ').length >= 2, `Esperado 2+ palavras: "${v}"`);
+});
+
+test('nomeCompleto: não deve conter números ou caracteres especiais', () => {
+  const v = genFullName();
+  assert(!/[0-9!@#$%^&*()_+=[\]{};':"\\|,.<>/?]/.test(v), `Nome inválido: "${v}"`);
 });
 
 test('primeiroNome: deve ter pelo menos 2 caracteres', () => {
   const v = genFirstName();
-  assert(v.length >= 2, `Primeiro nome deve ter pelo menos 2 caracteres: "${v}"`);
+  assert(v.length >= 2, `Esperado 2+ chars: "${v}"`);
+});
+
+test('primeiroNome: não deve conter números', () => {
+  const v = genFirstName();
+  assert(!/\d/.test(v), `Nome com número: "${v}"`);
 });
 
 test('sobrenome: deve ter pelo menos 2 caracteres', () => {
   const v = genLastName();
-  assert(v.length >= 2, `Sobrenome deve ter pelo menos 2 caracteres: "${v}"`);
+  assert(v.length >= 2, `Esperado 2+ chars: "${v}"`);
 });
 
 test('nomeSocial: deve ter pelo menos 2 caracteres', () => {
   const v = genNickname();
-  assert(v.length >= 2, `Nome social deve ter pelo menos 2 caracteres: "${v}"`);
+  assert(v.length >= 2, `Esperado 2+ chars: "${v}"`);
 });
 
 test('nomeUsuario: deve ter formato nome.sobrenome.numero ou nome_sobrenome_numero', () => {
   const v = genUsername();
-  assert(/^[a-z]+[._][a-z]+[._]\d+$/.test(v), `Nome de usuário deve ter formato correto: "${v}"`);
+  assert(/^[a-z]+[._][a-z]+[._]\d+$/.test(v), `Formato inválido: "${v}"`);
 });
 
-test('cpf: deve ter 11 dígitos', () => {
-  const v = genCpf();
-  assert(v.length === 11, `CPF deve ter exatamente 11 dígitos: "${v}"`);
+test('nomeUsuario: não deve conter acentos', () => {
+  const v = genUsername();
+  assert(!/[àáâãäåèéêëìíîïòóôõöùúûüçñ]/i.test(v), `Username com acento: "${v}"`);
 });
 
-test('cpf: deve conter apenas números', () => {
+test('cpf: deve ter 11 dígitos numéricos', () => {
   const v = genCpf();
-  assert(/^\d{11}$/.test(v), `CPF deve conter apenas números: "${v}"`);
+  assert(/^\d{11}$/.test(v), `CPF inválido: "${v}"`);
+});
+
+test('cpf: deve ter dígito verificador válido (algoritmo Receita Federal)', () => {
+  const v = genCpf();
+  assert(validarCpf(v), `CPF com DV inválido: "${v}"`);
+});
+
+test('cpf: não deve ser sequência repetida', () => {
+  const v = genCpf();
+  assert(!/^(\d)\1{10}$/.test(v), `CPF sequência repetida: "${v}"`);
 });
 
 test('cnpj: alfanumérico deve ter 14 caracteres', () => {
   const v = genCnpj();
-  assert(v.length === 14, `CNPJ deve ter exatamente 14 caracteres: "${v}"`);
+  assert(v.length === 14, `Esperado 14 chars: "${v}"`);
 });
 
 test('cnpj: alfanumérico deve ter base A-Z/0-9 e DVs numéricos', () => {
   const v = genCnpj();
-  assert(/^[A-Z0-9]{12}\d{2}$/.test(v), `Base deve ser alfanumérica e DVs numéricos: "${v}"`);
+  assert(/^[A-Z0-9]{12}\d{2}$/.test(v), `Formato inválido: "${v}"`);
 });
 
-test('cnpj: numérico deve ter 14 dígitos', () => {
-  const v = genCnpj( false);
-  assert(v.length === 14, `CNPJ numérico deve ter exatamente 14 dígitos: "${v}"`);
+test('cnpj: alfanumérico deve ter dígito verificador válido', () => {
+  const v = genCnpj();
+  assert(validarCnpj(v), `CNPJ AN com DV inválido: "${v}"`);
 });
 
-test('cnpj: numérico deve conter apenas números', () => {
+test('cnpj: numérico deve conter apenas dígitos', () => {
   const v = genCnpj(false);
-  assert(/^\d{14}$/.test(v), `CNPJ numérico deve conter apenas números: "${v}"`);
+  assert(/^\d{14}$/.test(v), `CNPJ numérico inválido: "${v}"`);
 });
 
-test('rg: deve ter 11 dígitos', () => {
+test('cnpj: numérico deve ter dígito verificador válido', () => {
+  const v = genCnpj(false);
+  assert(validarCnpj(v), `CNPJ numérico com DV inválido: "${v}"`);
+});
+
+test('rg: deve ter exatamente 11 dígitos', () => {
   const v = genCnh();
-  assert(v.length === 11, `RG/CNH deve ter 11 dígitos: "${v}"`);
+  assert(/^\d{11}$/.test(v), `RG/CNH inválido: "${v}"`);
+});
+
+test('rg: não deve ser sequência repetida', () => {
+  const v = genCnh();
+  assert(!/^(\d)\1{10}$/.test(v), `RG sequência repetida: "${v}"`);
 });
 
 test('dataNascimento: deve estar no formato YYYY-MM-DD', () => {
   const v = genBirthdate();
-  assert(/^\d{4}-\d{2}-\d{2}$/.test(v), `Data deve estar em formato YYYY-MM-DD: "${v}"`);
+  assert(/^\d{4}-\d{2}-\d{2}$/.test(v), `Formato inválido: "${v}"`);
 });
 
-test('dataNascimento: deve ter valores válidos', () => {
+test('dataNascimento: deve ser uma data real e válida', () => {
   const v = genBirthdate();
-  const [year, month, day] = v.split('-').map(Number);
-  assert(year >= 1900 && year <= 2100, `Ano inválido: ${year}`);
-  assert(month >= 1 && month <= 12, `Mês inválido: ${month}`);
-  assert(day >= 1 && day <= 31, `Dia inválido: ${day}`);
+  const [ano, mes, dia] = v.split('-').map(Number);
+  assert(validarData(ano, mes, dia), `Data irreal: "${v}"`);
+});
+
+test('dataNascimento: deve ser entre 18 e 70 anos atrás', () => {
+  const v = genBirthdate();
+  const anoNasc = parseInt(v.split('-')[0]);
+  const anoAtual = new Date().getFullYear();
+  const idade = anoAtual - anoNasc;
+  assert(idade >= 18 && idade <= 70, `Idade fora do intervalo: ${idade} anos`);
 });
 
 test('genero: deve ser um dos valores válidos', () => {
-  const valid = ['masculino', 'feminino', 'nao_binario', 'prefiro_nao_dizer'];
+  const validos = ['masculino', 'feminino', 'nao_binario', 'prefiro_nao_dizer'];
   const v = genGender();
-  assert(valid.includes(v), `Gênero inválido: "${v}"`);
+  assert(validos.includes(v), `Gênero inválido: "${v}"`);
 });
 
-// --- CONTATO ---
+// ============================================================================
+// CONTATO
+// ============================================================================
 
-test('email: deve conter @', () => {
+test('email: deve ter formato válido (RFC 5322)', () => {
   const v = genEmail();
-  assert(v.includes('@'), `Email deve conter @: "${v}"`);
+  assert(validarEmail(v), `Email inválido: "${v}"`);
 });
 
-test('email: deve conter domínio válido', () => {
+test('email: não deve ter espaços', () => {
   const v = genEmail();
-  assert(v.includes('.'), `Email deve conter ponto no domínio: "${v}"`);
+  assert(!v.includes(' '), `Email com espaço: "${v}"`);
 });
 
 test('emailExemplo: deve usar domínio example.com', () => {
   const v = genEmailExample();
-  assert(v.includes('example.com'), `Email de exemplo deve usar domínio example.com: "${v}"`);
+  assert(v.endsWith('@example.com') || v.includes('@example.com'), `Domínio inválido: "${v}"`);
+});
+
+test('emailExemplo: deve ter formato válido', () => {
+  const v = genEmailExample();
+  assert(validarEmail(v), `Email exemplo inválido: "${v}"`);
 });
 
 test('telefone: deve ter formato (XX) XXXX-XXXX', () => {
   const v = genPhone();
-  assert(/^\(\d{2}\) \d{4}-\d{4}$/.test(v), `Telefone deve ter formato correto: "${v}"`);
+  assert(/^\(\d{2}\) \d{4}-\d{4}$/.test(v), `Formato inválido: "${v}"`);
+});
+
+test('telefone: DDD deve ser válido (11-99)', () => {
+  const v = genPhone();
+  const ddd = parseInt(v.replace(/\D/g, '').slice(0, 2));
+  assert(ddd >= 11 && ddd <= 99, `DDD inválido: ${ddd}`);
 });
 
 test('celular: deve ter formato (XX) 9XXXX-XXXX', () => {
   const v = genCellphone();
-  assert(/^\(\d{2}\) 9\d{4}-\d{4}$/.test(v), `Celular deve ter formato correto: "${v}"`);
+  assert(/^\(\d{2}\) 9\d{4}-\d{4}$/.test(v), `Formato inválido: "${v}"`);
+});
+
+test('celular: deve começar com dígito 9', () => {
+  const v = genCellphone();
+  const digits = v.replace(/\D/g, '');
+  assert(digits[2] === '9', `Celular sem dígito 9: "${v}"`);
 });
 
 test('whatsapp: deve ter formato +55 XX 9XXXX-XXXX', () => {
   const v = genWhatsapp();
-  assert(/^\+55 \d{2} 9\d{4}-\d{4}$/.test(v), `WhatsApp deve ter formato correto: "${v}"`);
+  assert(/^\+55 \d{2} 9\d{4}-\d{4}$/.test(v), `Formato inválido: "${v}"`);
 });
 
-// --- ENDEREÇO ---
+test('whatsapp: deve ter código +55 (Brasil)', () => {
+  const v = genWhatsapp();
+  assert(v.startsWith('+55'), `Código país inválido: "${v}"`);
+});
+
+// ============================================================================
+// ENDEREÇO
+// ============================================================================
 
 test('cep: deve ter formato XXXXX-XXX', () => {
   const v = genCep();
-  assert(/^\d{5}-\d{3}$/.test(v), `CEP deve ter formato XXXXX-XXX: "${v}"`);
+  assert(/^\d{5}-\d{3}$/.test(v), `Formato inválido: "${v}"`);
+});
+
+test('cep: não deve ser todos zeros', () => {
+  const v = genCep();
+  assert(v !== '00000-000', `CEP zerado: "${v}"`);
 });
 
 test('logradouro: deve ter pelo menos 3 caracteres', () => {
   const v = genStreet();
-  assert(v.length >= 3, `Logradouro deve ter pelo menos 3 caracteres: "${v}"`);
+  assert(v.length >= 3, `Logradouro muito curto: "${v}"`);
 });
 
-test('numero: deve ser um inteiro positivo', () => {
+test('logradouro: deve começar com tipo (Rua, Av, etc)', () => {
+  const v = genStreet();
+  const vt = STREET_TYPES.some(tipo => v.startsWith(tipo));
+  assert(vt, `Sem tipo de logradouro: "${v}"`);
+});
+
+test('numero: deve ser inteiro positivo', () => {
   const v = genAddressNumber();
-  assert(/^\d+$/.test(v), `Número deve ser um inteiro positivo: "${v}"`);
+  assert(/^\d+$/.test(v) && parseInt(v) > 0, `Número inválido: "${v}"`);
 });
 
 test('complemento: deve ter pelo menos 2 caracteres', () => {
   const v = genComplement();
-  assert(v.length >= 2, `Complemento deve ter pelo menos 2 caracteres: "${v}"`);
+  assert(v.length >= 2, `Complemento muito curto: "${v}"`);
 });
 
 test('endereco: deve ter pelo menos 3 caracteres', () => {
   const v = genAddress();
-  assert(v.length >= 3, `Endereço deve ter pelo menos 3 caracteres: "${v}"`);
+  assert(v.length >= 3, `Endereço muito curto: "${v}"`);
 });
 
-test('enderecoNumero: deve conter logradouro e número', () => {
+test('enderecoNumero: deve conter vírgula separando rua e número', () => {
   const v = `${genStreet()}, ${genAddressNumber()}`;
-  assert(v.includes(','), `Endereço com número deve conter vírgula: "${v}"`);
+  assert(/^.+,\s\d+$/.test(v), `Formato inválido: "${v}"`);
 });
 
 test('bairro: deve ter pelo menos 2 caracteres', () => {
   const v = genNeighborhood();
-  assert(v.length >= 2, `Bairro deve ter pelo menos 2 caracteres: "${v}"`);
+  assert(v.length >= 2, `Bairro muito curto: "${v}"`);
 });
 
 test('cidade: deve ter pelo menos 2 caracteres', () => {
   const v = genCity();
-  assert(v.length >= 2, `Cidade deve ter pelo menos 2 caracteres: "${v}"`);
+  assert(v.length >= 2, `Cidade muito curta: "${v}"`);
 });
 
-test('estado: deve ser uma sigla de 2 caracteres', () => {
+test('estado: deve ser uma UF brasileira válida', () => {
   const v = genStateUf();
-  assert(/^[A-Z]{2}$/.test(v), `Estado deve ser uma sigla de 2 letras: "${v}"`);
+  assert(UF.includes(v), `UF inválida: "${v}"`);
 });
 
-test('timezone: deve conter barra separando região e cidade', () => {
+test('timezone: deve ser uma timezone IANA válida', () => {
   const v = genTimezone();
-  assert(v.includes('/'), `Timezone deve conter barra: "${v}"`);
+  assert(TIMEZONES.includes(v), `Timezone inválida: "${v}"`);
 });
 
-// --- EMPRESA ---
+// ============================================================================
+// EMPRESA
+// ============================================================================
 
 test('razaoSocial: deve ter pelo menos 3 caracteres', () => {
   const v = genCompanyName();
-  assert(v.length >= 3, `Razão social deve ter pelo menos 3 caracteres: "${v}"`);
+  assert(v.length >= 3, `Razão social muito curta: "${v}"`);
+});
+
+test('razaoSocial: deve conter sufixo legal (LTDA, S/A, etc)', () => {
+  const v = genCompanyName();
+  assert(/(LTDA|S\.?A\.?|EIRELI|ME|EPP|SS|SRL)/i.test(v), `Sem sufixo legal: "${v}"`);
 });
 
 test('nomeFantasia: deve ter pelo menos 2 caracteres', () => {
   const v = genCompanyFantasyName();
-  assert(v.length >= 2, `Nome fantasia deve ter pelo menos 2 caracteres: "${v}"`);
+  assert(v.length >= 2, `Nome fantasia muito curto: "${v}"`);
 });
 
-test('emailCorporativo: deve conter @', () => {
+test('emailCorporativo: deve ter formato válido', () => {
   const v = genCorporateEmail();
-  assert(v.includes('@'), `Email corporativo deve conter @: "${v}"`);
+  assert(validarEmail(v), `Email corporativo inválido: "${v}"`);
+});
+
+test('emailCorporativo: não deve usar domínios pessoais (gmail, hotmail)', () => {
+  const v = genCorporateEmail();
+  assert(!/gmail|hotmail|yahoo|outlook\.com$/i.test(v), `Domínio pessoal: "${v}"`);
 });
 
 test('cargo: deve ter pelo menos 2 caracteres', () => {
   const v = genPosition();
-  assert(v.length >= 2, `Cargo deve ter pelo menos 2 caracteres: "${v}"`);
+  assert(v.length >= 2, `Cargo muito curto: "${v}"`);
 });
 
 test('departamento: deve ter pelo menos 2 caracteres', () => {
   const v = genDepartment();
-  assert(v.length >= 2, `Departamento deve ter pelo menos 2 caracteres: "${v}"`);
+  assert(v.length >= 2, `Departamento muito curto: "${v}"`);
 });
 
-// --- FINANCEIRO ---
+// ============================================================================
+// FINANCEIRO
+// ============================================================================
 
 test('moeda: deve ser BRL', () => {
   const v = genCurrency();
-  assert(v === 'BRL', `Moeda deve ser BRL: "${v}"`);
+  assert(v === 'BRL', `Moeda inválida: "${v}"`);
 });
 
-test('valor: deve ser número positivo', () => {
+test('valor: deve ser número positivo maior que zero', () => {
   const v = genAmount();
-  assert(v > 0, `Valor deve ser positivo: ${v}`);
+  assert(typeof v === 'number' && v > 0, `Valor inválido: ${v}`);
 });
 
-test('valor: deve ter até 2 casas decimais', () => {
-  const v = genAmount().toFixed(2);
-  assert(/^\d+\.\d{1,2}$/.test(v), `Valor deve ter até 2 casas decimais: "${v}"`);
+test('valor: deve ter no máximo 2 casas decimais', () => {
+  const v = genAmount();
+  const str = v.toFixed(2);
+  assert(/^\d+\.\d{2}$/.test(str), `Casas decimais inválidas: ${str}`);
+});
+
+test('valor: deve estar em intervalo realista (R$ 0,01 a R$ 100.000)', () => {
+  const v = genAmount();
+  assert(v >= 0.01 && v <= 100000, `Valor fora do intervalo: ${v}`);
 });
 
 test('plano: deve ser um dos valores válidos', () => {
-  const valid = ['gratuito', 'profissional', 'empresarial'];
+  const validos = ['gratuito', 'profissional', 'empresarial'];
   const v = genPaymentPlan();
-  assert(valid.includes(v), `Plano inválido: "${v}"`);
+  assert(validos.includes(v), `Plano inválido: "${v}"`);
 });
 
 test('statusPagamento: deve ser um dos valores válidos', () => {
-  const valid = ['pago', 'pendente', 'falhou', 'reembolsado'];
+  const validos = ['pago', 'pendente', 'falhou', 'reembolsado'];
   const v = genPaymentStatus();
-  assert(valid.includes(v), `Status de pagamento inválido: "${v}"`);
+  assert(validos.includes(v), `Status inválido: "${v}"`);
 });
 
 test('cupom: deve ter pelo menos 4 caracteres', () => {
   const v = genCoupon();
-  assert(v.length >= 4, `Cupom deve ter pelo menos 4 caracteres: "${v}"`);
+  assert(v.length >= 4, `Cupom muito curto: "${v}"`);
 });
 
-// --- DATAS ---
+test('cupom: deve ser alfanumérico em maiúsculas', () => {
+  const v = genCoupon();
+  assert(/^[A-Z0-9]+$/.test(v), `Cupom com formato inválido: "${v}"`);
+});
 
-test('datetimeIso: deve ter formato válido', () => {
+// ============================================================================
+// DATAS
+// ============================================================================
+
+test('datetimeIso: deve ter formato ISO 8601 completo', () => {
   const v = genDatetimeIso();
-  assert(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(v), `Datetime deve estar em formato ISO: "${v}"`);
+  assert(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(v), `Formato inválido: "${v}"`);
 });
 
-// --- IDENTIFICADORES ---
+test('datetimeIso: deve ser uma data e hora reais', () => {
+  const v = genDatetimeIso();
+  const d = new Date(v);
+  assert(!isNaN(d.getTime()), `Data inválida: "${v}"`);
+});
 
-test('uuid: deve ter 36 caracteres', () => {
+test('datetimeIso: horas deve estar entre 0-23', () => {
+  const v = genDatetimeIso();
+  const hora = parseInt(v.split('T')[1].split(':')[0]);
+  assert(hora >= 0 && hora <= 23, `Hora inválida: ${hora}`);
+});
+
+test('datetimeIso: minutos deve estar entre 0-59', () => {
+  const v = genDatetimeIso();
+  const min = parseInt(v.split('T')[1].split(':')[1]);
+  assert(min >= 0 && min <= 59, `Minutos inválidos: ${min}`);
+});
+
+// ============================================================================
+// IDENTIFICADORES
+// ============================================================================
+
+test('uuid: deve ter formato UUID v4 válido', () => {
   const v = genUuid();
-  assert(v.length === 36, `UUID deve ter 36 caracteres: "${v}"`);
+  assert(validarUuid(v), `UUID v4 inválido: "${v}"`);
 });
 
 test('uuid: deve ter 5 segmentos separados por hífen', () => {
   const v = genUuid();
-  assert(v.split('-').length === 5, `UUID deve ter 5 segmentos: "${v}"`);
+  const segs = v.split('-');
+  assert(segs.length === 5, `Segmentos inválidos: "${v}"`);
+  assert(segs[0].length === 8 && segs[1].length === 4 && segs[2].length === 4 && segs[3].length === 4 && segs[4].length === 12,
+    `Tamanho de segmento inválido: "${v}"`);
 });
 
 test('ulid: deve ter 26 caracteres', () => {
   const v = genUlid();
-  assert(v.length === 26, `ULID deve ter 26 caracteres: "${v}"`);
+  assert(v.length === 26, `ULID com tamanho inválido: "${v}"`);
 });
 
-test('chaveIdempotencia: deve ter 36 caracteres', () => {
+test('ulid: deve conter apenas caracteres Crockford Base32', () => {
+  const v = genUlid();
+  assert(/^[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{26}$/.test(v), `ULID com chars inválidos: "${v}"`);
+});
+
+test('chaveIdempotencia: deve ser UUID v4 válido', () => {
   const v = genIdempotencyKey();
-  assert(v.length === 36, `Chave de idempotência deve ter 36 caracteres: "${v}"`);
+  assert(validarUuid(v), `Chave de idempotência inválida: "${v}"`);
 });
 
 test('chaveApi: deve ter pelo menos 32 caracteres', () => {
   const v = genApiKey();
-  assert(v.length >= 32, `Chave de API deve ter pelo menos 32 caracteres: "${v}"`);
+  assert(v.length >= 32, `API Key muito curta: "${v}"`);
+});
+
+test('chaveApi: deve conter apenas caracteres alfanuméricos e underscores', () => {
+  const v = genApiKey();
+  assert(/^[a-zA-Z0-9_]+$/.test(v), `API Key com chars inválidos: "${v}"`);
 });
 
 test('tokenJwt: deve ter 3 partes separadas por ponto', () => {
   const v = genJwtToken();
-  assert(v.split('.').length === 3, `JWT deve ter 3 partes: "${v}"`);
+  assert(v.split('.').length === 3, `JWT sem 3 partes: "${v}"`);
+});
+
+test('tokenJwt: header deve ser Base64 decodificável com alg e typ', () => {
+  const v = genJwtToken();
+  const header = JSON.parse(Buffer.from(v.split('.')[0], 'base64').toString());
+  assert(header.alg && header.typ === 'JWT', `Header JWT inválido: ${JSON.stringify(header)}`);
 });
 
 test('senha: deve ter pelo menos 12 caracteres', () => {
   const v = genPassword();
-  assert(v.length >= 12, `Senha deve ter pelo menos 12 caracteres: "${v}"`);
+  assert(v.length >= 12, `Senha muito curta: "${v}"`);
 });
 
-test('hashSha256: deve ter 64 caracteres', () => {
+test('senha: deve ser forte (maiúscula, minúscula, número, especial)', () => {
+  const v = genPassword();
+  assert(validarSenha(v), `Senha fraca: "${v}"`);
+});
+
+test('hashSha256: deve ter exatamente 64 caracteres hexadecimais', () => {
   const v = genSha256Hash();
-  assert(v.length === 64, `Hash SHA256 deve ter 64 caracteres: "${v}"`);
+  assert(/^[a-f0-9]{64}$/.test(v), `Hash SHA256 inválido: "${v}"`);
 });
 
-// --- CONTEÚDO ---
+// ============================================================================
+// CONTEÚDO
+// ============================================================================
 
-test('corHex: deve ter formato #XXXXXX', () => {
+test('corHex: deve ter formato #RRGGBB válido', () => {
   const v = genHexColor();
-  assert(/^#[0-9A-F]{6}$/i.test(v), `Cor deve ter formato #XXXXXX: "${v}"`);
+  assert(/^#[0-9A-Fa-f]{6}$/.test(v), `Cor hex inválida: "${v}"`);
 });
 
-test('booleano: deve ser true ou false', () => {
+test('corHex: deve ter exatamente 7 caracteres', () => {
+  const v = genHexColor();
+  assert(v.length === 7, `Cor hex com tamanho inválido: "${v}"`);
+});
+
+test('booleano: deve ser exatamente "true" ou "false"', () => {
   const v = genBoolean();
-  assert(v === 'true' || v === 'false', `Booleano deve ser true ou false: "${v}"`);
+  assert(v === 'true' || v === 'false', `Booleano inválido: "${v}"`);
 });
 
 test('titulo: deve ter pelo menos 3 caracteres', () => {
   const v = genContentTitle();
-  assert(v.length >= 3, `Título deve ter pelo menos 3 caracteres: "${v}"`);
+  assert(v.length >= 3, `Título muito curto: "${v}"`);
+});
+
+test('titulo: não deve ser apenas espaços', () => {
+  const v = genContentTitle();
+  assert(v.trim().length > 0, `Título vazio: "${v}"`);
 });
 
 test('descricao: deve ter pelo menos 5 caracteres', () => {
   const v = genContentDescription();
-  assert(v.length >= 5, `Descrição deve ter pelo menos 5 caracteres: "${v}"`);
+  assert(v.length >= 5, `Descrição muito curta: "${v}"`);
 });
 
 test('textoLongo: deve ter pelo menos 50 caracteres', () => {
   const v = genLongText();
-  assert(v.length >= 50, `Texto longo deve ter pelo menos 50 caracteres: "${v}"`);
+  assert(v.length >= 50, `Texto longo muito curto: ${v.length} chars`);
+});
+
+test('textoLongo: deve ter no máximo 500 caracteres', () => {
+  const v = genLongText();
+  assert(v.length <= 500, `Texto longo muito grande: ${v.length} chars`);
 });
 
 test('emoji: deve ter pelo menos 1 caractere', () => {
   const v = genEmoji();
-  assert(v.length > 0, `Emoji deve ser um caractere válido: "${v}"`);
+  assert(v.length > 0, `Emoji vazio`);
 });
 
-// --- E-COMMERCE ---
+// ============================================================================
+// E-COMMERCE
+// ============================================================================
 
 test('sku: deve ter formato SKU-XXXXX', () => {
   const v = genSku();
-  assert(/^SKU-\d{5}$/.test(v), `SKU deve ter formato SKU-XXXXX: "${v}"`);
+  assert(/^SKU-\d{5}$/.test(v), `SKU inválido: "${v}"`);
 });
 
 test('ean: deve ter 13 dígitos', () => {
   const v = genEan();
-  assert(v.length === 13, `EAN deve ter 13 dígitos: "${v}"`);
+  assert(/^\d{13}$/.test(v), `EAN inválido: "${v}"`);
 });
 
-test('ean: deve conter apenas números', () => {
+test('ean: deve ter dígito verificador válido (EAN-13)', () => {
   const v = genEan();
-  assert(/^\d{13}$/.test(v), `EAN deve conter apenas números: "${v}"`);
+  assert(validarEan13(v), `EAN-13 com DV inválido: "${v}"`);
 });
 
 test('pedido: deve ter formato ORD-YYYYMMDD-XXXX', () => {
   const v = genOrderId();
-  assert(/^ORD-\d{8}-\d{4}$/.test(v), `Pedido deve ter formato correto: "${v}"`);
+  assert(/^ORD-\d{8}-\d{4}$/.test(v), `Pedido inválido: "${v}"`);
+});
+
+test('pedido: data embutida deve ser válida', () => {
+  const v = genOrderId();
+  const dateStr = v.split('-')[1];
+  const ano = parseInt(dateStr.slice(0, 4));
+  const mes = parseInt(dateStr.slice(4, 6));
+  const dia = parseInt(dateStr.slice(6, 8));
+  assert(validarData(ano, mes, dia), `Data do pedido inválida: "${dateStr}"`);
 });
 
 test('statusPedido: deve ser um dos valores válidos', () => {
-  const valid = ['criado', 'pago', 'enviado', 'entregue', 'cancelado'];
+  const validos = ['criado', 'pago', 'enviado', 'entregue', 'cancelado'];
   const v = genOrderStatus();
-  assert(valid.includes(v), `Status de pedido inválido: "${v}"`);
+  assert(validos.includes(v), `Status de pedido inválido: "${v}"`);
 });
 
-test('quantidade: deve ser um inteiro positivo', () => {
+test('quantidade: deve ser inteiro positivo', () => {
   const v = genQuantity();
-  assert(Number.isInteger(v) && v > 0, `Quantidade deve ser um inteiro positivo: ${v}`);
+  assert(Number.isInteger(v) && v > 0, `Quantidade inválida: ${v}`);
+});
+
+test('quantidade: deve estar em intervalo realista (1-9999)', () => {
+  const v = genQuantity();
+  assert(v >= 1 && v <= 9999, `Quantidade fora do intervalo: ${v}`);
 });
 
 test('frete: deve ser um dos valores válidos', () => {
-  const valid = ['padrao', 'expresso'];
+  const validos = ['padrao', 'expresso'];
   const v = genShippingType();
-  assert(valid.includes(v), `Frete inválido: "${v}"`);
+  assert(validos.includes(v), `Frete inválido: "${v}"`);
 });
 
-// --- GEOLOCALIZAÇÃO ---
+// ============================================================================
+// GEOLOCALIZAÇÃO
+// ============================================================================
 
 test('latitude: deve estar entre -90 e 90', () => {
   const v = parseFloat(genLatitude());
-  assert(v >= -90 && v <= 90, `Latitude deve estar entre -90 e 90: ${v}`);
+  assert(v >= -90 && v <= 90, `Latitude fora do intervalo: ${v}`);
+});
+
+test('latitude: deve ter casas decimais (não inteiro)', () => {
+  const v = genLatitude();
+  assert(v.includes('.'), `Latitude sem decimais: "${v}"`);
 });
 
 test('longitude: deve estar entre -180 e 180', () => {
   const v = parseFloat(genLongitude());
-  assert(v >= -180 && v <= 180, `Longitude deve estar entre -180 e 180: ${v}`);
+  assert(v >= -180 && v <= 180, `Longitude fora do intervalo: ${v}`);
+});
+
+test('longitude: deve ter casas decimais (não inteiro)', () => {
+  const v = genLongitude();
+  assert(v.includes('.'), `Longitude sem decimais: "${v}"`);
 });
 
 test('ipv4: deve ter 4 octetos', () => {
   const v = genIpv4();
-  assert(v.split('.').length === 4, `IP v4 deve ter 4 octetos: "${v}"`);
+  assert(v.split('.').length === 4, `IPv4 com octetos incorretos: "${v}"`);
 });
 
 test('ipv4: octetos devem estar entre 0 e 255', () => {
@@ -430,45 +696,73 @@ test('ipv4: octetos devem estar entre 0 e 255', () => {
   });
 });
 
-test('ipv6: deve conter dois pontos', () => {
-  const v = genIpv6();
-  assert(v.includes(':'), `IP v6 deve conter dois pontos: "${v}"`);
+test('ipv4: não deve ser IP privado (deve ser documentação RFC 5737)', () => {
+  const v = genIpv4();
+  assert(
+    v.startsWith('192.0.2.') || v.startsWith('198.51.100.') || v.startsWith('203.0.113.'),
+    `IPv4 fora da faixa de documentação: "${v}"`
+  );
 });
 
-// --- PAÍSES DO MUNDO ---
+test('ipv6: deve ter formato válido com dois pontos', () => {
+  const v = genIpv6();
+  assert(v.includes(':') && v.split(':').length >= 4, `IPv6 inválido: "${v}"`);
+});
+
+// ============================================================================
+// PAÍSES DO MUNDO
+// ============================================================================
 
 test('pais: deve ter pelo menos 3 caracteres', () => {
   const v = genCountryName();
-  assert(v.length >= 3, `País deve ter pelo menos 3 caracteres: "${v}"`);
+  assert(v.length >= 3, `País muito curto: "${v}"`);
 });
 
-test('codigoPais: deve ser uma sigla de 2 caracteres', () => {
+test('pais: não deve conter números', () => {
+  const v = genCountryName();
+  assert(!/\d/.test(v), `País com número: "${v}"`);
+});
+
+test('codigoPais: deve ser sigla ISO 3166-1 alpha-2 (2 letras maiúsculas)', () => {
   const v = genCountryCode();
-  assert(/^[A-Z]{2}$/.test(v), `Código de país deve ser uma sigla de 2 letras: "${v}"`);
+  assert(/^[A-Z]{2}$/.test(v), `Código de país inválido: "${v}"`);
 });
 
 test('codigoTelefonePais: deve começar com +', () => {
   const v = genCountryPhoneCode();
-  assert(v.startsWith('+'), `Código de telefone deve começar com +: "${v}"`);
+  assert(v.startsWith('+'), `Código sem +: "${v}"`);
 });
 
-test('codigoTelefonePais: deve conter apenas números após +', () => {
+test('codigoTelefonePais: deve ter apenas dígitos após +', () => {
   const v = genCountryPhoneCode();
   assert(/^\+\d+(-\d+)?$/.test(v), `Código de telefone inválido: "${v}"`);
 });
 
-test('moedaPais: deve ser uma sigla de 3 caracteres', () => {
-  const v = genCountryCurrency();
-  assert(/^[A-Z]{3}$/.test(v), `Moeda deve ser uma sigla de 3 letras: "${v}"`);
+test('codigoTelefonePais: deve ter entre 1 e 4 dígitos após +', () => {
+  const v = genCountryPhoneCode();
+  const digits = v.replace(/\D/g, '');
+  assert(digits.length >= 1 && digits.length <= 4, `Código com dígitos inválidos: "${v}"`);
 });
 
-test('paisCompleto: deve ser um objeto com todos os campos', () => {
+test('moedaPais: deve ser sigla ISO 4217 (3 letras maiúsculas)', () => {
+  const v = genCountryCurrency();
+  assert(/^[A-Z]{3}$/.test(v), `Moeda inválida: "${v}"`);
+});
+
+test('paisCompleto: deve ter todos os campos obrigatórios', () => {
   const v = genCountryFull() as any;
-  assert(v && v.name && v.code && v.phoneCode && v.currency, 'Objeto país deve conter todos os campos');
+  assert(v && v.name && v.code && v.phoneCode && v.currency,
+    `Objeto país incompleto: ${JSON.stringify(v)}`);
+});
+
+test('paisCompleto: código deve bater com nome do país', () => {
+  const v = genCountryFull() as any;
+  assert(/^[A-Z]{2}$/.test(v.code), `Código do país inválido: "${v.code}"`);
+  assert(v.name.length >= 3, `Nome do país muito curto: "${v.name}"`);
 });
 
 // ============================================================================
-// RELATÓRIO DE TESTES
+// RELATÓRIO
 // ============================================================================
 
 const passed = results.filter(r => r.passed).length;

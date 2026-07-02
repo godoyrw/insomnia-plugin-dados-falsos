@@ -28,7 +28,7 @@
 │       ├── geo.ts
 │       └── countries.ts
 ├── test/
-│   └── quality.ts               # Testes de qualidade
+│   └── generators.test.ts               # Testes de qualidade
 ├── dist/                        # Código compilado (gerado)
 ├── tsconfig.json                # Configuração TypeScript
 ├── package.json                 # Dependências e scripts
@@ -96,7 +96,7 @@ Dados constantes organizados por categoria:
 - `business.ts`: Departamentos, cargos, sufixos, domínios
 - `enums.ts`: Planos, status, tipos, emojis
 - `countries.ts`: Países, códigos ISO, telefones, moedas
-- `templateTags.ts`: Definição de todas as 64 template tags
+- `templateTags.ts`: Definição de todas as 65 template tags
 
 ### `src/generators/`
 

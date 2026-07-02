@@ -9,7 +9,7 @@
 [![Insomnia](https://img.shields.io/badge/Insomnia-Plugin-purple)](https://insomnia.rest/)
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0003--2100--4772-green.svg)](https://orcid.org/0009-0003-2100-4772)
 
-Plugin para Insomnia focado em massa sintética pt-BR com consistência e validação real de CPF/CNPJ, reduzindo o risco de uso de dados reais em testes. Oferece 60+ template tags cobrindo identidade, contato, endereço, empresa, financeiro, e-commerce, geolocalização e mais — com suporte ao novo formato alfanumérico CNPJ 2026 da Receita Federal.
+Plugin para Insomnia focado em massa sintética pt-BR com consistência e validação real de CPF/CNPJ, reduzindo o risco de uso de dados reais em testes. Oferece 64+ template tags cobrindo identidade, contato, endereço, empresa, financeiro, e-commerce, geolocalização e mais — com suporte ao novo formato alfanumérico CNPJ 2026 da Receita Federal.
 
 <div align="center">
   <img src="./assets/images/insomnia-plugin-dados-falsos.jpg" alt="Dados Falsos - Plugin Insomnia">
@@ -276,13 +276,13 @@ O plugin seleciona um valor aleatório da lista. Se não estiver definida, gera 
 ✅ Dados realistas em português brasileiro  
 ✅ Suporte a múltiplos formatos de data  
 ✅ Telefones, WhatsApp e CEP com formatação brasileira  
-✅ 60+ template tags  
+✅ 50+ template tags  
 ✅ Listas customizadas via Environment para cenários determinísticos  
 ✅ Identificadores únicos (UUID, ULID, API Keys, JWT)  
 ✅ Dados de empresa, financeiro e e-commerce  
 ✅ Geolocalização e dados de rede  
 ✅ Escrito em TypeScript com type safety completo  
-✅ Suite de testes com 75 casos e 100% de aprovação  
+✅ Suite de testes com 110 casos e 100% de aprovação  
 ✅ Licença MIT — código aberto e colaborativo  
 
 ---
@@ -295,7 +295,7 @@ O plugin é escrito em **TypeScript** para melhor type safety e manutenibilidade
 - Arquitetura limpa e coesa, separada por domínio
 - Algoritmos de CPF/CNPJ com Dígito Verificador (DV) real — calculados pelo algoritmo oficial da Receita Federal, garantindo números matematicamente válidos, não apenas sequências aleatórias
 - Suporte ao novo formato alfanumérico 2026 da Receita Federal — base com letras A-Z e números, pioneiro entre plugins Insomnia
-- Suite de testes com 75 casos e 100% de aprovação
+- Suite de testes com 110 casos e 100% de aprovação
 
 ### Estrutura do Projeto
 
@@ -326,7 +326,7 @@ src/
 ├── types.ts             # Tipos TypeScript
 └── utils.ts             # Helpers matemáticos e de string
 test/
-└── quality.ts           # Suite de 75 testes
+└── generators.test.ts           # Suite de 75 testes
 ```
 
 ### Setup
@@ -361,15 +361,15 @@ npm test
   ✓ cpf: deve ter 11 dígitos (0.1ms)
   ✓ cnpj: alfanumérico deve ter 14 caracteres (0.2ms)
   ✓ cnpj: numérico deve conter apenas números (0.1ms)
-  ... 75 testes
+  ...
 
-  ──────────────────────────────────────────────────
-    Resultados
-  ──────────────────────────────────────────────────
-    Total   75 testes
-    Passou  75
-    Score   100%
-  ──────────────────────────────────────────────────
+──────────────────────────────────────────────────
+  Resultados
+──────────────────────────────────────────────────
+  Total   110 testes
+  Passou  110
+  Score   100%
+──────────────────────────────────────────────────
 ```
 
 ---

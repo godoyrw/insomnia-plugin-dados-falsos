@@ -6,21 +6,22 @@ Documentação completa sobre os testes de qualidade do plugin Dados Falsos.
 
 O projeto inclui uma suite de testes de qualidade que valida todos os geradores de dados. Os testes garantem que os dados gerados seguem os padrões brasileiros e formatos esperados.
 
-A suite cobre **todas as 60 template tags** com **68 testes** organizados por categoria:
+A suite cobre **todas as 65 template tags** com **110 testes** organizados por categoria:
 
-| Categoria | Tags | Testes |
-|-----------|------|--------|
-| Identidade | 11 | 14 |
-| Contato | 5 | 6 |
-| Endereço | 9 | 9 |
-| Empresa | 5 | 5 |
-| Financeiro | 5 | 6 |
-| Datas | 2 | 2 |
-| Identificadores | 7 | 8 |
-| Conteúdo | 6 | 6 |
-| E-commerce | 6 | 7 |
-| Geolocalização | 4 | 5 |
-| **TOTAL** | **60** | **68** |
+| Categoria           | Tags | Testes |
+|---------------------|------|--------|
+| Identidade          | 11   | 22     |
+| Contato             | 5    | 10     |
+| Endereço            | 9    | 12     |
+| Empresa             | 5    | 7      |
+| Financeiro          | 5    | 8      |
+| Datas e Tempo       | 2    | 4      |
+| Identificadores     | 7    | 12     |
+| Conteúdo            | 6    | 9      |
+| E-commerce          | 6    | 9      |
+| Geolocalização      | 4    | 8      |
+| Países do Mundo     | 5    | 9      |
+| **TOTAL**           | **65** | **110** |
 
 ## Executando os Testes
 
@@ -46,7 +47,7 @@ Recompila e executa os testes automaticamente quando arquivos são modificados.
 
 ## Estrutura dos Testes
 
-Os testes estão localizados em `test/quality.ts` e cobrem todas as 60 template tags com 68 testes de validação:
+Os testes estão localizados em `test/generators.test.ts` e cobrem todas as 65 template tags com 110 testes de validação:
 
 ### Categorias de Testes
 
@@ -66,19 +67,19 @@ Os testes estão localizados em `test/quality.ts` e cobrem todas as 60 template 
 ### Última Execução
 
 ```
-==================================================
-RESUMO DOS TESTES
-==================================================
+──────────────────────────────────────────────────
+  Resultados
+──────────────────────────────────────────────────
+  Total   110 testes
+  Passou  110
+  Score   100%
+──────────────────────────────────────────────────
 
-Total: 68 testes
-✅ Passou: 68
-❌ Falhou: 0
-Taxa de sucesso: 100.00%
 ```
 
 ### Detalhes dos Testes por Categoria
 
-**Identidade (14 testes)**
+**Identidade (15 testes)**
 - nomeCompleto, primeiroNome, sobrenome, nomeSocial, usuario, nomeUsuario
 - cpf (2 testes), cnpj (2 testes), rg
 - dataNascimento (2 testes), genero
@@ -87,7 +88,7 @@ Taxa de sucesso: 100.00%
 - email (2 testes), emailExemplo
 - telefone, celular, whatsapp
 
-**Endereço (9 testes)**
+**Endereço (10 testes)**
 - cep, logradouro, numero, complemento, endereco
 - bairro, cidade, estado, pais
 
@@ -97,8 +98,8 @@ Taxa de sucesso: 100.00%
 **Financeiro (6 testes)**
 - moeda, valor (2 testes), plano, statusPagamento, cupom
 
-**Datas (2 testes)**
-- datetimeIso, timezone
+**Dados (1 teste)**
+- datetimeIso
 
 **Identificadores (8 testes)**
 - uuid (2 testes), ulid, chaveIdempotencia, chaveApi
@@ -113,9 +114,13 @@ Taxa de sucesso: 100.00%
 **Geolocalização (5 testes)**
 - latitude, longitude, ipv4 (2 testes), ipv6
 
+**Países do Mundo (6 testes)**
+- nome, código ISO, telefone, moeda, bandeira, região
+
+
 ## Adicionando Novos Testes
 
-Para adicionar novos testes, edite `test/quality.ts`:
+Para adicionar novos testes, edite `test/generators.test.ts`:
 
 ```typescript
 // Exemplo de novo teste
@@ -157,7 +162,7 @@ npm install -g typescript
 Ou use a versão local:
 
 ```bash
-npx tsc test/quality.ts --outDir dist && node dist/quality.js
+npx tsc test/generators.test.ts --outDir dist && node dist/generators.test.ts
 ```
 
 ### Erro: "Module not found"
