@@ -2,9 +2,10 @@
   "name": "insomnia-plugin-dados-falsos",
   "version": "1.0.0",
   "description": "Plugin Insomnia para gerar Dados Falsos realistas para testes de APIs brasileiras",
-  "main": "dist/src/main.js",
+  "main": "dist/insomnia-plugin-dados-falsos/src/main.js",
   "exports": {
-    ".": "./dist/src/main.js"
+    ".": "./dist/insomnia-plugin-dados-falsos/src/main.js"
+
   },
   "author": "godoyrw",
   "maintainers": [
@@ -70,17 +71,18 @@
     "LICENSE"
   ],
   "scripts": {
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist && find src test -name '*.js' -delete -o -name '*.d.ts' -delete",
+    "copy-package": "mkdir -p dist/insomnia-plugin-dados-falsos && cp package.json dist/insomnia-plugin-dados-falsos/package.json",
     "prebuild": "npm run clean",
     "build": "npm run clean && npx tsc",
-    "copy-package": "mkdir -p dist/insomnia-plugin-dados-falsos && cp package.json dist/insomnia-plugin-dados-falsos/package.json",
     "dev": "tsc --watch",
-    "test": "tsc test/quality.ts --outDir dist && node dist/test/quality.js",
-    "test:watch": "tsc test/quality.ts --outDir dist --watch",
-    "prepublishOnly": "npm run build"
+    "test": "tsc test/generators.test.ts --outDir dist/insomnia-plugin-dados-falsos && node dist/insomnia-plugin-dados-falsos/test/generators.test.js",
+    "test:watch": "tsc test/generators.test.ts --outDir dist/insomnia-plugin-dados-falsos --watch",
+    "test:stress": "bash -c 'success=0; fail=0; for i in {1..100}; do if npm test > /tmp/test-stress.log 2>&1; then ((success++)); else ((fail++)); echo \"❌ Falha na execução $i\"; fi; done; echo \"✅ Sucessos: $success\"; echo \"❌ Falhas: $fail\"; exit $fail'"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "tsx": "^4.22.4",
     "typescript": "^5.0.0"
   },
   "engines": {
@@ -90,7 +92,7 @@
   "insomnia": {
     "name": "Dados Falsos",
     "displayName": "Dados Falsos",
-    "description": "Plugin Insomnia para gerar dados falsos realistas em português para testes de APIs brasileiras. Suporta mais de 60 template tags incluindo CPF, CNPJ, nomes, endereços, emails, telefones, UUIDs, JWTs e muito mais.",
+    "description": "Plugin Insomnia para gerar dados falsos realistas em português para testes de APIs brasileiras. Suporta mais de 65 template tags incluindo CPF, CNPJ, nomes, endereços, emails, telefones, UUIDs, JWTs e muito mais.",
     "version": "1.0.0",
     "category": "data-generation",
     "tags": [

@@ -7,7 +7,7 @@
  * @license AGPL-3.0
  * @version 1.0.0
  *
- * Este plugin fornece 60 template tags para gerar dados fake em português,
+ * Este plugin fornece 65 template tags para gerar dados fake em português,
  * com suporte a validação de documentos (CPF, CNPJ), formatação brasileira
  * e casos de uso reais (e-commerce, financeiro, geolocalização).
  *

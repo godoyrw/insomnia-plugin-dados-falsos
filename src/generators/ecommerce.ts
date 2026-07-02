@@ -34,18 +34,32 @@ export function genSku(): string {
 }
 
 /**
- * Gera EAN (European Article Number)
- * Formato: 13 dígitos (código de barras padrão)
- * Útil para testes de leitura de código de barras
- *
- * @returns {string} EAN com 13 dígitos
+ * Gera EAN-13 válido (código de barras)
+ * - 12 primeiros dígitos aleatórios
+ * - 13º dígito = dígito verificador calculado
+ * 
+ * @returns {string} EAN com 13 dígitos e DV válido
  * @example
  * genEan() // "7891234567890"
  */
 export function genEan(): string {
-  let ean = '';
-  for (let i = 0; i < 13; i++) ean += String(randInt(0, 9));
-  return ean;
+  // Gera 12 dígitos aleatórios (base para o cálculo)
+  let base = '';
+  for (let i = 0; i < 12; i++) {
+    base += String(randInt(0, 9));
+  }
+
+  // Calcula o dígito verificador (EAN-13)
+  let sum = 0;
+  for (let i = 0; i < 12; i++) {
+    const digit = parseInt(base[i]);
+    // Posições ímpares (índice 0,2,4...) multiplicam por 1
+    // Posições pares (índice 1,3,5...) multiplicam por 3
+    sum += digit * (i % 2 === 0 ? 1 : 3);
+  }
+  const checkDigit = (10 - (sum % 10)) % 10;
+
+  return base + String(checkDigit);
 }
 
 /**
