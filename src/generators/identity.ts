@@ -98,11 +98,11 @@ export function genUsername(): string {
   const first = genFirstName()
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
+    .replace(/[̀-ͯ]/g, '');
   const last = genLastName()
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
+    .replace(/[̀-ͯ]/g, '');
   const number = randInt(100, 9999);
   const separator = Math.random() < 0.5 ? '.' : '_';
   return `${first}${separator}${last}${separator}${number}`;
@@ -258,6 +258,5 @@ export function genBirthdate(format?: string): string {
   }
 }
 
-// Re-exporta para quem importava diretamente de identity
-export { generateValidCpf } from './cpf';
-export { generateValidCnpj } from './cnpj';
+// Re-export RG functions from './rg'
+export { genRg, isValidRg } from './rg';

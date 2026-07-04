@@ -17,7 +17,8 @@ import {
   genCnpj,
   genCnh,
   genBirthdate,
-  genUsername
+  genUsername,
+  genRg
 } from '../generators/identity';
 
 // Importa geradores de contato
@@ -203,6 +204,13 @@ export const templateTags: TemplateTag[] = [
     description: 'CNH válida com 11 dígitos',
     args: [],
     run: async () => genCnh()
+  },
+  {
+    name: 'rg',
+    displayName: 'dados-falsos → rg',
+    description: 'RG válido',
+    args: [],
+    run: async () => genRg()
   },
   {
     name: 'dataNascimento',

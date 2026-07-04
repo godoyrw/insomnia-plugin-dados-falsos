@@ -14,7 +14,7 @@
  */
 
 import { STREET_TYPES,UF, TIMEZONES } from '../src/constants/locations';
-import { genCpf, genCnpj, genFullName, genFirstName, genLastName, genNickname, genUsername, genCnh, genBirthdate, genGender } from '../src/generators/identity';
+import { genCpf, genCnpj, genFullName, genFirstName, genLastName, genNickname, genUsername, genCnh, genBirthdate, genGender, genRg, isValidRg } from '../src/generators/identity';
 import { genEmail, genEmailExample, genPhone, genCellphone, genWhatsapp } from '../src/generators/contact';
 import { genCep, genStreet, genAddressNumber, genComplement, genAddress, genNeighborhood, genCity, genStateUf, genTimezone } from '../src/generators/address';
 import { genCompanyName, genCompanyFantasyName, genCorporateEmail, genPosition, genDepartment } from '../src/generators/company';
@@ -213,6 +213,28 @@ test('cnh: deve gerar apenas CNHs válidas', () => {
   for (let i = 0; i < 1000; i++) {
     const v = genCnh();
     assert(isValidCnh(v), `CNH inválida: "${v}"`);
+  }
+});
+
+test('rg: deve ter exatamente 9 caracteres', () => {
+  const v = genRg();
+  assert(/^\d{8}[\dX]$/.test(v), `RG inválido: "${v}"`);
+});
+
+test('rg: não deve ser sequência repetida', () => {
+  const v = genRg();
+  assert(!/^(\d)\1{7}[\dX]$/.test(v), `RG sequência repetida: "${v}"`);
+});
+
+test('rg: deve possuir dígito verificador válido', () => {
+  const v = genRg();
+  assert(isValidRg(v), `RG inválido: "${v}"`);
+});
+
+test('rg: deve gerar apenas RGs válidos', () => {
+  for (let i = 0; i < 1000; i++) {
+    const v = genRg();
+    assert(isValidRg(v), `RG inválido: "${v}"`);
   }
 });
 

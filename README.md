@@ -9,7 +9,7 @@
 [![Insomnia](https://img.shields.io/badge/Insomnia-Plugin-purple)](https://insomnia.rest/)
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0003--2100--4772-green.svg)](https://orcid.org/0009-0003-2100-4772)
 
-Plugin para Insomnia focado em massa sintética pt-BR com consistência e validação real de CNH, CPF, CNPJ, entre outros. Reduzindo o risco de uso de dados reais em testes. Oferece 71+ template tags cobrindo identidade, contato, endereço, empresa, financeiro, e-commerce, geolocalização e mais — com suporte ao novo formato alfanumérico CNPJ 2026 da Receita Federal.
+Plugin para Insomnia focado em massa sintética pt-BR com consistência e validação real de CNH, CPF, CNPJ, entre outros. Reduzindo o risco de uso de dados reais em testes. Oferece 72+ template tags cobrindo identidade, contato, endereço, empresa, financeiro, e-commerce, geolocalização e mais — com suporte ao novo formato alfanumérico CNPJ 2026 da Receita Federal.
 
 <div align="center">
   <img src="./assets/images/insomnia-plugin-dados-falsos.jpg" alt="Dados Falsos - Plugin Insomnia">
@@ -49,125 +49,88 @@ npm install && npm run build
 2. No Insomnia: **Preferences → Plugins → Install Plugin**
 3. Selecione o arquivo compactado
 
----
+| Categoria   | Tag                               | Descrição                                           | Exemplo                                                 |
+| ----------- | --------------------------------- | --------------------------------------------------- | ------------------------------------------------------- |
+| Identidade  | `{% nomeCompleto %}`              | Nome completo aleatório                             | João da Silva                                           |
+| Identidade  | `{% primeiroNome %}`              | Primeiro nome aleatório                             | João                                                    |
+| Identidade  | `{% sobrenome %}`                 | Sobrenome aleatório                                 | Silva                                                   |
+| Identidade  | `{% nomeSocial %}`                | Nome social / apelido                               | Joca                                                    |
+| Identidade  | `{% usuario %}`                   | Handle/usuário aleatório                            | joaosilva                                               |
+| Identidade  | `{% nomeUsuario %}`               | Username formato nome.sobrenome.numero              | joao.silva.42                                           |
+| Identidade  | `{% cpf %}`                       | CPF válido com dígitos verificadores                | 123.456.789-09                                          |
+| Identidade  | `{% cnpj %}`                      | CNPJ válido (numérico ou alfanumérico 2026)         | 12.345.678/0001-95                                      |
+| Identidade  | `{% cnh %}`                       | CNH válida (11 dígitos)                             | 12345678909                                             |
+| Identidade  | `{% rg %}`                        | RG válido                                           | 12345678X                                             |
+| Identidade  | `{% dataNascimento %}`            | Data de nascimento padrão ISO (YYYY-MM-DD)          | 1995-03-21                                              |
+| Identidade  | `{% dataNascimento DD/MM/YYYY %}` | Data formatada                                      | 21/03/1995                                              |
+| Identidade  | `{% dataNascimento YYYYMMDD %}`   | Data sem separadores                                | 19950321                                                |
+| Identidade  | `{% dataNascimento ISO %}`        | Data ISO com timestamp                              | 1995-03-21T00:00:00Z                                    |
+| Identidade  | `{% genero %}`                    | masculino, feminino, nao_binario, prefiro_nao_dizer | masculino                                               |
+| Identidade  | `{% tipoSanguineo %}`             | Tipo sanguíneo                                      | O+                                                      |
+| Saúde       | `{% numeroProntuario %}`          | Número de prontuário médico                         | PRN-102938                                              |
+| Saúde       | `{% numeroCNS %}`                 | Cartão Nacional de Saúde                            | 898000000000001                                         |
+| Saúde       | `{% convenio %}`                  | Nome de convênio médico                             | Amil                                                    |
+| Saúde       | `{% alergia %}`                   | Alergia aleatória                                   | lactose                                                 |
+| Saúde       | `{% conselhoProfissional %}`      | Conselho profissional genérico                      | CRM 123456                                              |
+| Saúde       | `{% conselhoProfissional CRM %}`  | CRM médico                                          | CRM 123456-SP                                           |
+| Saúde       | `{% conselhoProfissional CREA %}` | CREA engenharia                                     | CREA 123456                                             |
+| Saúde       | `{% conselhoProfissional OAB %}`  | OAB advocacia                                       | OAB/SP 123456                                           |
+| Contato     | `{% email %}`                     | Email aleatório                                     | [joao@gmail.com](mailto:joao@gmail.com)                 |
+| Contato     | `{% email suaempresa.com.br %}`   | Email com domínio customizado                       | [joao@suaempresa.com.br](mailto:joao@suaempresa.com.br) |
+| Contato     | `{% emailExemplo %}`              | Email example.com                                   | [joao@example.com](mailto:joao@example.com)             |
+| Contato     | `{% telefone %}`                  | Telefone fixo                                       | (11) 3333-4444                                          |
+| Contato     | `{% celular %}`                   | Celular BR                                          | (11) 91234-5678                                         |
+| Contato     | `{% whatsapp %}`                  | WhatsApp internacional BR                           | +55 11 91234-5678                                       |
+| Endereço BR | `{% cep %}`                       | CEP válido                                          | 01310-000                                               |
+| Endereço BR | `{% logradouro %}`                | Rua/Avenida                                         | Rua Augusta                                             |
+| Endereço BR | `{% numero %}`                    | Número                                              | 123                                                     |
+| Endereço BR | `{% complemento %}`               | Complemento                                         | Apto 42                                                 |
+| Endereço BR | `{% endereco %}`                  | Apenas logradouro                                   | Rua Augusta                                             |
+| Endereço BR | `{% enderecoNumero %}`            | Logradouro + número                                 | Rua Augusta, 123                                        |
+| Endereço BR | `{% bairro %}`                    | Bairro aleatório                                    | Bela Vista                                              |
+| Endereço BR | `{% cidade %}`                    | Cidade aleatória                                    | São Paulo                                               |
+| Endereço BR | `{% estado %}`                    | UF (sigla)                                          | SP                                                      |
+| Empresa     | `{% razaoSocial %}`               | Razão social                                        | ACME LTDA                                               |
+| Empresa     | `{% nomeFantasia %}`              | Nome fantasia                                       | ACME Tech                                               |
+| Empresa     | `{% emailCorporativo %}`          | Email corporativo                                   | [contato@empresa.com](mailto:contato@empresa.com)       |
+| Empresa     | `{% cargo %}`                     | Cargo profissional                                  | Engenheiro de Software                                  |
+| Empresa     | `{% departamento %}`              | Departamento                                        | Tecnologia                                              |
+| Financeiro  | `{% moeda %}`                     | Moeda                                               | BRL                                                     |
+| Financeiro  | `{% valor %}`                     | Valor monetário                                     | 199.90                                                  |
+| Financeiro  | `{% plano %}`                     | Plano de assinatura                                 | profissional                                            |
+| Financeiro  | `{% cupom %}`                     | Código de desconto                                  | SAVE20                                                  |
+| Financeiro  | `{% statusPagamento %}`           | Status pagamento                                    | pago                                                    |
+| Datas       | `{% datetimeIso %}`               | ISO datetime                                        | 2026-01-21T14:35:20Z                                    |
+| Datas       | `{% timezone %}`                  | Timezone                                            | America/Sao_Paulo                                       |
+| Segurança   | `{% uuid %}`                      | UUID v4                                             | 550e8400-e29b-41d4-a716-446655440000                    |
+| Segurança   | `{% ulid %}`                      | ULID                                                | 01ARZ3NDEKTSV4RRFFQ69G5FAV                              |
+| Segurança   | `{% chaveIdempotencia %}`         | Chave idempotente                                   | idem_abc123                                             |
+| Segurança   | `{% chaveApi %}`                  | API key                                             | sk_test_abc123                                          |
+| Segurança   | `{% tokenJwt %}`                  | JWT                                                 | eyJhbGciOiJI...                                         |
+| Segurança   | `{% senha %}`                     | Senha forte                                         | Xy!9pQ#2mL                                              |
+| Segurança   | `{% hashSha256 %}`                | Hash SHA256                                         | a94a8fe5...                                             |
+| Conteúdo    | `{% titulo %}`                    | Título aleatório                                    | Sistema de Pagamentos                                   |
+| Conteúdo    | `{% descricao %}`                 | Descrição curta                                     | Descrição gerada automaticamente                        |
+| Conteúdo    | `{% textoLongo %}`                | Texto 200–500 caracteres                            | Lorem ipsum...                                          |
+| Conteúdo    | `{% emoji %}`                     | Emoji aleatório                                     | 🚀                                                      |
+| Conteúdo    | `{% corHex %}`                    | Cor hexadecimal                                     | #A1B2C3                                                 |
+| Conteúdo    | `{% booleano %}`                  | Booleano                                            | true                                                    |
+| E-commerce  | `{% sku %}`                       | SKU                                                 | SKU-12345                                               |
+| E-commerce  | `{% ean %}`                       | EAN 13 dígitos                                      | 7891234567890                                           |
+| E-commerce  | `{% pedido %}`                    | ID pedido                                           | ORD-20260704-1234                                       |
+| E-commerce  | `{% statusPedido %}`              | Status pedido                                       | enviado                                                 |
+| E-commerce  | `{% quantidade %}`                | Quantidade                                          | 3                                                       |
+| E-commerce  | `{% frete %}`                     | Tipo frete                                          | expresso                                                |
+| Geo e Rede  | `{% latitude %}`                  | Latitude                                            | -23.5505                                                |
+| Geo e Rede  | `{% longitude %}`                 | Longitude                                           | -46.6333                                                |
+| Geo e Rede  | `{% ipv4 %}`                      | IPv4 RFC 5737                                       | 203.0.113.42                                            |
+| Geo e Rede  | `{% ipv6 %}`                      | IPv6 RFC 3849                                       | 2001:db8::a1b2                                          |
+| Países      | `{% pais %}`                      | País                                                | Brasil                                                  |
+| Países      | `{% codigoPais %}`                | ISO 3166-1                                          | BR                                                      |
+| Países      | `{% codigoTelefonePais %}`        | Código telefone                                     | +55                                                     |
+| Países      | `{% moedaPais %}`                 | Moeda ISO                                           | BRL                                                     |
+| Países      | `{% paisCompleto %}`              | JSON completo país                                  | {...}                                                   |
 
-## Template Tags
-
-### Identidade
-
-- `{% nomeCompleto %}` — Nome completo aleatório
-- `{% primeiroNome %}` — Primeiro nome aleatório
-- `{% sobrenome %}` — Sobrenome aleatório
-- `{% nomeSocial %}` — Nome social / apelido
-- `{% usuario %}` — Usuário/handle
-- `{% nomeUsuario %}` — Nome de usuário (formato: nome.sobrenome.numero)
-- `{% cpf %}` — CPF válido com dígitos verificadores
-- `{% cnpj %}` — CNPJ válido — alfanumérico 2026 (padrão) ou numérico
-- `{% cnh %}` — CNH válida com 11 dígitos
-- `{% dataNascimento %}` — Data de nascimento (YYYY-MM-DD)
-- `{% dataNascimento DD/MM/YYYY %}` — Data formatada
-- `{% dataNascimento YYYYMMDD %}` — Data sem separadores
-- `{% dataNascimento ISO %}` — Data ISO com timestamp
-- `{% genero %}` — masculino, feminino, nao_binario, prefiro_nao_dizer
-- `{% tipoSanguineo %}` — Tipo sanguíneo (A+, A-, B+, B-, AB+, AB-, O+, O-)
-
-### Saúde
-
-- `{% numeroProntuario %}` — Número de prontuário médico
-- `{% numeroCNS %}` — Número do Cartão Nacional de Saúde (CNS)
-- `{% convenio %}` — Nome de convênio de saúde
-- `{% alergia %}` — Alergia
-- `{% conselhoProfissional %}` — Número do conselho profissional (CRM, CREA, OAB, etc.)
-- `{% conselhoProfissional CRM %}` — CRM (Medicina)
-- `{% conselhoProfissional CREA %}` — CREA (Engenharia)
-- `{% conselhoProfissional OAB %}` — OAB (Direito)
-
-### Contato
-
-- `{% email %}` — Email aleatório
-- `{% email suaempresa.com.br %}` — Email com domínio customizado
-- `{% emailExemplo %}` — Email com domínio example.com
-- `{% telefone %}` — Telefone fixo: (XX) XXXX-XXXX
-- `{% celular %}` — Celular: (XX) 9XXXX-XXXX
-- `{% whatsapp %}` — WhatsApp: +55 XX 9XXXX-XXXX
-
-### Endereço BR
-
-- `{% cep %}` — CEP: XXXXX-XXX
-- `{% logradouro %}` — Logradouro (Rua/Avenida/etc)
-- `{% numero %}` — Número do endereço
-- `{% complemento %}` — Complemento (Apto, Bloco, etc)
-- `{% endereco %}` — Somente logradouro (sem número)
-- `{% enderecoNumero %}` — Endereço completo: Rua X, 123
-- `{% bairro %}` — Bairro aleatório
-- `{% cidade %}` — Cidade aleatória
-- `{% estado %}` — UF (sigla do estado)
-
-### Empresa e Trabalho
-
-- `{% razaoSocial %}` — Razão social
-- `{% nomeFantasia %}` — Nome fantasia
-- `{% emailCorporativo %}` — E-mail corporativo
-- `{% cargo %}` — Cargo
-- `{% departamento %}` — Departamento
-
-### Financeiro
-
-- `{% moeda %}` — Moeda (BRL)
-- `{% valor %}` — Valor monetário
-- `{% plano %}` — gratuito, profissional, empresarial
-- `{% cupom %}` — Cupom de desconto
-- `{% statusPagamento %}` — pago, pendente, falhou, reembolsado
-
-### Datas e Tempo
-
-- `{% datetimeIso %}` — Datetime ISO: 2026-01-21T14:35:20Z
-- `{% timezone %}` — Timezone (America/Sao_Paulo, etc)
-
-### Identificadores e Segurança
-
-- `{% uuid %}` — UUID v4 aleatório
-- `{% ulid %}` — ULID aleatório
-- `{% chaveIdempotencia %}` — Chave de Idempotência
-- `{% chaveApi %}` — Chave de API
-- `{% tokenJwt %}` — Token JWT
-- `{% senha %}` — Senha forte
-- `{% hashSha256 %}` — Hash SHA256
-
-### Conteúdo / Texto
-
-- `{% titulo %}` — Título
-- `{% descricao %}` — Descrição
-- `{% textoLongo %}` — Texto longo (200-500 caracteres)
-- `{% emoji %}` — Emoji aleatório
-- `{% corHex %}` — Cor hexadecimal: #XXXXXX
-- `{% booleano %}` — true ou false
-
-### E-commerce / Pedidos
-
-- `{% sku %}` — SKU: SKU-XXXXX
-- `{% ean %}` — EAN: 13 dígitos
-- `{% pedido %}` — Pedido: ORD-YYYYMMDD-XXXX
-- `{% statusPedido %}` — criado, pago, enviado, entregue, cancelado
-- `{% quantidade %}` — Quantidade
-- `{% frete %}` — padrao, expresso
-
-### Geo e Rede
-
-- `{% latitude %}` — Latitude
-- `{% longitude %}` — Longitude
-- `{% ipv4 %}` — IP v4 (faixa reservada para docs)
-- `{% ipv6 %}` — IP v6 (reservado para docs)
-
-### Países do Mundo
-
-- `{% pais %}` — Nome do país aleatório
-- `{% codigoPais %}` — Código ISO do país (2 letras)
-- `{% codigoTelefonePais %}` — Código de telefone internacional
-- `{% moedaPais %}` — Moeda do país (ISO 4217)
-- `{% paisCompleto %}` — Dados completos do país em JSON
-
----
 
 ## Exemplo Completo
 
@@ -183,11 +146,13 @@ npm install && npm run build
     "cpf": "{% cpf %}",
     "cnpj": "{% cnpj %}",
     "cnh": "{% cnh %}",
+    "rg": "{% rg %}",
     "data_nascimento": "{% dataNascimento %}",
     "genero": "{% genero %}"
   },
   "contato": {
     "email": "{% email %}",
+    "email_exemplo": "{% emailExemplo %}",
     "email_corporativo": "{% emailCorporativo %}",
     "telefone": "{% telefone %}",
     "celular": "{% celular %}",
@@ -259,13 +224,16 @@ npm install && npm run build
     "cor_hex": "{% corHex %}",
     "booleano": "{% booleano %}"
   },
-  "saúde": {
-    "tipoSanguineo": "{% tipoSanguineo %}",
-    "numeroProntuario": "{% numeroProntuario %}",
-    "numeroCNS": "{% numeroCNS %}",
+  "saude": {
+    "tipo_sanguineo": "{% tipoSanguineo %}",
+    "numero_prontuario": "{% numeroProntuario %}",
+    "numero_cns": "{% numeroCNS %}",
     "convenio": "{% convenio %}",
     "alergia": "{% alergia %}",
-    "conselhoProfissional": "{% conselhoProfissional %}"
+    "conselho_profissional": "{% conselhoProfissional %}",
+    "crm": "{% conselhoProfissional CRM %}",
+    "crea": "{% conselhoProfissional CREA %}",
+    "oab": "{% conselhoProfissional OAB %}"
   }
 }
 ```
@@ -296,7 +264,7 @@ O plugin seleciona um valor aleatório da lista. Se não estiver definida, gera 
 ✅ Dados realistas em português brasileiro  
 ✅ Suporte a múltiplos formatos de data  
 ✅ Telefones, WhatsApp e CEP com formatação brasileira  
-✅ 71+ template tags  
+✅ 72+ template tags  
 ✅ Listas customizadas via Environment para cenários determinísticos  
 ✅ Identificadores únicos (UUID, ULID, API Keys, JWT)  
 ✅ Dados de empresa, financeiro e e-commerce  
