@@ -142,6 +142,7 @@ npm test
 npm run test:watch
 ```
 
+
 Os testes validam:
 
 - ✅ Formatos de CPF, CNPJ, RG
