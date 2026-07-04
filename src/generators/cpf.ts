@@ -29,6 +29,26 @@ function calcCpfDigit(digits: string): number {
 }
 
 /**
+ * Valida CPF — algoritmo oficial Receita Federal
+ * @param {string} cpf - CPF a ser validado
+ * @returns {boolean} True se válido
+ * @example
+ * validarCpf('12345678909') // true
+ * validarCpf('12345678900') // false
+ */
+export function validarCpf(cpf: string): boolean {
+  if (!/^\d{11}$/.test(cpf)) return false;
+  if (/^(\d)\1{10}$/.test(cpf)) return false;
+  const calc = (len: number) => {
+    let sum = 0;
+    for (let i = 0; i < len; i++) sum += parseInt(cpf[i]) * (len + 1 - i);
+    const r = (sum * 10) % 11;
+    return r === 10 || r === 11 ? 0 : r;
+  };
+  return calc(9) === parseInt(cpf[9]) && calc(10) === parseInt(cpf[10]);
+}
+
+/**
  * Gera CPF válido com dígitos verificadores
  * Cria 9 dígitos aleatórios e calcula os 2 dígitos verificadores
  * usando o algoritmo oficial de validação de CPF da Receita Federal

@@ -63,7 +63,7 @@ npm install && npm run build
 - `{% nomeUsuario %}` — Nome de usuário (formato: nome.sobrenome.numero)
 - `{% cpf %}` — CPF válido com dígitos verificadores
 - `{% cnpj %}` — CNPJ válido — alfanumérico 2026 (padrão) ou numérico
-- `{% rg %}` — RG / CNH aleatória (11 dígitos)
+- `{% cnh %}` — CNH válida com 11 dígitos
 - `{% dataNascimento %}` — Data de nascimento (YYYY-MM-DD)
 - `{% dataNascimento DD/MM/YYYY %}` — Data formatada
 - `{% dataNascimento YYYYMMDD %}` — Data sem separadores
@@ -182,7 +182,7 @@ npm install && npm run build
     "nome_usuario": "{% nomeUsuario %}",
     "cpf": "{% cpf %}",
     "cnpj": "{% cnpj %}",
-    "rg": "{% rg %}",
+    "cnh": "{% cnh %}",
     "data_nascimento": "{% dataNascimento %}",
     "genero": "{% genero %}"
   },
@@ -296,13 +296,13 @@ O plugin seleciona um valor aleatório da lista. Se não estiver definida, gera 
 ✅ Dados realistas em português brasileiro  
 ✅ Suporte a múltiplos formatos de data  
 ✅ Telefones, WhatsApp e CEP com formatação brasileira  
-✅ 76+ template tags  
+✅ 71+ template tags  
 ✅ Listas customizadas via Environment para cenários determinísticos  
 ✅ Identificadores únicos (UUID, ULID, API Keys, JWT)  
 ✅ Dados de empresa, financeiro e e-commerce  
 ✅ Geolocalização e dados de rede  
 ✅ Escrito em TypeScript com type safety completo  
-✅ Suite de testes com 110 casos e 100% de aprovação  
+✅ Suite de testes com 122 casos e 100% de aprovação  
 ✅ Licença MIT — código aberto e colaborativo  
 
 ---
@@ -315,7 +315,7 @@ O plugin é escrito em **TypeScript** para melhor type safety e manutenibilidade
 - Arquitetura limpa e coesa, separada por domínio
 - Algoritmos de RG, CNH, CPF e CNPJ com Dígito Verificador (DV) real — calculados pelo algoritmo oficial da Receita Federal, garantindo números matematicamente válidos, não apenas sequências aleatórias
 - Suporte ao novo formato alfanumérico 2026 da Receita Federal — base com letras A-Z e números, pioneiro entre plugins Insomnia
-- Suite de testes com 110 casos e 100% de aprovação
+- Suite de testes com 122 casos e 100% de aprovação
 
 ### Estrutura do Projeto
 
@@ -346,7 +346,7 @@ src/
 ├── types.ts             # Tipos TypeScript
 └── utils.ts             # Helpers matemáticos e de string
 test/
-└── generators.test.ts           # Suite de 75 testes
+└── generators.test.ts           # Suite de 122 testes
 ```
 
 ### Setup
@@ -386,8 +386,8 @@ npm test
 ──────────────────────────────────────────────────
   Resultados
 ──────────────────────────────────────────────────
-  Total   120 testes
-  Passou  110
+  Total   122 testes
+  Passou  122
   Score   100%
 ──────────────────────────────────────────────────
 ```

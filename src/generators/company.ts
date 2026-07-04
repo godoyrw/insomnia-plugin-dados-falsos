@@ -59,8 +59,8 @@ export function genCompanyFantasyName(): string {
  * genCorporateEmail() // "joao.silva@empresa.com.br"
  */
 export function genCorporateEmail(): string {
-  const first = genFirstName().toLowerCase();
-  const last = genLastName().toLowerCase();
+  const first = slugifyEmailPart(genFirstName());
+  const last = slugifyEmailPart(genLastName());
   return `${first}.${last}@${pickRandom(CORPORATE_DOMAINS)}`;
 }
 

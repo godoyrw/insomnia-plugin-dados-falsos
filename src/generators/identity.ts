@@ -13,8 +13,8 @@
  */
 
 import { randInt, pickRandom, pad, parseNumbersByLength, getEnvValue } from '../utils';
-import { generateValidCpf } from './cpf';
-import { generateValidCnpj } from './cnpj';
+import { generateValidCpf, validarCpf } from './cpf';
+import { generateValidCnpj, validarCnpj } from './cnpj';
 import { FIRST_NAMES, LAST_NAMES, NICKNAMES, GENDERS } from '../constants/names';
 import { InsomniaContext } from '../types';
 
@@ -119,12 +119,25 @@ export function genUsername(): string {
  * genCpf(context) // Usa CPF_LIST se disponível, senão gera novo
  */
 export function genCpf(context?: InsomniaContext): string {
+  let cpf;
   const list = getEnvValue(context, 'CPF_LIST');
   if (list && list.trim()) {
     const values = parseNumbersByLength(list, 11);
-    if (values.length > 0) return pickRandom(values);
+    if (values.length > 0) {
+      cpf = pickRandom(values);
+    } else {
+      cpf = generateValidCpf();
+    }
+  } else {
+    cpf = generateValidCpf();
   }
-  return generateValidCpf();
+
+  // Validar o CPF gerado e lançar erro se inválido
+  if (!validarCpf(cpf)) {
+    throw new Error(`genCpf gerou um valor inválido: "${cpf}"`);
+  }
+
+  return cpf;
 }
 
 /**
@@ -147,31 +160,72 @@ export function genCpf(context?: InsomniaContext): string {
 export function genCnpj(alphanumeric?: boolean): string;
 export function genCnpj(context?: InsomniaContext, alphanumeric?: boolean): string;
 export function genCnpj(contextOrAlphanumeric?: InsomniaContext | boolean, alphanumeric = true): string {
+  let cnpj;
   if (typeof contextOrAlphanumeric === 'boolean') {
-    return generateValidCnpj(contextOrAlphanumeric);
+    cnpj = generateValidCnpj(contextOrAlphanumeric);
+  } else {
+    const list = getEnvValue(contextOrAlphanumeric, 'CNPJ_LIST');
+    if (list && list.trim()) {
+      const values = parseNumbersByLength(list, 14);
+      if (values.length > 0) {
+        cnpj = pickRandom(values);
+      } else {
+        cnpj = generateValidCnpj(alphanumeric);
+      }
+    } else {
+      cnpj = generateValidCnpj(alphanumeric);
+    }
   }
-  const list = getEnvValue(contextOrAlphanumeric, 'CNPJ_LIST');
-  if (list && list.trim()) {
-    const values = parseNumbersByLength(list, 14);
-    if (values.length > 0) return pickRandom(values);
+
+  // Validar o CNPJ gerado e lançar erro se inválido
+  if (!validarCnpj(cnpj)) {
+    throw new Error(`genCnpj gerou um valor inválido: "${cnpj}"`);
   }
-  return generateValidCnpj(alphanumeric);
+
+  return cnpj;
 }
 
 /**
- * Gera RG / CNH válido
- * Gera 11 dígitos aleatórios, evitando sequências onde todos os dígitos são iguais
- * (padrão inválido de RG/CNH)
+ * Gera número de CNH válido.
  *
- * @returns {string} RG/CNH válido com 11 dígitos
+ * A CNH possui 11 dígitos:
+ * - 9 dígitos base
+ * - 2 dígitos verificadores calculados
+ *
+ * @returns Número de CNH válido com 11 dígitos.
+ *
  * @example
- * genCnh() // "12345678901"
+ * genCnh() // "12345678909"
  */
 export function genCnh(): string {
-  let s = '';
-  for (let i = 0; i < 11; i++) s += String(randInt(0, 9));
-  if (/^(\d)\1{10}$/.test(s)) return genCnh();
-  return s;
+  const digits = Array.from({ length: 9 }, () => randInt(0, 9));
+
+  let dsc = 0;
+  let sum = 0;
+
+  for (let i = 0, weight = 9; i < 9; i++, weight--) {
+    sum += digits[i] * weight;
+  }
+
+  let d1 = sum % 11;
+
+  if (d1 >= 10) {
+    d1 = 0;
+    dsc = 2;
+  }
+
+  sum = 0;
+
+  for (let i = 0, weight = 1; i < 9; i++, weight++) {
+    sum += digits[i] * weight;
+  }
+
+  let d2 = (sum % 11) - dsc;
+
+  if (d2 < 0) d2 += 11;
+  if (d2 >= 10) d2 = 0;
+
+  return [...digits, d1, d2].join('');
 }
 
 /**

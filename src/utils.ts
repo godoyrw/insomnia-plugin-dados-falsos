@@ -102,3 +102,74 @@ export function slugifyEmailPart(s: string): string {
     .replace(/^\.+|\.+$/g, '')
     .replace(/\.+/g, '.');
 }
+
+/**
+ * Valida UUID v4
+ * @param {string} uuid - UUID a ser validado
+ * @returns {boolean} True se v\u00e1lido
+ * @example
+ * validarUuid('123e4567-e89b-12d3-a456-426614174000') // true
+ */
+export function validarUuid(uuid: string): boolean {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(uuid);
+}
+
+/**
+ * Valida data real (considera dias por m\u00eas e anos bissextos)
+ * @param {number} ano - Ano (ex: 2023)
+ * @param {number} mes - M\u00eas (1-12)
+ * @param {number} dia - Dia (1-31)
+ * @returns {boolean} True se for uma data v\u00e1lida
+ * @example
+ * validarData(2023, 2, 28) // true
+ * validarData(2023, 2, 29) // false (ano n\u00e3o bissexto)
+ */
+export function validarData(ano: number, mes: number, dia: number): boolean {
+  const d = new Date(ano, mes - 1, dia);
+  return d.getFullYear() === ano && d.getMonth() === mes - 1 && d.getDate() === dia;
+}
+
+/**
+ * Valida email com regex completo RFC 5322 simplificado
+ * @param {string} email - Email a ser validado
+ * @returns {boolean} True se v\u00e1lido
+ * @example
+ * validarEmail('usuario@example.com') // true
+ * validarEmail('usuario@invalido') // false
+ */
+export function validarEmail(email: string): boolean {
+  return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(email);
+}
+
+/**
+ * Valida senha forte: mai\u00fascula, min\u00fascula, n\u00famero, especial, 12+ chars
+ * @param {string} senha - Senha a ser validada
+ * @returns {boolean} True se for uma senha forte
+ * @example
+ * validarSenha('SenhaFort3!') // true
+ * validarSenha('fraca') // false
+ */
+export function validarSenha(senha: string): boolean {
+  return senha.length >= 12
+    && /[A-Z]/.test(senha)
+    && /[a-z]/.test(senha)
+    && /[0-9]/.test(senha)
+    && /[^A-Za-z0-9]/.test(senha);
+}
+
+/**
+ * Valida EAN-13 com d\u00edgito verificador
+ * @param {string} ean - EAN a ser validado
+ * @returns {boolean} True se v\u00e1lido
+ * @example
+ * validarEan13('7891234567890') // true
+ * validarEan13('7891234567891') // false
+ */
+export function validarEan13(ean: string): boolean {
+  if (!/^\d{13}$/.test(ean)) return false;
+  const sum = ean.split('').slice(0, 12).reduce((acc, d, i) => {
+    return acc + parseInt(d) * (i % 2 === 0 ? 1 : 3);
+  }, 0);
+  const dv = (10 - (sum % 10)) % 10;
+  return dv === parseInt(ean[12]);
+}

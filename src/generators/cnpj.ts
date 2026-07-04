@@ -61,3 +61,26 @@ export function generateValidCnpj(alphanumeric = true): string {
 
   return `${base}${d1}${d2}`;
 }
+
+/**
+ * Valida CNPJ — algoritmo oficial Receita Federal (suporta alfanumérico 2026)
+ * @param {string} cnpj - CNPJ a ser validado
+ * @returns {boolean} True se válido
+ * @example
+ * validarCnpj('12345678000195') // true
+ * validarCnpj('AB12CD34EF5635') // true
+ * validarCnpj('12345678000196') // false
+ */
+export function validarCnpj(cnpj: string): boolean {
+  if (cnpj.length !== 14) return false;
+  const digitos = Array.from(cnpj.slice(0, 12)).map(c => c.charCodeAt(0) - 48);
+  const pesos1  = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const pesos2  = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const calcDV  = (nums: number[], pesos: number[]) => {
+    const r = nums.reduce((acc, v, i) => acc + v * pesos[i], 0) % 11;
+    return r < 2 ? 0 : 11 - r;
+  };
+  const d1 = calcDV(digitos, pesos1);
+  const d2 = calcDV([...digitos, d1], pesos2);
+  return cnpj[12] === String(d1) && cnpj[13] === String(d2);
+}

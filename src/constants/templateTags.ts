@@ -198,9 +198,9 @@ export const templateTags: TemplateTag[] = [
     run: async (context?: InsomniaContext) => genCnpj(context)
   },
   {
-    name: 'rg',
-    displayName: 'dados-falsos → rg',
-    description: 'RG / CNH',
+    name: 'cnh',
+    displayName: 'dados-falsos → cnh',
+    description: 'CNH válida com 11 dígitos',
     args: [],
     run: async () => genCnh()
   },

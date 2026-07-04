@@ -34,83 +34,10 @@ import { genMedicalRecordNumber } from '../src/generators/medicalRecordNumber';
 import { genCNS } from '../src/generators/cns';
 import { genProfessionalRegistration } from '../src/generators/professionalRegistration';
 
-
-/**
- * Valida CPF — algoritmo oficial Receita Federal
- */
-function validarCpf(cpf: string): boolean {
-  if (!/^\d{11}$/.test(cpf)) return false;
-  if (/^(\d)\1{10}$/.test(cpf)) return false;
-  const calc = (len: number) => {
-    let sum = 0;
-    for (let i = 0; i < len; i++) sum += parseInt(cpf[i]) * (len + 1 - i);
-    const r = (sum * 10) % 11;
-    return r === 10 || r === 11 ? 0 : r;
-  };
-  return calc(9) === parseInt(cpf[9]) && calc(10) === parseInt(cpf[10]);
-}
-
-/**
- * Valida CNPJ — algoritmo oficial Receita Federal (suporta alfanumérico 2026)
- */
-function validarCnpj(cnpj: string): boolean {
-  if (cnpj.length !== 14) return false;
-  const digitos = Array.from(cnpj.slice(0, 12)).map(c => c.charCodeAt(0) - 48);
-  const pesos1  = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-  const pesos2  = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-  const calcDV  = (nums: number[], pesos: number[]) => {
-    const r = nums.reduce((acc, v, i) => acc + v * pesos[i], 0) % 11;
-    return r < 2 ? 0 : 11 - r;
-  };
-  const d1 = calcDV(digitos, pesos1);
-  const d2 = calcDV([...digitos, d1], pesos2);
-  return cnpj[12] === String(d1) && cnpj[13] === String(d2);
-}
-
-/**
- * Valida UUID v4
- */
-function validarUuid(uuid: string): boolean {
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(uuid);
-}
-
-/**
- * Valida data real (considera dias por mês e anos bissextos)
- */
-function validarData(ano: number, mes: number, dia: number): boolean {
-  const d = new Date(ano, mes - 1, dia);
-  return d.getFullYear() === ano && d.getMonth() === mes - 1 && d.getDate() === dia;
-}
-
-/**
- * Valida email com regex completo RFC 5322 simplificado
- */
-function validarEmail(email: string): boolean {
-  return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(email);
-}
-
-/**
- * Valida senha forte: maiúscula, minúscula, número, especial, 12+ chars
- */
-function validarSenha(senha: string): boolean {
-  return senha.length >= 12
-    && /[A-Z]/.test(senha)
-    && /[a-z]/.test(senha)
-    && /[0-9]/.test(senha)
-    && /[^A-Za-z0-9]/.test(senha);
-}
-
-/**
- * Valida EAN-13 com dígito verificador
- */
-function validarEan13(ean: string): boolean {
-  if (!/^\d{13}$/.test(ean)) return false;
-  const sum = ean.split('').slice(0, 12).reduce((acc, d, i) => {
-    return acc + parseInt(d) * (i % 2 === 0 ? 1 : 3);
-  }, 0);
-  const dv = (10 - (sum % 10)) % 10;
-  return dv === parseInt(ean[12]);
-}
+// Importa funções de validação
+import { validarCpf } from '../src/generators/cpf';
+import { validarCnpj } from '../src/generators/cnpj';
+import { validarUuid, validarData, validarEmail, validarSenha, validarEan13 } from '../src/utils';
 
 // ============================================================================
 // FRAMEWORK DE TESTES
@@ -146,6 +73,46 @@ function test(name: string, fn: () => void): void {
 // ============================================================================
 // IDENTIDADE
 // ============================================================================
+
+function isValidCnh(cnh: string): boolean {
+  if (!/^\d{11}$/.test(cnh)) return false;
+
+  if (/^(\d)\1{10}$/.test(cnh)) return false;
+
+  const digits = cnh
+    .slice(0, 9)
+    .split('')
+    .map(Number);
+
+  let dsc = 0;
+
+  let sum = 0;
+  for (let i = 0, weight = 9; i < 9; i++, weight--) {
+    sum += digits[i] * weight;
+  }
+
+  let d1 = sum % 11;
+
+  if (d1 >= 10) {
+    d1 = 0;
+    dsc = 2;
+  }
+
+  sum = 0;
+  for (let i = 0, weight = 1; i < 9; i++, weight++) {
+    sum += digits[i] * weight;
+  }
+
+  let d2 = (sum % 11) - dsc;
+
+  if (d2 < 0) d2 += 11;
+  if (d2 >= 10) d2 = 0;
+
+  return (
+    d1 === Number(cnh[9]) &&
+    d2 === Number(cnh[10])
+  );
+}
 
 test('nomeCompleto: deve ter pelo menos 2 palavras', () => {
   const v = genFullName();
@@ -227,14 +194,26 @@ test('cnpj: numérico deve ter dígito verificador válido', () => {
   assert(validarCnpj(v), `CNPJ numérico com DV inválido: "${v}"`);
 });
 
-test('rg: deve ter exatamente 11 dígitos', () => {
+test('cnh: deve ter exatamente 11 dígitos', () => {
   const v = genCnh();
-  assert(/^\d{11}$/.test(v), `RG/CNH inválido: "${v}"`);
+  assert(/^\d{11}$/.test(v), `CNH inválida: "${v}"`);
 });
 
-test('rg: não deve ser sequência repetida', () => {
+test('cnh: não deve ser sequência repetida', () => {
   const v = genCnh();
-  assert(!/^(\d)\1{10}$/.test(v), `RG sequência repetida: "${v}"`);
+  assert(!/^(\d)\1{10}$/.test(v), `CNH sequência repetida: "${v}"`);
+});
+
+test('cnh: deve possuir dígitos verificadores válidos', () => {
+  const v = genCnh();
+  assert(isValidCnh(v), `CNH com dígitos verificadores inválidos: "${v}"`);
+});
+
+test('cnh: deve gerar apenas CNHs válidas', () => {
+  for (let i = 0; i < 1000; i++) {
+    const v = genCnh();
+    assert(isValidCnh(v), `CNH inválida: "${v}"`);
+  }
 });
 
 test('dataNascimento: deve estar no formato YYYY-MM-DD', () => {
