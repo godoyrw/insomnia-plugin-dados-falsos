@@ -9,7 +9,7 @@
 [![Insomnia](https://img.shields.io/badge/Insomnia-Plugin-purple)](https://insomnia.rest/)
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0003--2100--4772-green.svg)](https://orcid.org/0009-0003-2100-4772)
 
-Plugin para Insomnia focado em massa sintética pt-BR com consistência e validação real de RG, CNH, CPF, CNPJ, entre outros. Reduzindo o risco de uso de dados reais em testes. Oferece 80+ template tags cobrindo identidade, contato, endereço, empresa, financeiro, e-commerce, geolocalização e mais — com suporte ao novo formato alfanumérico CNPJ 2026 da Receita Federal.
+Plugin para Insomnia focado em massa sintética pt-BR com consistência e validação real de CNH, CPF, CNPJ, entre outros. Reduzindo o risco de uso de dados reais em testes. Oferece 71+ template tags cobrindo identidade, contato, endereço, empresa, financeiro, e-commerce, geolocalização e mais — com suporte ao novo formato alfanumérico CNPJ 2026 da Receita Federal.
 
 <div align="center">
   <img src="./assets/images/insomnia-plugin-dados-falsos.jpg" alt="Dados Falsos - Plugin Insomnia">
@@ -307,13 +307,37 @@ O plugin seleciona um valor aleatório da lista. Se não estiver definida, gera 
 
 ---
 
+## Próximos Passos / Roadmap
+
+Conforme definido no plano de implementação ([`.dev/implementations.md`](.dev/implementations.md)), os seguintes recursos são prioridades para futuras versões:
+
+### 🩺 Alta Prioridade
+- **Dados de Saúde**: Número de cartão SUS fictício, convênio fictício
+- **Dados Pessoais e Profissionais**: PIS/PASEP, Título de Eleitor, Passaporte, Renda mensal, Escolaridade, Nome social/apelido
+- **Dados Veiculares**: Placa Veicular (formato Mercosul e antiga)
+- **Dados Previdenciários/Trabalhistas**: Número do PIS/PASEP/NIT, Número do Título de Eleitor
+
+### 📊 Média Prioridade
+- **Dados Acadêmicos**: Nome de Instituição de Ensino, Nome de Curso Técnico/Graduação
+- **Dados Financeiros Específicos**: Dados Bancários Básicos (Agência/Conta), Chave Pix Aleatória
+- **Dados Pessoais e Profissionais**: Banco, Agência, Conta, Telefone comercial, Site pessoal
+- **Desenvolvimento**: MAC Address, User-Agent, Locale
+- **Internet**: Username (avancado)
+
+Esses recursos serão implementados seguindo os mesmos padrões de qualidade:
+- Zero dependências externas
+- Performance <1ms
+- Validação real de dados brasileiros
+- Documentação completa em português
+- Testes automatizados de qualidade
+
 ## Desenvolvimento
 
 O plugin é escrito em **TypeScript** para melhor type safety e manutenibilidade.
 
 - JSDoc completo em português
 - Arquitetura limpa e coesa, separada por domínio
-- Algoritmos de RG, CNH, CPF e CNPJ com Dígito Verificador (DV) real — calculados pelo algoritmo oficial da Receita Federal, garantindo números matematicamente válidos, não apenas sequências aleatórias
+- Algoritmos de CNH, CPF e CNPJ com Dígito Verificador (DV) real — calculados pelo algoritmo oficial da Receita Federal, garantindo números matematicamente válidos, não apenas sequências aleatórias
 - Suporte ao novo formato alfanumérico 2026 da Receita Federal — base com letras A-Z e números, pioneiro entre plugins Insomnia
 - Suite de testes com 122 casos e 100% de aprovação
 
