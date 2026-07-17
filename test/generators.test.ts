@@ -14,7 +14,11 @@
  */
 
 import { STREET_TYPES,UF, TIMEZONES } from '../src/constants/locations';
-import { genCpf, genCnpj, genFullName, genFirstName, genLastName, genNickname, genUsername, genCnh, genBirthdate, genGender, genRg, isValidRg } from '../src/generators/identity';
+import { genFullName, genFirstName, genLastName, genNickname, genUsername, genBirthdate, genGender } from '../src/generators/identity';
+import { genCpf, validarCpf } from '../src/generators/cpf';
+import { genCnpj, validarCnpj } from '../src/generators/cnpj';
+import { genCnh, validarCnh } from '../src/generators/cnh';
+import { genRg, validarRg } from '../src/generators/rg';
 import { genEmail, genEmailExample, genPhone, genCellphone, genWhatsapp } from '../src/generators/contact';
 import { genCep, genStreet, genAddressNumber, genComplement, genAddress, genNeighborhood, genCity, genStateUf, genTimezone } from '../src/generators/address';
 import { genCompanyName, genCompanyFantasyName, genCorporateEmail, genPosition, genDepartment } from '../src/generators/company';
@@ -33,10 +37,8 @@ import { genAllergy } from '../src/generators/allergy';
 import { genMedicalRecordNumber } from '../src/generators/medicalRecordNumber';
 import { genCNS } from '../src/generators/cns';
 import { genProfessionalRegistration } from '../src/generators/professionalRegistration';
-
-// Importa funções de validação
-import { validarCpf } from '../src/generators/cpf';
-import { validarCnpj } from '../src/generators/cnpj';
+import { genPIS, validarPis } from '../src/generators/pis';
+import { genPlaca, genPlacaAntiga, genPlacaMercosul, validarPlaca } from '../src/generators/vehicle';
 import { validarUuid, validarData, validarEmail, validarSenha, validarEan13 } from '../src/utils';
 
 // ============================================================================
@@ -73,46 +75,6 @@ function test(name: string, fn: () => void): void {
 // ============================================================================
 // IDENTIDADE
 // ============================================================================
-
-function isValidCnh(cnh: string): boolean {
-  if (!/^\d{11}$/.test(cnh)) return false;
-
-  if (/^(\d)\1{10}$/.test(cnh)) return false;
-
-  const digits = cnh
-    .slice(0, 9)
-    .split('')
-    .map(Number);
-
-  let dsc = 0;
-
-  let sum = 0;
-  for (let i = 0, weight = 9; i < 9; i++, weight--) {
-    sum += digits[i] * weight;
-  }
-
-  let d1 = sum % 11;
-
-  if (d1 >= 10) {
-    d1 = 0;
-    dsc = 2;
-  }
-
-  sum = 0;
-  for (let i = 0, weight = 1; i < 9; i++, weight++) {
-    sum += digits[i] * weight;
-  }
-
-  let d2 = (sum % 11) - dsc;
-
-  if (d2 < 0) d2 += 11;
-  if (d2 >= 10) d2 = 0;
-
-  return (
-    d1 === Number(cnh[9]) &&
-    d2 === Number(cnh[10])
-  );
-}
 
 test('nomeCompleto: deve ter pelo menos 2 palavras', () => {
   const v = genFullName();
@@ -152,6 +114,17 @@ test('nomeUsuario: deve ter formato nome.sobrenome.numero ou nome_sobrenome_nume
 test('nomeUsuario: não deve conter acentos', () => {
   const v = genUsername();
   assert(!/[àáâãäåèéêëìíîïòóôõöùúûüçñ]/i.test(v), `Username com acento: "${v}"`);
+});
+
+test('usuario: deve ter formato nome.sobrenome.numero ou nome_sobrenome_numero', () => {
+  const v = genUsername();
+  assert(/^[a-z]+[._][a-z]+[._]\d+$/.test(v), `Formato inválido: "${v}"`);
+});
+
+test('usuario: não deve ser igual a nomeSocial (apelido)', () => {
+  // usuario deve retornar username estruturado (ex: joao.silva.42), não apelido (ex: Mari)
+  const v = genUsername();
+  assert(/^[a-z]+[._][a-z]+[._]\d+$/.test(v), `usuario retornou apelido ao invés de username: "${v}"`);
 });
 
 test('cpf: deve ter 11 dígitos numéricos', () => {
@@ -206,13 +179,13 @@ test('cnh: não deve ser sequência repetida', () => {
 
 test('cnh: deve possuir dígitos verificadores válidos', () => {
   const v = genCnh();
-  assert(isValidCnh(v), `CNH com dígitos verificadores inválidos: "${v}"`);
+  assert(validarCnh(v), `CNH com dígitos verificadores inválidos: "${v}"`);
 });
 
 test('cnh: deve gerar apenas CNHs válidas', () => {
   for (let i = 0; i < 1000; i++) {
     const v = genCnh();
-    assert(isValidCnh(v), `CNH inválida: "${v}"`);
+    assert(validarCnh(v), `CNH inválida: "${v}"`);
   }
 });
 
@@ -228,13 +201,13 @@ test('rg: não deve ser sequência repetida', () => {
 
 test('rg: deve possuir dígito verificador válido', () => {
   const v = genRg();
-  assert(isValidRg(v), `RG inválido: "${v}"`);
+  assert(validarRg(v), `RG inválido: "${v}"`);
 });
 
 test('rg: deve gerar apenas RGs válidos', () => {
   for (let i = 0; i < 1000; i++) {
     const v = genRg();
-    assert(isValidRg(v), `RG inválido: "${v}"`);
+    assert(validarRg(v), `RG inválido: "${v}"`);
   }
 });
 
@@ -839,6 +812,69 @@ test('conselhoProfissional: deve funcionar sem parâmetro (qualquer conselho)', 
   // Deve corresponder a algum formato de conselho
   const formatoValido = /^(CRM|CREA|OAB|CRO|COREN)[\-\/][A-Z]{2} [0-9]+(-[0-9A-Z])?$/.test(v);
   assert(formatoValido, `Formato de conselho profissional inválido: "${v}"`);
+});
+
+// ============================================================================
+// PIS/PASEP
+// ============================================================================
+
+test('pis: deve ter exatamente 11 dígitos numéricos', () => {
+  const v = genPIS();
+  assert(/^\d{11}$/.test(v), `PIS inválido: "${v}"`);
+});
+
+test('pis: deve ter dígito verificador válido (algoritmo oficial)', () => {
+  const v = genPIS();
+  assert(validarPis(v), `PIS com DV inválido: "${v}"`);
+});
+
+test('pis: deve gerar apenas PIS válidos (1000 iterações)', () => {
+  for (let i = 0; i < 1000; i++) {
+    const v = genPIS();
+    assert(validarPis(v), `PIS inválido na iteração ${i}: "${v}"`);
+  }
+});
+
+// ============================================================================
+// VEICULAR
+// ============================================================================
+
+test('placa: deve ter exatamente 7 caracteres', () => {
+  const v = genPlaca();
+  assert(v.length === 7, `Placa com tamanho inválido: "${v}"`);
+});
+
+test('placa: deve ser formato antigo ou Mercosul', () => {
+  const v = genPlaca();
+  assert(validarPlaca(v), `Formato de placa inválido: "${v}"`);
+});
+
+test('placaAntiga: deve ter formato AAA9999', () => {
+  const v = genPlacaAntiga();
+  assert(/^[A-Z]{3}\d{4}$/.test(v), `Formato antigo inválido: "${v}"`);
+});
+
+test('placaAntiga: deve ter 3 letras seguidas de 4 dígitos', () => {
+  const v = genPlacaAntiga();
+  assert(/^[A-Z]{3}/.test(v), `Letras iniciais inválidas: "${v}"`);
+  assert(/\d{4}$/.test(v), `Dígitos finais inválidos: "${v}"`);
+});
+
+test('placaMercosul: deve ter formato AAA9A99', () => {
+  const v = genPlacaMercosul();
+  assert(/^[A-Z]{3}\d[A-Z]\d{2}$/.test(v), `Formato Mercosul inválido: "${v}"`);
+});
+
+test('placaMercosul: deve ter letra na 5ª posição (índice 4)', () => {
+  const v = genPlacaMercosul();
+  assert(/[A-Z]/.test(v[4]), `5ª posição não é letra: "${v}"`);
+});
+
+test('placa: deve gerar formatos válidos em 1000 iterações', () => {
+  for (let i = 0; i < 1000; i++) {
+    const v = genPlaca();
+    assert(validarPlaca(v), `Placa inválida na iteração ${i}: "${v}"`);
+  }
 });
 
 // ============================================================================

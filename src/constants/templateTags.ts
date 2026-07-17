@@ -1,25 +1,27 @@
 /**
  * Constantes de Template Tags
- * Definição de todas as 59 template tags do plugin Dados Falsos
+ * Definição de todas as 76 template tags do plugin Dados Falsos
  * Organizadas por categoria: Identidade, Contato, Endereço, Empresa, Financeiro, etc
  */
 
 import { TemplateTag, InsomniaContext } from '../types';
 
-// Importa geradores de identidade
+// Importa geradores de identidade (nomes e dados demográficos)
 import {
   genFirstName,
   genLastName,
   genFullName,
   genNickname,
   genGender,
-  genCpf,
-  genCnpj,
-  genCnh,
   genBirthdate,
-  genUsername,
-  genRg
+  genUsername
 } from '../generators/identity';
+
+// Importa geradores de documentos de identificação
+import { genCpf } from '../generators/cpf';
+import { genCnpj } from '../generators/cnpj';
+import { genCnh } from '../generators/cnh';
+import { genRg } from '../generators/rg';
 
 // Importa geradores de contato
 import {
@@ -134,9 +136,21 @@ import {
   genProfessionalRegistration
 } from '../generators/professionalRegistration';
 
+// Importa gerador de PIS/PASEP
+import {
+  genPIS
+} from '../generators/pis';
+
+// Importa geradores veiculares
+import {
+  genPlaca,
+  genPlacaAntiga,
+  genPlacaMercosul
+} from '../generators/vehicle';
+
 /**
  * Array de template tags exportado para o Insomnia
- * Contém todas as 60 tags organizadas por categoria
+ * Contém todas as 76 tags organizadas por categoria
  */
 export const templateTags: TemplateTag[] = [
   // ========================================================================
@@ -175,7 +189,7 @@ export const templateTags: TemplateTag[] = [
     displayName: 'dados-falsos → usuario',
     description: 'Usuário',
     args: [],
-    run: async () => genNickname()
+    run: async () => genUsername()
   },
   {
     name: 'nomeUsuario',
@@ -247,7 +261,7 @@ export const templateTags: TemplateTag[] = [
     displayName: 'dados-falsos → email',
     description: 'Email aleatório',
     args: [{ displayName: 'Domínio', type: 'string', defaultValue: '' }],
-    run: async (_context, domain) => genEmail(domain)
+    run: async (context, domain) => genEmail(domain, context)
   },
   {
     name: 'emailExemplo',
@@ -261,21 +275,21 @@ export const templateTags: TemplateTag[] = [
     displayName: 'dados-falsos → telefone',
     description: 'Telefone fixo',
     args: [],
-    run: async () => genPhone()
+    run: async (context?: InsomniaContext) => genPhone(context)
   },
   {
     name: 'celular',
     displayName: 'dados-falsos → celular',
     description: 'Celular',
     args: [],
-    run: async () => genCellphone()
+    run: async (context?: InsomniaContext) => genCellphone(context)
   },
   {
     name: 'whatsapp',
     displayName: 'dados-falsos → whatsapp',
     description: 'WhatsApp',
     args: [],
-    run: async () => genWhatsapp()
+    run: async (context?: InsomniaContext) => genWhatsapp(context)
   },
 
   // ========================================================================
@@ -449,7 +463,7 @@ export const templateTags: TemplateTag[] = [
     displayName: 'dados-falsos → uuid',
     description: 'Identificador único (UUID v4)',
     args: [],
-    run: async () => genUuid()
+    run: async (context?: InsomniaContext) => genUuid(context)
   },
   {
     name: 'ulid',
@@ -463,7 +477,7 @@ export const templateTags: TemplateTag[] = [
     displayName: 'dados-falsos → chaveIdempotencia',
     description: 'Chave de Idempotência',
     args: [],
-    run: async () => genIdempotencyKey()
+    run: async (context?: InsomniaContext) => genIdempotencyKey(context)
   },
   {
     name: 'chaveApi',
@@ -682,7 +696,14 @@ export const templateTags: TemplateTag[] = [
     displayName: 'dados-falsos → numeroCNS',
     description: 'Número do Cartão Nacional de Saúde (CNS)',
     args: [],
-    run: async () => genCNS()
+    run: async (context?: InsomniaContext) => genCNS(context)
+  },
+  {
+    name: 'pis',
+    displayName: 'dados-falsos → pis',
+    description: 'Número do PIS/PASEP válido (11 dígitos com DV)',
+    args: [],
+    run: async (context?: InsomniaContext) => genPIS(context)
   },
   {
     name: 'convenio',
@@ -718,5 +739,30 @@ export const templateTags: TemplateTag[] = [
       }
     ],
     run: async (_context, tipo) => genProfessionalRegistration(tipo)
+  },
+
+  // ========================================================================
+  // VEICULAR
+  // ========================================================================
+  {
+    name: 'placa',
+    displayName: 'dados-falsos → placa',
+    description: 'Placa veicular brasileira (antiga ou Mercosul, aleatório)',
+    args: [],
+    run: async (context?: InsomniaContext) => genPlaca(context)
+  },
+  {
+    name: 'placaAntiga',
+    displayName: 'dados-falsos → placaAntiga',
+    description: 'Placa veicular formato antigo (AAA9999)',
+    args: [],
+    run: async () => genPlacaAntiga()
+  },
+  {
+    name: 'placaMercosul',
+    displayName: 'dados-falsos → placaMercosul',
+    description: 'Placa veicular formato Mercosul (AAA9A99)',
+    args: [],
+    run: async () => genPlacaMercosul()
   }
 ];

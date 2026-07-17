@@ -1,14 +1,16 @@
 /**
  * Gerador de CNPJ
  * ================
- * Responsável por gerar CNPJs válidos com dígitos verificadores.
+ * Responsável por gerar e validar CNPJs com dígitos verificadores.
  * Suporta o novo formato alfanumérico 2026 da Receita Federal
  * e o formato numérico tradicional.
+ * Suporta listas de variáveis de ambiente do Insomnia (CNPJ_LIST).
  *
  * @module generators/cnpj
  */
 
-import { randInt } from '../utils';
+import { randInt, pickRandom, parseNumbersByLength, getEnvValue } from '../utils';
+import { InsomniaContext } from '../types';
 
 /**
  * Gera CNPJ válido com dígitos verificadores.
@@ -83,4 +85,45 @@ export function validarCnpj(cnpj: string): boolean {
   const d1 = calcDV(digitos, pesos1);
   const d2 = calcDV([...digitos, d1], pesos2);
   return cnpj[12] === String(d1) && cnpj[13] === String(d2);
+}
+
+/**
+ * Gera CNPJ com suporte a lista de variáveis de ambiente.
+ * Se CNPJ_LIST estiver definida no contexto Insomnia, seleciona um CNPJ da lista.
+ * Caso contrário, gera um CNPJ válido aleatório.
+ *
+ * Suporta duas assinaturas:
+ * - genCnpj(alphanumeric?)          — sem contexto (testes diretos)
+ * - genCnpj(context?, alphanumeric?) — com contexto Insomnia
+ *
+ * @param {boolean} [alphanumeric=true] - true para alfanumérico 2026, false para numérico.
+ * @returns {string} CNPJ válido com 14 caracteres.
+ * @example
+ * genCnpj()               // Alfanumérico, sem contexto
+ * genCnpj(false)          // Numérico, sem contexto
+ * genCnpj(context)        // Alfanumérico, com contexto
+ * genCnpj(context, false) // Numérico, com contexto
+ */
+export function genCnpj(alphanumeric?: boolean): string;
+export function genCnpj(context?: InsomniaContext, alphanumeric?: boolean): string;
+export function genCnpj(contextOrAlphanumeric?: InsomniaContext | boolean, alphanumeric = true): string {
+  let cnpj: string;
+
+  if (typeof contextOrAlphanumeric === 'boolean') {
+    cnpj = generateValidCnpj(contextOrAlphanumeric);
+  } else {
+    const list = getEnvValue(contextOrAlphanumeric, 'CNPJ_LIST');
+    if (list && list.trim()) {
+      const values = parseNumbersByLength(list, 14);
+      cnpj = values.length > 0 ? pickRandom(values) : generateValidCnpj(alphanumeric);
+    } else {
+      cnpj = generateValidCnpj(alphanumeric);
+    }
+  }
+
+  if (!validarCnpj(cnpj)) {
+    throw new Error(`genCnpj gerou um valor inválido: "${cnpj}"`);
+  }
+
+  return cnpj;
 }

@@ -37,7 +37,7 @@ function calcularDigitoVerificador(numero: string): string {
  *   genProfessionalRegistration() // "CRM-SP 12345"
  *   genProfessionalRegistration('CREA') // "CREA-RJ 67890-3"
  */
-export function genProfessionalRegistration(tipo?: string) {
+export function genProfessionalRegistration(tipo?: string): string {
   // Se tipo não especificado, escolher aleatoriamente
   let conselho;
   if (tipo) {

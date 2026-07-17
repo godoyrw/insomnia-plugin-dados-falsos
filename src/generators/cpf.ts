@@ -1,13 +1,15 @@
 /**
  * Gerador de CPF
  * ===============
- * Responsável por gerar CPFs válidos com dígitos verificadores.
- * Utiliza o algoritmo oficial de validação de CPF da Receita Federal.
+ * Responsável por gerar e validar CPFs com dígitos verificadores.
+ * Utiliza o algoritmo oficial da Receita Federal.
+ * Suporta listas de variáveis de ambiente do Insomnia (CPF_LIST).
  *
  * @module generators/cpf
  */
 
-import { randInt } from '../utils';
+import { randInt, pickRandom, parseNumbersByLength, getEnvValue } from '../utils';
+import { InsomniaContext } from '../types';
 
 /**
  * Calcula dígito verificador de CPF
@@ -65,4 +67,33 @@ export function generateValidCpf(): string {
   const digit1 = calcCpfDigit(cpf);
   const digit2 = calcCpfDigit(cpf + digit1);
   return cpf + digit1 + digit2;
+}
+
+/**
+ * Gera CPF com suporte a lista de variáveis de ambiente.
+ * Se CPF_LIST estiver definida no contexto Insomnia, seleciona um CPF da lista.
+ * Caso contrário, gera um CPF válido aleatório.
+ *
+ * @param {InsomniaContext} [context] - Contexto do Insomnia com variáveis de ambiente.
+ * @returns {string} CPF válido com 11 dígitos.
+ * @example
+ * genCpf()         // CPF gerado aleatoriamente
+ * genCpf(context)  // Usa CPF_LIST se disponível
+ */
+export function genCpf(context?: InsomniaContext): string {
+  const list = getEnvValue(context, 'CPF_LIST');
+  let cpf: string;
+
+  if (list && list.trim()) {
+    const values = parseNumbersByLength(list, 11);
+    cpf = values.length > 0 ? pickRandom(values) : generateValidCpf();
+  } else {
+    cpf = generateValidCpf();
+  }
+
+  if (!validarCpf(cpf)) {
+    throw new Error(`genCpf gerou um valor inválido: "${cpf}"`);
+  }
+
+  return cpf;
 }

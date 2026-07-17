@@ -1,0 +1,192 @@
+# Testes - Dados Falsos
+
+Documentação completa sobre os testes de qualidade do plugin Dados Falsos.
+
+## Visão Geral
+
+O projeto inclui uma suite de testes de qualidade que valida todos os geradores de dados. Os testes garantem que os dados gerados seguem os padrões brasileiros e formatos esperados.
+
+A suite cobre **todas as 76 template tags** com **138 testes** organizados por categoria:
+
+| Categoria           | Tags | Testes |
+|---------------------|------|--------|
+| Identidade          | 11   | 26     |
+| Contato             | 5    | 12     |
+| Endereço            | 9    | 19     |
+| Empresa             | 5    | 12     |
+| Financeiro          | 5    | 15     |
+| Datas e Tempo       | 2    | 4      |
+| Identificadores     | 7    | 16     |
+| Conteúdo            | 6    | 15     |
+| E-commerce          | 6    | 12     |
+| Geolocalização      | 4    | 8      |
+| Países do Mundo     | 5    | 12     |
+| Saúde               | 8    | 16     |
+| PIS/PASEP           | 1    | 3      |
+| Veicular            | 3    | 7      |
+| **TOTAL**           | **76** | **138** |
+
+## Executando os Testes
+
+### Comando Básico
+
+```bash
+npm test
+```
+
+Este comando:
+
+1. Compila o arquivo de testes TypeScript
+2. Executa os testes
+3. Exibe um relatório com resultados
+
+### Modo Watch (Desenvolvimento)
+
+```bash
+npm run test:watch
+```
+
+Recompila os testes automaticamente quando arquivos são modificados.
+
+## Estrutura dos Testes
+
+Os testes estão em `test/generators.test.ts` e cobrem todas as 76 template tags com 138 testes de validação.
+
+### Categorias de Testes
+
+- **Identidade**: nomeCompleto, primeiroNome, sobrenome, nomeSocial, usuario, nomeUsuario, cpf, cnpj, cnh, rg, dataNascimento, genero
+- **Contato**: email, emailExemplo, telefone, celular, whatsapp
+- **Endereço**: cep, logradouro, numero, complemento, endereco, enderecoNumero, bairro, cidade, estado, timezone
+- **Empresa**: razaoSocial, nomeFantasia, emailCorporativo, cargo, departamento
+- **Financeiro**: moeda, valor, plano, statusPagamento, cupom
+- **Datas**: datetimeIso, timezone
+- **Identificadores**: uuid, ulid, chaveIdempotencia, chaveApi, tokenJwt, senha, hashSha256
+- **Conteúdo**: corHex, booleano, titulo, descricao, textoLongo, emoji
+- **E-commerce**: sku, ean, pedido, statusPedido, quantidade, frete
+- **Geolocalização**: latitude, longitude, ipv4, ipv6
+- **Países**: pais, codigoPais, codigoTelefonePais, moedaPais, paisCompleto
+- **Saúde**: tipoSanguineo, numeroProntuario, numeroCNS, convenio, alergia, conselhoProfissional (CRM, CREA, OAB)
+- **PIS/PASEP**: pis (incluindo 1000 iterações de validação)
+- **Veicular**: placa, placaAntiga, placaMercosul (incluindo 1000 iterações de validação)
+
+## Resultado dos Testes
+
+### Última Execução
+
+```
+──────────────────────────────────────────────────
+  Resultados
+──────────────────────────────────────────────────
+  Total   138 testes
+  Passou  138
+  Score   100%
+──────────────────────────────────────────────────
+```
+
+### Detalhes dos Testes por Categoria
+
+**Identidade (26 testes)**
+- nomeCompleto (2), primeiroNome (2), sobrenome (1), nomeSocial (1), usuario (2), nomeUsuario (2)
+- cpf (3), cnpj (5), cnh (4), rg (4)
+- dataNascimento (3), genero (1)
+
+**Contato (12 testes)**
+- email (2), emailExemplo (2), telefone (2), celular (2), whatsapp (2)
+
+**Endereço (19 testes)**
+- cep (2), logradouro (2), numero (1), complemento (1), endereco (1), enderecoNumero (1)
+- bairro (1), cidade (1), estado (1), timezone (1)
+
+**Empresa (12 testes)**
+- razaoSocial (2), nomeFantasia (1), emailCorporativo (2), cargo (1), departamento (1)
+
+**Financeiro (15 testes)**
+- moeda (1), valor (3), plano (1), statusPagamento (1), cupom (2)
+
+**Datas e Tempo (4 testes)**
+- datetimeIso (4)
+
+**Identificadores (16 testes)**
+- uuid (2), ulid (2), chaveIdempotencia (1), chaveApi (2), tokenJwt (2), senha (2), hashSha256 (1)
+
+**Conteúdo (15 testes)**
+- corHex (2), booleano (1), titulo (2), descricao (1), textoLongo (2), emoji (1)
+
+**E-commerce (12 testes)**
+- sku (1), ean (2), pedido (2), statusPedido (1), quantidade (2), frete (1)
+
+**Geo e Rede (8 testes)**
+- latitude (2), longitude (2), ipv4 (3), ipv6 (1)
+
+**Países do Mundo (12 testes)**
+- pais (2), codigoPais (1), codigoTelefonePais (3), moedaPais (1), paisCompleto (2)
+
+**Saúde (16 testes)**
+- tipoSanguineo (2), numeroProntuario (1), numeroCNS (1), convenio (1), alergia (1)
+- conselhoProfissional sem parâmetro (1), CRM (1), CREA (1), OAB (1)
+
+**PIS/PASEP (3 testes)**
+- formato (1), dígito verificador (1), 1000 iterações (1)
+
+**Veicular (7 testes)**
+- placa: tamanho (1), formato geral (1), 1000 iterações (1)
+- placaAntiga: formato AAA9999 (1), letras e dígitos (1)
+- placaMercosul: formato AAA9A99 (1), letra na 5ª posição (1)
+
+## Cobertura de Testes
+
+A suite valida:
+
+- ✅ Formatos de dados brasileiros
+- ✅ Dígitos verificadores reais (CPF, CNPJ, CNH, RG, PIS, CNS, EAN)
+- ✅ Placas veiculares (formato antigo e Mercosul)
+- ✅ Padrões de telefone e email
+- ✅ Identificadores únicos (UUID, ULID)
+- ✅ Datas e horas
+- ✅ Valores monetários
+- ✅ Enumerações (status, planos, tipos)
+- ✅ Geolocalização (latitude, longitude, IP)
+- ✅ E-commerce (SKU, EAN, pedidos)
+- ✅ Dados de saúde e conselhos profissionais
+
+## Adicionando Novos Testes
+
+Edite `test/generators.test.ts` seguindo o padrão:
+
+```typescript
+test('minhaTag: deve ter formato correto', () => {
+  const v = genMinhaFuncao();
+  assert(/regex/.test(v), `Formato inválido: "${v}"`);
+});
+```
+
+## Troubleshooting
+
+### Erro: "tsc not found"
+
+```bash
+npm install   # instala typescript local
+```
+
+### Erro: "Module not found"
+
+```bash
+npm run build
+```
+
+### Testes falhando
+
+1. Execute `npm run build` para recompilar
+2. Verifique os logs de erro no console
+
+## Integração Contínua
+
+O workflow `.github/workflows/test.yml` executa automaticamente em todo push e pull request:
+
+```bash
+npx tsx test/generators.test.ts
+```
+
+## Performance
+
+Os testes executam em menos de 1 segundo, incluindo 1000 iterações de stress test para CNH, RG, PIS e placas veiculares.

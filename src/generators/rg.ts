@@ -50,10 +50,10 @@ export function genRg(): string {
 /**
  * Valida um número de RG (algoritmo de São Paulo).
  *
- * @param value RG a ser validado.
- * @returns true se válido.
+ * @param {string} value RG a ser validado.
+ * @returns {boolean} true se válido.
  */
-export function isValidRg(value: string): boolean {
+export function validarRg(value: string): boolean {
   const rg = value.replace(/[^\dX]/gi, '').toUpperCase();
 
   if (!/^\d{8}[\dX]$/.test(rg)) {

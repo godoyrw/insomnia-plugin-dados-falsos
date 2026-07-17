@@ -1,33 +1,30 @@
 /**
  * Geradores de Identificadores e Segurança
  * ==========================================
- * Módulo responsável por gerar identificadores únicos e tokens de segurança:
- * - UUID v4 (Universally Unique Identifier)
- * - ULID (Universally Unique Lexicographically Sortable Identifier)
- * - Chave de Idempotência
- * - Chave de API
- * - Token JWT
- * - Senha forte
- * - Hash SHA256
- *
- * Todos os geradores produzem valores realistas para testes, mas não são
- * criptograficamente seguros. Use apenas para testes, nunca em produção.
+ * Módulo responsável por gerar identificadores únicos e tokens de segurança.
+ * Suporta UUID_LIST via variável de ambiente do Insomnia.
  *
  * @module generators/identifiers
  */
 
-import { randInt } from '../utils';
+import { randInt, getEnvValue, pickRandom } from '../utils';
+import { InsomniaContext } from '../types';
 
 /**
- * Gera UUID v4 aleatório
- * Formato: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
- * Segue o padrão RFC 4122 para UUID v4
+ * Gera UUID v4 aleatório.
+ * Se UUID_LIST estiver definida no contexto, seleciona um UUID da lista.
  *
+ * @param {InsomniaContext} [context] - Contexto do Insomnia
  * @returns {string} UUID v4 válido
  * @example
  * genUuid() // "9f1c2c2e-3e2a-4c3e-a1b1-2d3c4e5f6789"
  */
-export function genUuid(): string {
+export function genUuid(context?: InsomniaContext): string {
+  const list = getEnvValue(context, 'UUID_LIST');
+  if (list && list.trim()) {
+    const values = list.trim().split(/\s+/).filter(Boolean);
+    if (values.length > 0) return pickRandom(values);
+  }
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = Math.random() * 16 | 0;
     const v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -52,16 +49,14 @@ export function genUlid(): string {
 }
 
 /**
- * Gera chave de idempotência
- * Usa UUID como base para garantir unicidade
- * Útil para testes de APIs que requerem idempotência
+ * Gera chave de idempotência (UUID v4).
+ * Repassa o contexto para suportar UUID_LIST.
  *
+ * @param {InsomniaContext} [context] - Contexto do Insomnia
  * @returns {string} Chave de idempotência (UUID)
- * @example
- * genIdempotencyKey() // "9f1c2c2e-3e2a-4c3e-a1b1-2d3c4e5f6789"
  */
-export function genIdempotencyKey(): string {
-  return genUuid();
+export function genIdempotencyKey(context?: InsomniaContext): string {
+  return genUuid(context);
 }
 
 /**

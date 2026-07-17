@@ -2,33 +2,41 @@
  * Geradores de Contato
  * =====================
  * Módulo responsável por gerar dados de contato:
- * - Email (com domínio customizável)
- * - Telefone fixo (formato brasileiro)
- * - Celular (formato brasileiro com 9 dígitos)
- * - WhatsApp (com código de país +55)
+ * - Email (com domínio customizável, suporte a EMAIL_LIST)
+ * - Telefone fixo (formato brasileiro, suporte a PHONE_LIST)
+ * - Celular (formato brasileiro, suporte a CELULAR_LIST)
+ * - WhatsApp (com código de país +55, suporte a WHATSAPP_LIST)
  *
- * Todos os geradores de telefone seguem o padrão brasileiro com DDD (11-99)
- * e formatos realistas para testes de APIs.
+ * Todos os geradores aceitam listas via variáveis de ambiente do Insomnia.
+ * Se a variável estiver definida, seleciona um valor aleatório da lista.
+ * Caso contrário, gera um valor aleatório.
  *
  * @module generators/contact
  */
 
-import { randInt, pickRandom, pad, slugifyEmailPart } from '../utils';
+import { randInt, pickRandom, pad, slugifyEmailPart, getEnvValue } from '../utils';
 import { EMAIL_DOMAINS } from '../constants/names';
 import { genFirstName, genLastName } from './identity';
+import { InsomniaContext } from '../types';
 
 /**
- * Gera email aleatório com domínio customizável
- * Normaliza nome completo para formato de email (remove acentos, converte para minúsculas)
- * Adiciona token numérico para garantir unicidade
+ * Gera email aleatório com domínio customizável.
+ * Se EMAIL_LIST estiver definida no contexto, seleciona um email da lista.
  *
- * @param {string} [domainOpt] - Domínio customizado (ex: "empresa.com.br")
- * @returns {string} Email aleatório no formato nome.sobrenome.token@dominio
+ * @param {string} [domainOpt] - Domínio customizado (ignorado se EMAIL_LIST estiver definida)
+ * @param {InsomniaContext} [context] - Contexto do Insomnia
+ * @returns {string} Email no formato nome.sobrenome.token@dominio
  * @example
- * genEmail() // "mariana.silva.4521@example.com"
- * genEmail('empresa.com.br') // "joao.lima.8932@empresa.com.br"
+ * genEmail()                   // "mariana.silva.4521@gmail.com"
+ * genEmail('empresa.com.br')   // "joao.lima.8932@empresa.com.br"
+ * genEmail('', context)        // usa EMAIL_LIST se disponível
  */
-export function genEmail(domainOpt?: string): string {
+export function genEmail(domainOpt?: string, context?: InsomniaContext): string {
+  const list = getEnvValue(context, 'EMAIL_LIST');
+  if (list && list.trim()) {
+    const values = list.trim().split(/\s+/).filter(Boolean);
+    if (values.length > 0) return pickRandom(values);
+  }
   const full = `${genFirstName()} ${genLastName()}`;
   const parts = full.split(' ');
   const first = parts[0];
@@ -52,16 +60,20 @@ export function genEmailExample(): string {
 }
 
 /**
- * Gera telefone fixo brasileiro
- * Formato: (XX) XXXX-XXXX
- * DDD: 11-99 (códigos de área brasileiros)
- * Primeiro dígito do número: 2-9 (padrão de telefone fixo)
+ * Gera telefone fixo brasileiro.
+ * Se PHONE_LIST estiver definida no contexto, seleciona um telefone da lista.
  *
- * @returns {string} Telefone fixo no formato (XX) XXXX-XXXX
+ * @param {InsomniaContext} [context] - Contexto do Insomnia
+ * @returns {string} Telefone no formato (XX) XXXX-XXXX
  * @example
  * genPhone() // "(11) 3456-7890"
  */
-export function genPhone(): string {
+export function genPhone(context?: InsomniaContext): string {
+  const list = getEnvValue(context, 'PHONE_LIST');
+  if (list && list.trim()) {
+    const values = list.trim().split(/\s+/).filter(Boolean);
+    if (values.length > 0) return pickRandom(values);
+  }
   const areaCode = pad(randInt(11, 99), 2);
   const firstPart = pad(randInt(2000, 9999), 4);
   const secondPart = pad(randInt(1000, 9999), 4);
@@ -69,16 +81,20 @@ export function genPhone(): string {
 }
 
 /**
- * Gera celular brasileiro
- * Formato: (XX) 9XXXX-XXXX
- * DDD: 11-99 (códigos de área brasileiros)
- * Começa com 9 (padrão de celular brasileiro)
+ * Gera celular brasileiro.
+ * Se CELULAR_LIST estiver definida no contexto, seleciona um celular da lista.
  *
+ * @param {InsomniaContext} [context] - Contexto do Insomnia
  * @returns {string} Celular no formato (XX) 9XXXX-XXXX
  * @example
  * genCellphone() // "(21) 98765-4321"
  */
-export function genCellphone(): string {
+export function genCellphone(context?: InsomniaContext): string {
+  const list = getEnvValue(context, 'CELULAR_LIST');
+  if (list && list.trim()) {
+    const values = list.trim().split(/\s+/).filter(Boolean);
+    if (values.length > 0) return pickRandom(values);
+  }
   const areaCode = pad(randInt(11, 99), 2);
   const firstPart = pad(randInt(90000, 99999), 5);
   const secondPart = pad(randInt(1000, 9999), 4);
@@ -86,15 +102,20 @@ export function genCellphone(): string {
 }
 
 /**
- * Gera WhatsApp com código de país
- * Formato: +55 XX 9XXXX-XXXX
- * Inclui código de país Brasil (+55) e segue padrão de celular
+ * Gera WhatsApp com código de país +55.
+ * Se WHATSAPP_LIST estiver definida no contexto, seleciona um número da lista.
  *
+ * @param {InsomniaContext} [context] - Contexto do Insomnia
  * @returns {string} WhatsApp no formato +55 XX 9XXXX-XXXX
  * @example
  * genWhatsapp() // "+55 11 99876-5432"
  */
-export function genWhatsapp(): string {
+export function genWhatsapp(context?: InsomniaContext): string {
+  const list = getEnvValue(context, 'WHATSAPP_LIST');
+  if (list && list.trim()) {
+    const values = list.trim().split(/\s+/).filter(Boolean);
+    if (values.length > 0) return pickRandom(values);
+  }
   const areaCode = pad(randInt(11, 99), 2);
   const number = pad(randInt(900000000, 999999999), 9);
   return `+55 ${areaCode} ${number.slice(0, 5)}-${number.slice(5)}`;
