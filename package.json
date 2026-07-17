@@ -107,7 +107,6 @@
     "displayName": "Dados Falsos",
     "description": "Plugin Insomnia para gerar dados falsos realistas em português para testes de APIs brasileiras. Suporta 76 template tags incluindo CPF, CNPJ, CNH, RG, CNS, PIS, placas veiculares, nomes, endereços, emails, telefones, UUIDs, JWTs e muito mais.",
     "icon": "assets/icon.png",
-    "version": "1.5.1",
     "category": "data-generation",
     "tags": [
       "dados-falsos",
