@@ -5,10 +5,10 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/).
 
 ---
 
-## [v1.5.1] — 2026-07-17
+## [v1.5.2] — 2026-07-17
 
 ### Adicionado
-- **76 template tags** — +5 novas tags em relação à v1.5.1
+- **76 template tags** — +5 novas tags em relação à v1.5.2
 - **`{% pis %}`** — PIS/PASEP com dígito verificador real (algoritmo Caixa Econômica Federal)
 - **`{% placa %}`** — Placa veicular aleatória (antiga ou Mercosul)
 - **`{% placaAntiga %}`** — Placa formato antigo AAA9999
@@ -50,7 +50,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/).
 - `assets/docs/` — pasta removida (documentação movida para raiz do projeto)
 
 ### Testes
-- **138 testes**, 100% de aprovação (+12 em relação à v1.5.1)
+- **138 testes**, 100% de aprovação (+12 em relação à v1.5.2)
 - Validadores `validarCnh`, `validarRg`, `validarPis` importados dos módulos oficiais
 - Função local `isValidCnh` removida do arquivo de testes (substituída pelo módulo)
 
@@ -59,7 +59,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/).
 
 ---
 
-## [v1.5.1] — 2026-07-04
+## [v1.5.2] — 2026-07-04
 
 ### Adicionado
 - **Tags de saúde**: `{% tipoSanguineo %}`, `{% numeroProntuario %}`, `{% numeroCNS %}`,
