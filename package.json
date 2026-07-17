@@ -2,11 +2,7 @@
   "name": "insomnia-plugin-dados-falsos",
   "version": "1.5.0",
   "description": "Gere dados sintéticos brasileiros com algoritmos oficiais (CPF, CNPJ, CNH, CNS, PIS, RG, UUID e muito mais) diretamente nas Template Tags do Insomnia.",
-  "sideEffects": false,
   "main": "dist/insomnia-plugin-dados-falsos/src/main.js",
-  "exports": {
-    ".": "./dist/insomnia-plugin-dados-falsos/src/main.js"
-  },
   "author": "Roberto Godoy <godoyrw@github.com>",
   "maintainers": [
     {
@@ -88,16 +84,14 @@
     "LICENSE"
   ],
   "scripts": {
-    "prepare": "npm run build",
-    "prepublishOnly": "npm run test",
     "clean": "rm -rf dist && find src test -name '*.js' -delete -o -name '*.d.ts' -delete",
     "prebuild": "npm run clean",
     "build": "npm run clean && npx tsc",
     "lint": "tsc --noEmit",
     "dev": "tsc --watch",
-    "test": "npm run build && node dist/insomnia-plugin-dados-falsos/test/generators.test.js",
-    "test:watch": "npm run build && tsc test/generators.test.ts --outDir dist/insomnia-plugin-dados-falsos --watch",
-    "test:stress": "npm run build && bash -c 'success=0; fail=0; for i in {1..100}; do if npm test > /tmp/test-stress.log 2>&1; then ((success++)); else ((fail++)); echo \"❌ Falha na execução $i\"; fi; done; echo \"✅ Sucessos: $success\"; echo \"❌ Falhas: $fail\"; exit $fail'"
+    "test": "tsc test/generators.test.ts --outDir dist/insomnia-plugin-dados-falsos && node dist/insomnia-plugin-dados-falsos/test/generators.test.js",
+    "test:watch": "tsc test/generators.test.ts --outDir dist/insomnia-plugin-dados-falsos --watch",
+    "test:stress": "bash -c 'success=0; fail=0; for i in {1..100}; do if npm test > /tmp/test-stress.log 2>&1; then ((success++)); else ((fail++)); echo \"❌ Falha na execução $i\"; fi; done; echo \"✅ Sucessos: $success\"; echo \"❌ Falhas: $fail\"; exit $fail'"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
@@ -112,7 +106,7 @@
     "name": "Dados Falsos",
     "displayName": "Dados Falsos",
     "description": "Plugin Insomnia para gerar dados falsos realistas em português para testes de APIs brasileiras. Suporta 76 template tags incluindo CPF, CNPJ, CNH, RG, CNS, PIS, placas veiculares, nomes, endereços, emails, telefones, UUIDs, JWTs e muito mais.",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "category": "data-generation",
     "tags": [
       "dados-falsos",
