@@ -40,7 +40,7 @@
 │       ├── medicalRecordNumber.ts   # Número de prontuário
 │       └── professionalRegistration.ts  # Conselhos profissionais (CRM, CREA, OAB...)
 ├── test/
-│   └── generators.test.ts           # Suite de 138 testes (100%)
+│   └── generators.test.ts           # Suite de 135 testes (100%)
 ├── dist/                            # Código compilado (gerado pelo build)
 ├── .github/workflows/
 │   ├── test.yml                     # CI — executa testes em todo push/PR
@@ -74,7 +74,7 @@
 ```bash
 npm install    # instala devDependencies (typescript, tsx, @types/node)
 npm run build  # compila para dist/
-npm test       # executa os 138 testes
+npm test       # executa os 135 testes
 ```
 
 ## Comandos disponíveis

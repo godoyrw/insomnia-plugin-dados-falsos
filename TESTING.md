@@ -6,25 +6,26 @@ Documentação completa sobre os testes de qualidade do plugin Dados Falsos.
 
 O projeto inclui uma suite de testes de qualidade que valida todos os geradores de dados. Os testes garantem que os dados gerados seguem os padrões brasileiros e formatos esperados.
 
-A suite cobre **todas as 76 template tags** com **138 testes** organizados por categoria:
+A suite cobre **todas as 77 template tags** com **135 testes** organizados por categoria:
 
 | Categoria           | Tags | Testes |
 |---------------------|------|--------|
-| Identidade          | 11   | 26     |
-| Contato             | 5    | 12     |
-| Endereço            | 9    | 19     |
-| Empresa             | 5    | 12     |
-| Financeiro          | 5    | 15     |
+| Identidade          | 13   | 28     |
+| Contato             | 5    | 10     |
+| Endereço BR         | 9    | 12     |
+| Empresa             | 5    | 7      |
+| Financeiro          | 5    | 7      |
 | Datas e Tempo       | 2    | 4      |
-| Identificadores     | 7    | 16     |
-| Conteúdo            | 6    | 15     |
-| E-commerce          | 6    | 12     |
-| Geolocalização      | 4    | 8      |
-| Países do Mundo     | 5    | 12     |
-| Saúde               | 8    | 16     |
-| PIS/PASEP           | 1    | 3      |
-| Veicular            | 3    | 7      |
-| **TOTAL**           | **76** | **138** |
+| Identificadores     | 7    | 12     |
+| Conteúdo            | 6    | 9      |
+| E-commerce          | 6    | 9      |
+| Geo e Rede          | 4    | 8      |
+| Países do Mundo     | 5    | 9      |
+| Saúde               | 7    | 10     |
+| PIS/PASEP           | 1    | 2      |
+| Título de Eleitor   | 1    | 2      |
+| Veicular            | 3    | 6      |
+| **TOTAL**           | **79** | **135** |
 
 ## Executando os Testes
 
@@ -50,11 +51,11 @@ Recompila os testes automaticamente quando arquivos são modificados.
 
 ## Estrutura dos Testes
 
-Os testes estão em `test/generators.test.ts` e cobrem todas as 76 template tags com 138 testes de validação.
+Os testes estão em `test/generators.test.ts` e cobrem todas as 77 template tags com 135 testes de validação.
 
 ### Categorias de Testes
 
-- **Identidade**: nomeCompleto, primeiroNome, sobrenome, nomeSocial, usuario, nomeUsuario, cpf, cnpj, cnh, rg, dataNascimento, genero
+- **Identidade**: nomeCompleto, primeiroNome, sobrenome, nomeSocial, usuario, nomeUsuario, cpf, cnpj, cnh, rg, tituloEleitor, dataNascimento, genero
 - **Contato**: email, emailExemplo, telefone, celular, whatsapp
 - **Endereço**: cep, logradouro, numero, complemento, endereco, enderecoNumero, bairro, cidade, estado, timezone
 - **Empresa**: razaoSocial, nomeFantasia, emailCorporativo, cargo, departamento
@@ -77,18 +78,19 @@ Os testes estão em `test/generators.test.ts` e cobrem todas as 76 template tags
 ──────────────────────────────────────────────────
   Resultados
 ──────────────────────────────────────────────────
-  Total   138 testes
-  Passou  138
+  Total   135 testes
+  Passou  135
   Score   100%
 ──────────────────────────────────────────────────
 ```
 
 ### Detalhes dos Testes por Categoria
 
-**Identidade (26 testes)**
+**Identidade (29 testes)**
 - nomeCompleto (2), primeiroNome (2), sobrenome (1), nomeSocial (1), usuario (2), nomeUsuario (2)
 - cpf (3), cnpj (5), cnh (4), rg (4)
 - dataNascimento (3), genero (1)
+- tituloEleitor: formato (1), dígito verificador (1)
 
 **Contato (12 testes)**
 - email (2), emailExemplo (2), telefone (2), celular (2), whatsapp (2)
@@ -138,7 +140,7 @@ Os testes estão em `test/generators.test.ts` e cobrem todas as 76 template tags
 A suite valida:
 
 - ✅ Formatos de dados brasileiros
-- ✅ Dígitos verificadores reais (CPF, CNPJ, CNH, RG, PIS, CNS, EAN)
+- ✅ Dígitos verificadores reais (CPF, CNPJ, CNH, RG, PIS, CNS, EAN, Título de Eleitor)
 - ✅ Placas veiculares (formato antigo e Mercosul)
 - ✅ Padrões de telefone e email
 - ✅ Identificadores únicos (UUID, ULID)

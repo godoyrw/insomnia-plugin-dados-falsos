@@ -4,7 +4,7 @@
 
 ✔ CPF &nbsp;✔ CNPJ 2026 &nbsp;✔ CNH &nbsp;✔ CNS &nbsp;✔ PIS &nbsp;✔ RG &nbsp;✔ CEP &nbsp;✔ UUID &nbsp;✔ JWT &nbsp;✔ Placas Mercosul
 
-**76 Template Tags &nbsp;·&nbsp; 0 dependências de produção &nbsp;·&nbsp; 100% TypeScript**
+**77 Template Tags &nbsp;·&nbsp; 0 dependências de produção &nbsp;·&nbsp; 100% TypeScript**
 
 ---
 
@@ -20,8 +20,12 @@
   ![LGPD Friendly](https://img.shields.io/badge/LGPD-Friendly-0052cc)
   ![Zero Dependencies](https://img.shields.io/badge/0-Production%20Dependencies-2ea44f)
   ![Official Algorithms](https://img.shields.io/badge/Algorithms-Official-6f42c1)
-  ![76 Template Tags](https://img.shields.io/badge/Template%20Tags-76-orange)
-  ![138 Tests](https://img.shields.io/badge/Tests-138%20Passing-success)
+  ![77 Template Tags](https://img.shields.io/badge/Template%20Tags-77-orange)
+  ![135 Tests](https://img.shields.io/badge/Tests-135%20Passing-success)
+  [![Known Vulnerabilities](https://snyk.io/test/github/godoyrw/insomnia-plugin-dados-falsos/badge.svg)](https://snyk.io/test/github/godoyrw/insomnia-plugin-dados-falsos)
+  [![Tests](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/test.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/test.yml)
+  [![Publish NPM](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-npm.yml)
+  [![Release](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-release.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-release.yml)
   [![ORCID](https://img.shields.io/badge/ORCID-0009--0003--2100--4772-green.svg)](https://orcid.org/0009-0003-2100-4772)
 
 
@@ -71,6 +75,7 @@ Este plugin gera **apenas dados sintéticos**. Nenhuma informação é obtida da
 | CNH | ✅ | ✅ | CONTRAN / DENATRAN |
 | RG | ✅ | ✅ | SSP-SP |
 | PIS/PASEP | ✅ | ✅ | Caixa Econômica Federal |
+| Título de Eleitor | ✅ | ✅ | Justiça Eleitoral |
 | CNS | ✅ | ✅ | Ministério da Saúde |
 | EAN-13 | ✅ | ✅ | GS1 |
 | UUID v4 | ✅ | ✅ | RFC 4122 / RFC 9562 |
@@ -184,6 +189,7 @@ Todos os geradores completam em **menos de 0,01 ms** — sem I/O, sem rede, sem 
 | `{% cnpj %}` | CNPJ (numérico ou alfanumérico 2026) | AB12CD34EF5601 |
 | `{% cnh %}` | CNH com 2 DVs reais | 12345678909 |
 | `{% rg %}` | RG com DV (SSP-SP) | 12345678X |
+| `{% tituloEleitor %}` | Título de Eleitor com DV real | 123456780167 |
 | `{% dataNascimento %}` | Data ISO (YYYY-MM-DD) | 1985-03-15 |
 | `{% dataNascimento DD/MM/YYYY %}` | Data formatada | 15/03/1985 |
 | `{% dataNascimento YYYYMMDD %}` | Data sem separadores | 19850315 |
@@ -434,7 +440,7 @@ src/
 ├── types.ts                 # Tipos TypeScript
 └── utils.ts                 # Funções utilitárias
 test/
-└── generators.test.ts       # Suite de 138 testes (100%)
+└── generators.test.ts       # Suite de 135 testes (100%)
 ```
 
 ### Setup
