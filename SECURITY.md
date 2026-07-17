@@ -108,9 +108,9 @@ O projeto busca seguir boas práticas de desenvolvimento seguro:
 - Nenhum envio automático de informações.
 
 ## Dependências
-
 São adotadas práticas como:
 
+- Em produção deve ser ZERO DEPENDÊNCIAS.
 - Avaliação periódica de dependências;
 - Redução de bibliotecas desnecessárias;
 - Atualização de pacotes vulneráveis quando identificado risco.
