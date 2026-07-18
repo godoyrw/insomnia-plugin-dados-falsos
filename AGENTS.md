@@ -1,6 +1,6 @@
 # PROJETO: insomnia-plugin-dados-falsos
 
-**VERSÃO:** v1.5.2
+**VERSÃO:** v1.5.3
 **OBJETIVO:** Plugin Insomnia para gerar dados falsos realistas em português brasileiro com 80 template tags, cobrindo identidade, documentos, saúde, veicular, contato, endereço, empresa, financeiro, e-commerce, geolocalização e mais.
 
 ---

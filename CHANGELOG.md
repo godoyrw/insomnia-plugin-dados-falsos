@@ -5,7 +5,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/).
 
 ---
 
-## [v1.5.2] — 2026-07-18
+## [v1.5.3] — 2026-07-18
 
 ### Atualizado
 - Documentação alinhada ao estado atual do projeto
