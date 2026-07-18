@@ -1,7 +1,20 @@
 /**
- * Constantes de Template Tags
- * Definição de todas as 76 template tags do plugin Dados Falsos
- * Organizadas por categoria: Identidade, Contato, Endereço, Empresa, Financeiro, etc
+ * Registro público das template tags expostas ao Insomnia.
+ *
+ * Este módulo centraliza o catálogo do plugin Dados Falsos e conecta cada
+ * tag a um gerador específico. O array exportado `templateTags` é consumido
+ * pelo ponto de entrada do plugin para disponibilizar os recursos na
+ * interface do Insomnia.
+ *
+ * Cada entrada do array define um identificador, um nome exibido, uma
+ * descrição, argumentos opcionais e a função responsável por gerar o valor.
+ *
+ * Categorias incluídas: identidade, contato, endereço, empresa, financeiro,
+ * datas, identificadores, conteúdo, e-commerce, geolocalização, países,
+ * saúde, veicular e bancário.
+ *
+ * @module constants/templateTags
+ * @description Catálogo de tags públicas do plugin.
  */
 
 import { TemplateTag, InsomniaContext } from '../types';
@@ -178,6 +191,10 @@ export const templateTags: TemplateTag[] = [
   // ========================================================================
   // IDENTIDADE
   // ========================================================================
+  /**
+   * Tags de identidade, documentos e dados demográficos.
+   * Inclui nomes completos, apelidos, CPF/CNPJ, nascimento, gênero e título de eleitor.
+   */
   {
     name: 'nomeCompleto',
     displayName: 'dados-falsos → nomeCompleto',
@@ -341,6 +358,10 @@ export const templateTags: TemplateTag[] = [
   // ========================================================================
   // CONTATO
   // ========================================================================
+  /**
+   * Tags de contato e comunicação.
+   * Inclui e-mails, telefones, celulares e WhatsApp.
+   */
   {
     name: 'email',
     displayName: 'dados-falsos → email',
@@ -380,6 +401,10 @@ export const templateTags: TemplateTag[] = [
   // ========================================================================
   // ENDEREÇO
   // ========================================================================
+  /**
+   * Tags relacionadas a endereços brasileiros.
+   * Incluem CEP, logradouro, número, complemento, bairro, cidade e estado.
+   */
   {
     name: 'cep',
     displayName: 'dados-falsos → cep',
@@ -447,6 +472,10 @@ export const templateTags: TemplateTag[] = [
   // ========================================================================
   // EMPRESA E TRABALHO
   // ========================================================================
+  /**
+   * Tags de representação e organização empresarial.
+   * Inclui razão social, nome fantasia, e-mail corporativo, cargo e departamento.
+   */
   {
     name: 'razaoSocial',
     displayName: 'dados-falsos → razaoSocial',
@@ -486,6 +515,10 @@ export const templateTags: TemplateTag[] = [
   // ========================================================================
   // FINANCEIRO
   // ========================================================================
+  /**
+   * Tags financeiras e comerciais básicas.
+   * Inclui moeda, valores, planos, status de pagamento e cupons.
+   */
   {
     name: 'moeda',
     displayName: 'dados-falsos → moeda',
@@ -525,6 +558,10 @@ export const templateTags: TemplateTag[] = [
   // ========================================================================
   // DATAS E TEMPO
   // ========================================================================
+  /**
+   * Tags de data, hora e fuso horário.
+   * Facilita a geração de timestamps e valores temporais sintéticos.
+   */
   {
     name: 'datetimeIso',
     displayName: 'dados-falsos → datetimeIso',
@@ -543,6 +580,10 @@ export const templateTags: TemplateTag[] = [
   // ========================================================================
   // IDENTIFICADORES E SEGURANÇA
   // ========================================================================
+  /**
+   * Tags de identificação e segurança.
+   * Inclui UUIDs, ULIDs, chaves, tokens, senhas e hashes.
+   */
   {
     name: 'uuid',
     displayName: 'dados-falsos → uuid',
@@ -596,6 +637,10 @@ export const templateTags: TemplateTag[] = [
   // ========================================================================
   // CONTEÚDO / TEXTO
   // ========================================================================
+  /**
+   * Tags para geração de conteúdo textual e utilitário.
+   * Inclui títulos, descrições, textos longos e emojis.
+   */
   {
     name: 'titulo',
     displayName: 'dados-falsos → titulo',
@@ -628,6 +673,10 @@ export const templateTags: TemplateTag[] = [
   // ========================================================================
   // E-COMMERCE / PEDIDOS
   // ========================================================================
+  /**
+   * Tags voltadas a comércio eletrônico e pedidos.
+   * Inclui SKU, EAN, pedidos, status, quantidade e frete.
+   */
   {
     name: 'sku',
     displayName: 'dados-falsos → sku',
@@ -674,6 +723,10 @@ export const templateTags: TemplateTag[] = [
   // ========================================================================
   // GEO E REDE
   // ========================================================================
+  /**
+   * Tags para geolocalização e rede.
+   * Inclui coordenadas geográficas e endereços IP.
+   */
   {
     name: 'latitude',
     displayName: 'dados-falsos → latitude',
@@ -706,6 +759,10 @@ export const templateTags: TemplateTag[] = [
   // ========================================================================
   // CORES E UTILITÁRIOS
   // ========================================================================
+  /**
+   * Tags utilitárias para valores simples.
+   * Inclui cores hexadecimais e booleanos.
+   */
   {
     name: 'corHex',
     displayName: 'dados-falsos → corHex',
@@ -724,6 +781,10 @@ export const templateTags: TemplateTag[] = [
   // ========================================================================
   // PAÍSES DO MUNDO
   // ========================================================================
+  /**
+   * Tags de contexto internacional.
+   * Inclui nomes, códigos, códigos de telefone e moedas de países.
+   */
   {
     name: 'pais',
     displayName: 'dados-falsos → pais',
@@ -762,6 +823,10 @@ export const templateTags: TemplateTag[] = [
   // ========================================================================
   // SAÚDE
   // ========================================================================
+  /**
+   * Tags relacionadas a dados de saúde.
+   * Inclui tipos sanguíneos, prontuários, CNS, PIS e convênios.
+   */
   {
     name: 'tipoSanguineo',
     displayName: 'dados-falsos → tipoSanguineo',
@@ -829,6 +894,10 @@ export const templateTags: TemplateTag[] = [
   // ========================================================================
   // VEICULAR
   // ========================================================================
+  /**
+   * Tags de veículos e placas brasileiras.
+   * Inclui placas antigas, Mercosul e variações.
+   */
   {
     name: 'placa',
     displayName: 'dados-falsos → placa',
@@ -854,6 +923,10 @@ export const templateTags: TemplateTag[] = [
   // ========================================================================
   // BANCÁRIO
   // ========================================================================
+  /**
+   * Tags de dados bancários sintéticos.
+   * Inclui agência, conta e chave Pix.
+   */
   {
     name: 'agencia',
     displayName: 'dados-falsos → agencia',
