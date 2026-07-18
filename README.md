@@ -500,7 +500,6 @@ npm test
 Contribuições são bem-vindas. Funcionalidades planejadas para próximas versões:
 
 ### 📊 Média Prioridade
-- **Dados Financeiros**: expansão de cenários de pagamento e bancos
 - **Dados Pessoais**: passaporte e documentos internacionais
 - **Desenvolvimento**: MAC Address, User-Agent, Locale
 
