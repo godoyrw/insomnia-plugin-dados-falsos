@@ -27,7 +27,7 @@ Isso instala TypeScript e @types/node localmente. Se você já tem TypeScript in
 git checkout -b feature/sua-feature
 ```
 
-5. **Faça suas mudanças** nos arquivos apropriados
+5. **Faça suas mudanças** nos arquivos apropriados e atualize a documentação relevante em `README.md`, `DEVELOPMENT.md`, `TESTING.md` e `AGENTS.md` quando adicionar ou alterar tags
 
 6. **Compile e teste**:
 

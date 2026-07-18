@@ -4,7 +4,7 @@
 
 ✔ CPF &nbsp;✔ CNPJ 2026 &nbsp;✔ CNH &nbsp;✔ CNS &nbsp;✔ PIS &nbsp;✔ RG &nbsp;✔ CEP &nbsp;✔ UUID &nbsp;✔ JWT &nbsp;✔ Placas Mercosul
 
-**80 Template Tags &nbsp;·&nbsp; 0 dependências de produção &nbsp;·&nbsp; 100% TypeScript**
+**88 Template Tags &nbsp;·&nbsp; 0 dependências de produção &nbsp;·&nbsp; 100% TypeScript**
 
 ---
 
@@ -19,8 +19,8 @@
   ![LGPD Friendly](https://img.shields.io/badge/LGPD-Friendly-0052cc)
   ![Zero Dependencies](https://img.shields.io/badge/0-Production%20Dependencies-2ea44f)
   ![Official Algorithms](https://img.shields.io/badge/Algorithms-Official-6f42c1)
-  ![80 Template Tags](https://img.shields.io/badge/Template%20Tags-80-orange)
-  ![147 Tests](https://img.shields.io/badge/Tests-147%20Passing-success)
+  ![88 Template Tags](https://img.shields.io/badge/Template%20Tags-88-orange)
+  ![157 Tests](https://img.shields.io/badge/Tests-157%20Passing-success)
   [![Known Vulnerabilities](https://snyk.io/test/github/godoyrw/insomnia-plugin-dados-falsos/badge.svg)](https://snyk.io/test/github/godoyrw/insomnia-plugin-dados-falsos)
   [![Tests](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/test.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/test.yml)
   [![Publish NPM](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-npm.yml)
@@ -235,6 +235,12 @@ Todos os geradores completam em **menos de 0,01 ms** — sem I/O, sem rede, sem 
 |---|---|---|
 | `{% instituicaoEnsino %}` | Instituição de ensino | Universidade de São Paulo (USP) |
 | `{% curso %}` | Curso acadêmico | Ciência da Computação |
+| `{% nivelFormacao %}` | Nível de formação | Graduação |
+| `{% statusAcademico %}` | Status acadêmico | Cursando |
+| `{% periodoAcademico %}` | Período de estudo | Manhã |
+| `{% semestreAcademico %}` | Semestre acadêmico | 4º Semestre |
+| `{% anoAcademico %}` | Ano acadêmico | 2026 |
+| `{% registroAcademico %}` | Registro completo em JSON | `{...}` |
 
 ### Contato
 
@@ -419,43 +425,64 @@ ABC1234 BRA1A23 XYZ9876
 ### Estrutura do Projeto
 
 ```
-src/
-├── constants/
-│   ├── names.ts             # Nomes e sobrenomes brasileiros
-│   ├── locations.ts         # Cidades, estados, bairros, timezones
-│   ├── business.ts          # Cargos, departamentos, sufixos
-│   ├── enums.ts             # Status, planos, tipos
-│   ├── countries.ts         # Países e códigos ISO
-│   └── templateTags.ts      # Definição das 80 template tags
-├── generators/
-│   ├── identity.ts          # Nomes e dados demográficos
-│   ├── cpf.ts               # CPF — geração, validação, context
-│   ├── cnpj.ts              # CNPJ — geração, validação, context
-│   ├── cnh.ts               # CNH — geração e validação
-│   ├── rg.ts                # RG — geração e validação
-│   ├── pis.ts               # PIS/PASEP — geração e validação
-│   ├── cns.ts               # CNS — geração e validação
-│   ├── vehicle.ts           # Placas veiculares (antiga e Mercosul)
-│   ├── contact.ts           # Email, telefone, celular, WhatsApp
-│   ├── address.ts           # CEP, logradouro, bairro, cidade, estado
-│   ├── company.ts           # Razão social, cargo, departamento
-│   ├── financial.ts         # Moeda, valor, plano, status, cupom
-│   ├── datetime.ts          # DateTime ISO e timezone
-│   ├── identifiers.ts       # UUID, ULID, API Key, JWT, senha, hash
-│   ├── content.ts           # Título, texto, emoji, cor, booleano
-│   ├── ecommerce.ts         # SKU, EAN, pedido, status, frete
-│   ├── geo.ts               # Latitude, longitude, IPv4, IPv6
-│   ├── countries.ts         # Países, códigos ISO, moeda
-│   ├── bloodType.ts         # Tipo sanguíneo
-│   ├── healthPlan.ts        # Convênio de saúde
-│   ├── allergy.ts           # Alergias
-│   ├── medicalRecordNumber.ts   # Número de prontuário
-│   └── professionalRegistration.ts  # Conselhos profissionais
-├── main.ts                  # Entry point do plugin
-├── types.ts                 # Tipos TypeScript
-└── utils.ts                 # Funções utilitárias
-test/
-└── generators.test.ts       # Suite de 147 testes (100%)
+.
+├── src/
+│   ├── main.ts                      # Entry point do plugin
+│   ├── types.ts                     # Interfaces compartilhadas
+│   ├── utils.ts                     # Funções utilitárias
+│   ├── constants/
+│   │   ├── names.ts                 # Nomes e sobrenomes brasileiros
+│   │   ├── locations.ts             # Cidades, estados, bairros, timezones
+│   │   ├── business.ts              # Cargos, departamentos, sufixos, domínios
+│   │   ├── enums.ts                 # Status, planos, tipos, emojis
+│   │   ├── countries.ts             # Países, códigos ISO, telefones, moedas
+│   │   └── templateTags.ts          # Definição das 88 template tags
+│   └── generators/
+│       ├── identity.ts              # Nomes e dados demográficos
+│       ├── cpf.ts                   # CPF — geração, validação, CPF_LIST
+│       ├── cnpj.ts                  # CNPJ — geração, validação, CNPJ_LIST
+│       ├── cnh.ts                   # CNH — geração e validação
+│       ├── rg.ts                    # RG — geração e validação
+│       ├── pis.ts                   # PIS/PASEP — geração e validação
+│       ├── cns.ts                   # CNS — geração e validação
+│       ├── vehicle.ts               # Placas veiculares e listas de placas
+│       ├── contact.ts               # Email, telefone, celular, WhatsApp
+│       ├── address.ts               # CEP, logradouro, bairro, cidade, estado
+│       ├── company.ts               # Razão social, cargo, departamento
+│       ├── financial.ts             # Moeda, valor, plano, status, cupom
+│       ├── datetime.ts              # DateTime ISO e timezone
+│       ├── identifiers.ts           # UUID, ULID, API Key, JWT, senha, hash
+│       ├── content.ts               # Título, texto, emoji, cor, booleano
+│       ├── ecommerce.ts             # SKU, EAN, pedido, status, frete
+│       ├── geo.ts                   # Latitude, longitude, IPv4, IPv6
+│       ├── countries.ts             # Países, códigos ISO, moeda
+│       ├── bloodType.ts             # Tipo sanguíneo
+│       ├── healthPlan.ts            # Convênio de saúde
+│       ├── allergy.ts               # Alergias
+│       ├── medicalRecordNumber.ts   # Número de prontuário
+│       ├── professionalRegistration.ts # Conselhos profissionais
+│       ├── tituloEleitor.ts         # Título de Eleitor
+│       ├── bancario.ts              # Agência, conta e Pix
+│       └── education.ts             # Instituição, curso e dados acadêmicos
+├── test/
+│   └── generators.test.ts           # Suite de 157 testes (100%)
+├── .github/workflows/
+│   ├── test.yml                     # CI
+│   └── publish-npm.yml              # Publicação no npm
+├── .dev/
+│   ├── implementations.md           # Backlog de funcionalidades
+│   └── publish_release.sh           # Release automatizado
+├── assets/
+│   └── images/
+│       └── insomnia-plugin-dados-falsos.jpg
+├── package.json
+├── README.md
+├── DEVELOPMENT.md
+├── TESTING.md
+├── INSTALL.md
+├── CONTRIBUTING.md
+├── SECURITY.md
+└── LICENSE
 ```
 
 ### Setup
@@ -473,9 +500,8 @@ npm test
 Contribuições são bem-vindas. Funcionalidades planejadas para próximas versões:
 
 ### 📊 Média Prioridade
-- **Dados Acadêmicos**: Instituição de ensino, curso de graduação/técnico
-- **Dados Financeiros**: Agência/conta bancária (ranges fictícios), chave Pix aleatória
-- **Dados Pessoais**: Título de Eleitor, Passaporte
+- **Dados Financeiros**: expansão de cenários de pagamento e bancos
+- **Dados Pessoais**: passaporte e documentos internacionais
 - **Desenvolvimento**: MAC Address, User-Agent, Locale
 
 ---

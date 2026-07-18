@@ -6,7 +6,7 @@ Documentação completa sobre os testes de qualidade do plugin Dados Falsos.
 
 O projeto inclui uma suite de testes de qualidade que valida todos os geradores de dados. Os testes garantem que os dados gerados seguem os padrões brasileiros e formatos esperados.
 
-A suite cobre as 80 template tags do plugin com 147 testes organizados por categoria, cobrindo validação de formato, regras de negócio e cenários de stress para os geradores.
+A suite cobre as 88 template tags do plugin com 157 testes organizados por categoria, cobrindo validação de formato, regras de negócio e cenários de stress para os geradores.
 
 | Categoria | Escopo |
 |-----------|--------|
@@ -51,7 +51,7 @@ Recompila os testes automaticamente quando arquivos são modificados.
 
 ## Estrutura dos Testes
 
-Os testes estão em `test/generators.test.ts` e cobrem as 80 template tags com 147 testes de validação.
+Os testes estão em `test/generators.test.ts` e cobrem as 88 template tags com 157 testes de validação.
 
 ### Categorias de Testes
 
@@ -67,6 +67,7 @@ Os testes estão em `test/generators.test.ts` e cobrem as 80 template tags com 1
 - **Geolocalização**: latitude, longitude, ipv4, ipv6
 - **Países**: pais, codigoPais, codigoTelefonePais, moedaPais, paisCompleto
 - **Saúde**: tipoSanguineo, numeroProntuario, numeroCNS, convenio, alergia, conselhoProfissional (CRM, CREA, OAB, CRO, COREN)
+- **Educação**: instituicaoEnsino, curso, nivelFormacao, statusAcademico, periodoAcademico, semestreAcademico, anoAcademico, registroAcademico
 - **PIS/PASEP**: pis (incluindo 1000 iterações de validação)
 - **Título de Eleitor**: tituloEleitor (incluindo 1000 iterações de validação)
 - **Bancário**: agencia, conta, pixAleatoria (incluindo 1000 iterações de validação)
@@ -80,8 +81,8 @@ Os testes estão em `test/generators.test.ts` e cobrem as 80 template tags com 1
 ──────────────────────────────────────────────────
   Resultados
 ──────────────────────────────────────────────────
-  Total   147 testes
-  Passou  147
+  Total   157 testes
+  Passou  157
   Score   100%
 ──────────────────────────────────────────────────
 ```

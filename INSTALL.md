@@ -68,7 +68,7 @@ Em qualquer campo de requisição use a sintaxe de template tag:
 {% uuid %}
 ```
 
-Veja o `README.md` para a lista completa de 80 tags.
+Veja o `README.md` para a lista completa de 88 tags.
 
 ---
 
@@ -111,7 +111,9 @@ dist/insomnia-plugin-dados-falsos/
         ├── healthPlan.js
         ├── allergy.js
         ├── medicalRecordNumber.js
-        └── professionalRegistration.js
+        ├── professionalRegistration.js
+        ├── education.js
+        └── bancario.js
 ```
 
 ---

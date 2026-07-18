@@ -185,7 +185,7 @@ import {
 
 /**
  * Array de template tags exportado para o Insomnia
- * Contém todas as 80 tags organizadas por categoria
+ * Contém todas as 88 tags organizadas por categoria
  */
 export const templateTags: TemplateTag[] = [
   // ========================================================================

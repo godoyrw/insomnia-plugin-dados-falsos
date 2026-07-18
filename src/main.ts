@@ -5,11 +5,11 @@
  *
  * @author Roberto Godoy
  * @license AGPL-3.0
- * @version 1.4.0
+ * @version 1.5.3
  *
- * Este plugin fornece 76 template tags para gerar dados fake em português,
+ * Este plugin fornece 88 template tags para gerar dados fake em português,
  * com suporte a validação de documentos (CPF, CNPJ), formatação brasileira
- * e casos de uso reais (e-commerce, financeiro, geolocalização).
+ * e casos de uso reais (e-commerce, financeiro, geolocalização, educação e bancário).
  *
  * Arquitetura Modular:
  * - src/types.ts: Interfaces compartilhadas
