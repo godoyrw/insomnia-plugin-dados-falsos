@@ -6,26 +6,26 @@ Documentação completa sobre os testes de qualidade do plugin Dados Falsos.
 
 O projeto inclui uma suite de testes de qualidade que valida todos os geradores de dados. Os testes garantem que os dados gerados seguem os padrões brasileiros e formatos esperados.
 
-A suite cobre **todas as 77 template tags** com **135 testes** organizados por categoria:
+A suite cobre as 80 template tags do plugin com 147 testes organizados por categoria, cobrindo validação de formato, regras de negócio e cenários de stress para os geradores.
 
-| Categoria           | Tags | Testes |
-|---------------------|------|--------|
-| Identidade          | 13   | 28     |
-| Contato             | 5    | 10     |
-| Endereço BR         | 9    | 12     |
-| Empresa             | 5    | 7      |
-| Financeiro          | 5    | 7      |
-| Datas e Tempo       | 2    | 4      |
-| Identificadores     | 7    | 12     |
-| Conteúdo            | 6    | 9      |
-| E-commerce          | 6    | 9      |
-| Geo e Rede          | 4    | 8      |
-| Países do Mundo     | 5    | 9      |
-| Saúde               | 7    | 10     |
-| PIS/PASEP           | 1    | 2      |
-| Título de Eleitor   | 1    | 2      |
-| Veicular            | 3    | 6      |
-| **TOTAL**           | **79** | **135** |
+| Categoria | Escopo |
+|-----------|--------|
+| Identidade | Nomes, documentos, gênero e datas |
+| Contato | Emails, telefones, celulares e WhatsApp |
+| Endereço BR | CEP, logradouro, número, bairro, cidade e UF |
+| Empresa | Razão social, nome fantasia, email corporativo e cargos |
+| Financeiro | Moeda, valores, planos, status e cupons |
+| Datas e Tempo | Datetime ISO e timezone |
+| Identificadores | UUID, ULID, API Key, JWT, senha e hash |
+| Conteúdo | Cores, booleanos, textos e emoji |
+| E-commerce | SKU, EAN, pedido, quantidade e frete |
+| Geo e Rede | Latitude, longitude, IPv4 e IPv6 |
+| Países do Mundo | Nome, código, DDI, moeda e objeto completo |
+| Saúde | Tipos sanguíneos, prontuário, CNS e conselhos profissionais |
+| PIS/PASEP | PIS com validação oficial |
+| Título de Eleitor | Título com validação oficial |
+| Bancário | Agência, conta e Pix |
+| Veicular | Placas antigas e Mercosul |
 
 ## Executando os Testes
 
@@ -51,7 +51,7 @@ Recompila os testes automaticamente quando arquivos são modificados.
 
 ## Estrutura dos Testes
 
-Os testes estão em `test/generators.test.ts` e cobrem todas as 77 template tags com 135 testes de validação.
+Os testes estão em `test/generators.test.ts` e cobrem as 80 template tags com 147 testes de validação.
 
 ### Categorias de Testes
 
@@ -66,8 +66,10 @@ Os testes estão em `test/generators.test.ts` e cobrem todas as 77 template tags
 - **E-commerce**: sku, ean, pedido, statusPedido, quantidade, frete
 - **Geolocalização**: latitude, longitude, ipv4, ipv6
 - **Países**: pais, codigoPais, codigoTelefonePais, moedaPais, paisCompleto
-- **Saúde**: tipoSanguineo, numeroProntuario, numeroCNS, convenio, alergia, conselhoProfissional (CRM, CREA, OAB)
+- **Saúde**: tipoSanguineo, numeroProntuario, numeroCNS, convenio, alergia, conselhoProfissional (CRM, CREA, OAB, CRO, COREN)
 - **PIS/PASEP**: pis (incluindo 1000 iterações de validação)
+- **Título de Eleitor**: tituloEleitor (incluindo 1000 iterações de validação)
+- **Bancário**: agencia, conta, pixAleatoria (incluindo 1000 iterações de validação)
 - **Veicular**: placa, placaAntiga, placaMercosul (incluindo 1000 iterações de validação)
 
 ## Resultado dos Testes
@@ -78,8 +80,8 @@ Os testes estão em `test/generators.test.ts` e cobrem todas as 77 template tags
 ──────────────────────────────────────────────────
   Resultados
 ──────────────────────────────────────────────────
-  Total   135 testes
-  Passou  135
+  Total   147 testes
+  Passou  147
   Score   100%
 ──────────────────────────────────────────────────
 ```

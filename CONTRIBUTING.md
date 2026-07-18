@@ -68,10 +68,11 @@ git push origin feature/sua-feature
 
 ## Dependências do Projeto
 
-O projeto é **minimalista** com apenas 2 devDependencies:
+O projeto é **minimalista** com 3 devDependencies:
 
 - **typescript** (^5.0.0): Compilador TypeScript
 - **@types/node** (^20.0.0): Tipos do Node.js para Buffer e module
+- **tsx** (^4.22.4): Execução direta de TypeScript em testes e scripts
 
 **Sem dependências de produção!** O plugin usa apenas APIs nativas do Node.js.
 

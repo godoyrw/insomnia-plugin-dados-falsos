@@ -5,6 +5,16 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/).
 
 ---
 
+## [v1.5.2] — 2026-07-18
+
+### Atualizado
+- Documentação alinhada ao estado atual do projeto
+- Contagem oficial de template tags atualizada para 80
+- Contagem de testes atualizada para 147
+- Referências de documentação ajustadas em AGENTS.md, TESTING.md, INSTALL.md e CONTRIBUTING.md
+
+---
+
 ## [v1.5.1] — 2026-07-17
 
 ### Corrigido
@@ -17,7 +27,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/).
 ## [v1.5.0] — 2026-07-17
 
 ### Adicionado
-- **77 template tags** — `{% tituloEleitor %}` e `{% pis %}` adicionados
+- **80 template tags** — `{% tituloEleitor %}` e `{% pis %}` adicionados, além de novas tags de saúde, bancos e veicular
 - **`{% tituloEleitor %}`** — Título de Eleitor com dígito verificador real (Justiça Eleitoral)
 - **`{% pis %}`** — PIS/PASEP com dígito verificador real (Caixa Econômica Federal)
 - **`{% placa %}`**, **`{% placaAntiga %}`**, **`{% placaMercosul %}`** — placas veiculares
@@ -47,7 +57,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/).
 - `assets/docs/` — pasta removida
 
 ### Testes
-- **135 testes**, 100% de aprovação
+- **147 testes**, 100% de aprovação
 
 ### CI/CD
 - `test.yml`: `ts-node` → `tsx`

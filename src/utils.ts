@@ -173,3 +173,56 @@ export function validarEan13(ean: string): boolean {
   const dv = (10 - (sum % 10)) % 10;
   return dv === parseInt(ean[12]);
 }
+
+/**
+ * Converte uma lista textual em um array de valores.
+ *
+ * Aceita listas separadas por:
+ *
+ *   • Vírgula (,)
+ *   • Quebra de linha (\n)
+ *
+ * Cada item é normalizado através da remoção de espaços em branco
+ * no início e no fim da string. Valores vazios são descartados.
+ *
+ * Exemplos:
+ *
+ * Entrada:
+ *
+ * "João,Maria,Carlos"
+ *
+ * Resultado:
+ *
+ * ["João", "Maria", "Carlos"]
+ *
+ * Entrada:
+ *
+ * "João
+ * Maria
+ * Carlos"
+ *
+ * Resultado:
+ *
+ * ["João", "Maria", "Carlos"]
+ *
+ * Entrada:
+ *
+ * "João, Maria,
+ * Carlos"
+ *
+ * Resultado:
+ *
+ * ["João", "Maria", "Carlos"]
+ *
+ * @param {string} input
+ * Lista contendo valores separados por vírgulas e/ou quebras de linha.
+ *
+ * @returns {string[]}
+ * Array contendo apenas valores válidos, já normalizados.
+ */
+export function parseList(input: string): string[] {
+  return input
+    .split(/[,\n]/)
+    .map(value => value.trim())
+    .filter(Boolean);
+}

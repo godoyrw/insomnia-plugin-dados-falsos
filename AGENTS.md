@@ -1,7 +1,7 @@
 # PROJETO: insomnia-plugin-dados-falsos
 
 **VERSÃO:** v1.5.2
-**OBJETIVO:** Plugin Insomnia para gerar dados falsos realistas em português brasileiro com 77 template tags, cobrindo identidade, documentos, saúde, veicular, contato, endereço, empresa, financeiro, e-commerce, geolocalização e mais.
+**OBJETIVO:** Plugin Insomnia para gerar dados falsos realistas em português brasileiro com 80 template tags, cobrindo identidade, documentos, saúde, veicular, contato, endereço, empresa, financeiro, e-commerce, geolocalização e mais.
 
 ---
 
@@ -35,7 +35,7 @@
 │   │   ├── business.ts              # Departamentos, cargos, sufixos legais, domínios corporativos
 │   │   ├── enums.ts                 # Planos, status, tipos de frete, emojis, etc.
 │   │   ├── countries.ts             # Países com código ISO, DDI, moeda
-│   │   └── templateTags.ts          # Definição das 77 template tags
+│   │   └── templateTags.ts          # Definição das 80 template tags
 │   └── generators/
 │       ├── identity.ts              # Nomes, username, gênero, data de nascimento
 │       ├── cpf.ts                   # CPF — geração, validarCpf, genCpf(context) + CPF_LIST
@@ -65,9 +65,9 @@
 │       ├── allergy.ts               # Alergias
 │       ├── medicalRecordNumber.ts   # Número de prontuário
 │       ├── professionalRegistration.ts  # Conselhos profissionais (CRM, CREA, OAB, CRO, COREN)
-│       └── titulo-eleitor.ts        # Título de Eleitor — genTituloEleitor, validarTituloEleitor
+│       └── tituloEleitor.ts         # Título de Eleitor — genTituloEleitor, validarTituloEleitor
 ├── test/
-│   └── generators.test.ts           # Suite de 135 testes (100%)
+│   └── generators.test.ts           # Suite de 147 testes (100%)
 ├── dist/                            # Código compilado (gerado — não versionar)
 ├── .github/
 │   └── workflows/
@@ -197,7 +197,7 @@ Valores separados por espaço. Se a variável não existir, o gerador aleatório
 
 - **Execução**: `npm test` (compila com `tsc` e roda com `node`)
 - **CI**: `npx tsx test/generators.test.ts` (sem compilação prévia)
-- **Cobertura atual**: 135 testes, 100% de aprovação
+- **Cobertura atual**: 147 testes, 100% de aprovação
 - **Padrão**:
 
 ```typescript
@@ -228,7 +228,7 @@ test('minhaTag: deve ser válido em 1000 iterações', () => {
 | `npm install` | Instala devDependencies |
 | `npm run build` | Compila TypeScript para `dist/` |
 | `npm run dev` | Watch mode — recompila ao salvar |
-| `npm test` | Executa os 135 testes |
+| `npm test` | Executa os 147 testes |
 | `npm run test:watch` | Recompila testes ao salvar |
 | `npm run test:stress` | 100 execuções consecutivas |
 | `npm run clean` | Remove `dist/` e arquivos compilados |
@@ -354,13 +354,13 @@ Toda alteração deve manter estes arquivos sincronizados:
 | Métrica | Valor |
 |---|---|
 | Plugin Version | 1.5.2 |
-| Template Tags | 77 |
+| Template Tags | 80 |
 | Generators | 24 |
 | Validadores exportados | 13 |
 | Listas via Environment | 10 |
-| Testes | 135 |
+| Testes | 147 |
 | Taxa de aprovação | 100% |
 | Dependências de produção | 0 |
 | Performance média por gerador | < 0,01 ms |
 
-**Última atualização:** 2026-07-17
+**Última atualização:** 2026-07-18
