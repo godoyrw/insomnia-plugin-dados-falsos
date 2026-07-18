@@ -4,7 +4,7 @@
 
 ✔ CPF &nbsp;✔ CNPJ 2026 &nbsp;✔ CNH &nbsp;✔ CNS &nbsp;✔ PIS &nbsp;✔ RG &nbsp;✔ CEP &nbsp;✔ UUID &nbsp;✔ JWT &nbsp;✔ Placas Mercosul
 
-**77 Template Tags &nbsp;·&nbsp; 0 dependências de produção &nbsp;·&nbsp; 100% TypeScript**
+**80 Template Tags &nbsp;·&nbsp; 0 dependências de produção &nbsp;·&nbsp; 100% TypeScript**
 
 ---
 
@@ -13,21 +13,21 @@
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   [![npm version](https://badge.fury.io/js/insomnia-plugin-dados-falsos.svg)](https://www.npmjs.com/package/insomnia-plugin-dados-falsos)
   [![npm downloads](https://img.shields.io/npm/dt/insomnia-plugin-dados-falsos.svg)](https://www.npmjs.com/package/insomnia-plugin-dados-falsos)
-  [![GitHub stars](https://img.shields.io/github/stars/godoyrw/insomnia-plugin-dados-falsos.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos)
-  [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-blue)](https://www.typescriptlang.org/)
   [![Insomnia](https://img.shields.io/badge/Insomnia-Plugin-purple)](https://insomnia.rest/)
   ![100% Offline](https://img.shields.io/badge/100%25-Offline-2ea44f)
   ![LGPD Friendly](https://img.shields.io/badge/LGPD-Friendly-0052cc)
   ![Zero Dependencies](https://img.shields.io/badge/0-Production%20Dependencies-2ea44f)
   ![Official Algorithms](https://img.shields.io/badge/Algorithms-Official-6f42c1)
-  ![77 Template Tags](https://img.shields.io/badge/Template%20Tags-77-orange)
-  ![135 Tests](https://img.shields.io/badge/Tests-135%20Passing-success)
+  ![80 Template Tags](https://img.shields.io/badge/Template%20Tags-80-orange)
+  ![147 Tests](https://img.shields.io/badge/Tests-147%20Passing-success)
   [![Known Vulnerabilities](https://snyk.io/test/github/godoyrw/insomnia-plugin-dados-falsos/badge.svg)](https://snyk.io/test/github/godoyrw/insomnia-plugin-dados-falsos)
   [![Tests](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/test.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/test.yml)
   [![Publish NPM](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-npm.yml)
   [![Release](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-release.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-release.yml)
+  ![Gitea Last Commit](https://img.shields.io/gitea/last-commit/godoyrw/insomnia-plugin-dados-falsos)
+  ![Static Badge](https://img.shields.io/badge/Godah-Code-blue?logo=github) 
   [![ORCID](https://img.shields.io/badge/ORCID-0009--0003--2100--4772-green.svg)](https://orcid.org/0009-0003-2100-4772)
-
 
   <img src="./assets/images/insomnia-plugin-dados-falsos.jpg" alt="Dados Falsos - Plugin Insomnia">
 </div>
@@ -221,6 +221,21 @@ Todos os geradores completam em **menos de 0,01 ms** — sem I/O, sem rede, sem 
 | `{% placaAntiga %}` | Formato antigo AAA9999 | ABC1234 |
 | `{% placaMercosul %}` | Formato Mercosul AAA9A99 | ABC1D23 |
 
+### Bancário
+
+| Tag | Descrição | Exemplo |
+|---|---|---|
+| `{% agencia %}` | Agência bancária sintética (4 dígitos) | 4532 |
+| `{% conta %}` | Conta bancária sintética (XXXXX-X) | 56789-3 |
+| `{% pixAleatoria %}` | Chave Pix Aleatória (UUID v4 — formato Banco Central) | 550e8400-e29b-41d4-a716-446655440000 |
+
+### Educação
+
+| Tag | Descrição | Exemplo |
+|---|---|---|
+| `{% instituicaoEnsino %}` | Instituição de ensino | Universidade de São Paulo (USP) |
+| `{% curso %}` | Curso acadêmico | Ciência da Computação |
+
 ### Contato
 
 | Tag | Descrição | Exemplo |
@@ -411,7 +426,7 @@ src/
 │   ├── business.ts          # Cargos, departamentos, sufixos
 │   ├── enums.ts             # Status, planos, tipos
 │   ├── countries.ts         # Países e códigos ISO
-│   └── templateTags.ts      # Definição das 76 template tags
+│   └── templateTags.ts      # Definição das 80 template tags
 ├── generators/
 │   ├── identity.ts          # Nomes e dados demográficos
 │   ├── cpf.ts               # CPF — geração, validação, context
@@ -440,7 +455,7 @@ src/
 ├── types.ts                 # Tipos TypeScript
 └── utils.ts                 # Funções utilitárias
 test/
-└── generators.test.ts       # Suite de 135 testes (100%)
+└── generators.test.ts       # Suite de 147 testes (100%)
 ```
 
 ### Setup

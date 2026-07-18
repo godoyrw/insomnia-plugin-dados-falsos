@@ -159,10 +159,20 @@ import {
   genConta,
   genPixAleatoria
 } from '../generators/bancario';
+import {
+  genEducationInstitution,
+  genEducationCourse,
+  genEducationLevel,
+  genEducationStatus,
+  genEducationPeriod,
+  genEducationSemester,
+  genEducationYear,
+  genEducation
+} from '../generators/education';
 
 /**
  * Array de template tags exportado para o Insomnia
- * Contém todas as 76 tags organizadas por categoria
+ * Contém todas as 80 tags organizadas por categoria
  */
 export const templateTags: TemplateTag[] = [
   // ========================================================================
@@ -263,6 +273,62 @@ export const templateTags: TemplateTag[] = [
     description: 'Gênero / pronome',
     args: [],
     run: async () => genGender()
+  },
+  {
+    name: 'instituicaoEnsino',
+    displayName: 'dados-falsos → instituicaoEnsino',
+    description: 'Instituição de ensino',
+    args: [],
+    run: async (context?: InsomniaContext) => genEducationInstitution(context)
+  },
+  {
+    name: 'curso',
+    displayName: 'dados-falsos → curso',
+    description: 'Curso acadêmico',
+    args: [],
+    run: async (context?: InsomniaContext) => genEducationCourse(context)
+  },
+  {
+    name: 'nivelFormacao',
+    displayName: 'dados-falsos → nivelFormacao',
+    description: 'Nível de formação acadêmica',
+    args: [],
+    run: async (context?: InsomniaContext) => genEducationLevel(context)
+  },
+  {
+    name: 'statusAcademico',
+    displayName: 'dados-falsos → statusAcademico',
+    description: 'Status acadêmico',
+    args: [],
+    run: async (context?: InsomniaContext) => genEducationStatus(context)
+  },
+  {
+    name: 'periodoAcademico',
+    displayName: 'dados-falsos → periodoAcademico',
+    description: 'Período de estudo',
+    args: [],
+    run: async (context?: InsomniaContext) => genEducationPeriod(context)
+  },
+  {
+    name: 'semestreAcademico',
+    displayName: 'dados-falsos → semestreAcademico',
+    description: 'Semestre acadêmico',
+    args: [],
+    run: async () => genEducationSemester()
+  },
+  {
+    name: 'anoAcademico',
+    displayName: 'dados-falsos → anoAcademico',
+    description: 'Ano acadêmico',
+    args: [],
+    run: async () => genEducationYear().toString()
+  },
+  {
+    name: 'registroAcademico',
+    displayName: 'dados-falsos → registroAcademico',
+    description: 'Registro acadêmico completo',
+    args: [],
+    run: async (context?: InsomniaContext) => JSON.stringify(genEducation(context))
   },
   {
     name: 'tituloEleitor',

@@ -40,6 +40,18 @@ import { genProfessionalRegistration } from '../src/generators/professionalRegis
 import { genPIS, validarPis } from '../src/generators/pis';
 import { genTituloEleitor, validarTituloEleitor } from '../src/generators/tituloEleitor';
 import { genPlaca, genPlacaAntiga, genPlacaMercosul, validarPlaca } from '../src/generators/vehicle';
+import { genAgencia, genConta, genPixAleatoria } from '../src/generators/bancario';
+import {
+  genEducationInstitution,
+  genEducationCourse,
+  genEducationLevel,
+  genEducationStatus,
+  genEducationPeriod,
+  genEducationSemester,
+  genEducationYear,
+  genEducation
+} from '../src/generators/education';
+import { templateTags } from '../src/constants/templateTags';
 import { validarUuid, validarData, validarEmail, validarSenha, validarEan13 } from '../src/utils';
 
 // ============================================================================
@@ -221,6 +233,62 @@ test('genero: deve ser um dos valores válidos', () => {
   const validos = ['masculino', 'feminino', 'nao_binario', 'prefiro_nao_dizer'];
   const v = genGender();
   assert(validos.includes(v), `Gênero inválido: "${v}"`);
+});
+
+test('instituicaoEnsino: deve estar registrada como template tag', () => {
+  const tag = templateTags.find(item => item.name === 'instituicaoEnsino');
+  assert(Boolean(tag), 'Tag instituicaoEnsino não registrada');
+});
+
+test('instituicaoEnsino: deve gerar valor não vazio', () => {
+  const v = genEducationInstitution();
+  assert(v.length > 0, 'Instituição vazia');
+});
+
+test('curso: deve estar registrada como template tag', () => {
+  const tag = templateTags.find(item => item.name === 'curso');
+  assert(Boolean(tag), 'Tag curso não registrada');
+});
+
+test('curso: deve gerar valor não vazio', () => {
+  const v = genEducationCourse();
+  assert(v.length > 0, 'Curso vazio');
+});
+
+test('nivelFormacao: deve gerar valor não vazio', () => {
+  const v = genEducationLevel();
+  assert(v.length > 0, 'Nível vazio');
+});
+
+test('statusAcademico: deve gerar valor não vazio', () => {
+  const v = genEducationStatus();
+  assert(v.length > 0, 'Status vazio');
+});
+
+test('periodoAcademico: deve gerar valor não vazio', () => {
+  const v = genEducationPeriod();
+  assert(v.length > 0, 'Período vazio');
+});
+
+test('semestreAcademico: deve ter formato válido', () => {
+  const v = genEducationSemester();
+  assert(/^\d+º Semestre$/.test(v), `Semestre inválido: "${v}"`);
+});
+
+test('anoAcademico: deve estar entre 1990 e o ano atual', () => {
+  const v = genEducationYear();
+  assert(v >= 1990 && v <= new Date().getFullYear(), `Ano inválido: ${v}`);
+});
+
+test('registroAcademico: deve retornar objeto completo', () => {
+  const v = genEducation();
+  assert(typeof v.institution === 'string' && v.institution.length > 0, 'Instituição ausente');
+  assert(typeof v.course === 'string' && v.course.length > 0, 'Curso ausente');
+  assert(typeof v.level === 'string' && v.level.length > 0, 'Nível ausente');
+  assert(typeof v.status === 'string' && v.status.length > 0, 'Status ausente');
+  assert(typeof v.semester === 'string' && v.semester.length > 0, 'Semestre ausente');
+  assert(typeof v.year === 'number', 'Ano ausente');
+  assert(typeof v.period === 'string' && v.period.length > 0, 'Período ausente');
 });
 
 // ============================================================================
@@ -823,6 +891,82 @@ test('tituloEleitor: deve ter exatamente 12 dígitos numéricos', () => {
 test('tituloEleitor: deve ter dígito verificador válido (algoritmo oficial)', () => {
   const v = genTituloEleitor();
   assert(validarTituloEleitor(v), `Título de Eleitor com DV inválido: "${v}"`);
+});
+
+test('tituloEleitor: deve ser válido em 1000 iterações', () => {
+  for (let i = 0; i < 1000; i++) {
+    const v = genTituloEleitor();
+    assert(validarTituloEleitor(v), `Título inválido na iteração ${i}: "${v}"`);
+  }
+});
+
+test('tituloEleitor: UF deve ser entre 01 e 28', () => {
+  const v = genTituloEleitor();
+  const uf = parseInt(v.substring(8, 10));
+  assert(uf >= 1 && uf <= 28, `UF inválida: ${uf}`);
+});
+
+// ============================================================================
+// BANCÁRIO
+// ============================================================================
+
+test('agencia: deve ter exatamente 4 dígitos numéricos', () => {
+  const v = genAgencia();
+  assert(/^\d{4}$/.test(v), `Agência inválida: "${v}"`);
+});
+
+test('agencia: não deve ser 0000', () => {
+  const v = genAgencia();
+  assert(v !== '0000', `Agência zerada: "${v}"`);
+});
+
+test('agencia: deve ser válida em 1000 iterações', () => {
+  for (let i = 0; i < 1000; i++) {
+    const v = genAgencia();
+    assert(/^\d{4}$/.test(v) && v !== '0000', `Agência inválida na iteração ${i}: "${v}"`);
+  }
+});
+
+test('conta: deve ter formato XXXXX-X', () => {
+  const v = genConta();
+  assert(/^\d{5}-\d$/.test(v), `Conta inválida: "${v}"`);
+});
+
+test('conta: número principal deve estar entre 10000 e 99999', () => {
+  const v = genConta();
+  const numero = parseInt(v.split('-')[0]);
+  assert(numero >= 10000 && numero <= 99999, `Número de conta inválido: ${numero}`);
+});
+
+test('conta: dígito verificador deve ser entre 0 e 9', () => {
+  const v = genConta();
+  const dv = parseInt(v.split('-')[1]);
+  assert(dv >= 0 && dv <= 9, `Dígito verificador inválido: ${dv}`);
+});
+
+test('conta: deve ser válida em 1000 iterações', () => {
+  for (let i = 0; i < 1000; i++) {
+    const v = genConta();
+    assert(/^\d{5}-\d$/.test(v), `Conta inválida na iteração ${i}: "${v}"`);
+  }
+});
+
+test('pixAleatoria: deve ser UUID v4 válido', () => {
+  const v = genPixAleatoria();
+  assert(validarUuid(v), `Chave Pix Aleatória inválida: "${v}"`);
+});
+
+test('pixAleatoria: deve ter formato UUID v4', () => {
+  const v = genPixAleatoria();
+  assert(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v), 
+    `Formato UUID v4 inválido para Pix: "${v}"`);
+});
+
+test('pixAleatoria: deve ser válida em 1000 iterações', () => {
+  for (let i = 0; i < 1000; i++) {
+    const v = genPixAleatoria();
+    assert(validarUuid(v), `Pix inválida na iteração ${i}: "${v}"`);
+  }
 });
 
 // ============================================================================

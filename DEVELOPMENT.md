@@ -14,7 +14,7 @@
 │   │   ├── business.ts              # Cargos, departamentos, sufixos, domínios
 │   │   ├── enums.ts                 # Status, planos, tipos, emojis
 │   │   ├── countries.ts             # Países, códigos ISO, telefones, moedas
-│   │   └── templateTags.ts          # Definição das 76 template tags
+│   │   └── templateTags.ts          # Definição das 80 template tags
 │   └── generators/
 │       ├── identity.ts              # Nomes e dados demográficos
 │       ├── cpf.ts                   # CPF — geração, validação, CPF_LIST
@@ -38,9 +38,11 @@
 │       ├── healthPlan.ts            # Convênio de saúde
 │       ├── allergy.ts               # Alergias
 │       ├── medicalRecordNumber.ts   # Número de prontuário
-│       └── professionalRegistration.ts  # Conselhos profissionais (CRM, CREA, OAB...)
+│       ├── professionalRegistration.ts  # Conselhos profissionais (CRM, CREA, OAB...)
+│       ├── tituloEleitor.ts         # Título de Eleitor
+│       └── bancario.ts              # Dados bancários (agência, conta, pix)
 ├── test/
-│   └── generators.test.ts           # Suite de 135 testes (100%)
+│   └── generators.test.ts           # Suite de 147 testes (100%)
 ├── dist/                            # Código compilado (gerado pelo build)
 ├── .github/workflows/
 │   ├── test.yml                     # CI — executa testes em todo push/PR
@@ -74,7 +76,7 @@
 ```bash
 npm install    # instala devDependencies (typescript, tsx, @types/node)
 npm run build  # compila para dist/
-npm test       # executa os 135 testes
+npm test       # executa os 147 testes
 ```
 
 ## Comandos disponíveis
@@ -114,6 +116,8 @@ Tags que suportam listas fixas via variáveis de ambiente do Insomnia:
 | `PIS_LIST` | `{% pis %}` |
 | `CNS_LIST` | `{% numeroCNS %}` |
 | `PLACA_LIST` | `{% placa %}` |
+| `EDUCATION_INSTITUTION_LIST` | `{% instituicaoEnsino %}` |
+| `EDUCATION_COURSE_LIST` | `{% curso %}` |
 
 ## Adicionando um Novo Template Tag
 
