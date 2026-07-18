@@ -141,12 +141,24 @@ import {
   genPIS
 } from '../generators/pis';
 
+// Importa gerador de Título de Eleitor
+import {
+  genTituloEleitor
+} from '../generators/tituloEleitor';
+
 // Importa geradores veiculares
 import {
   genPlaca,
   genPlacaAntiga,
   genPlacaMercosul
 } from '../generators/vehicle';
+
+// Importa geradores bancários
+import {
+  genAgencia,
+  genConta,
+  genPixAleatoria
+} from '../generators/bancario';
 
 /**
  * Array de template tags exportado para o Insomnia
@@ -251,6 +263,13 @@ export const templateTags: TemplateTag[] = [
     description: 'Gênero / pronome',
     args: [],
     run: async () => genGender()
+  },
+  {
+    name: 'tituloEleitor',
+    displayName: 'dados-falsos → tituloEleitor',
+    description: 'Título de Eleitor válido',
+    args: [],
+    run: async () => genTituloEleitor()
   },
 
   // ========================================================================
@@ -764,5 +783,30 @@ export const templateTags: TemplateTag[] = [
     description: 'Placa veicular formato Mercosul (AAA9A99)',
     args: [],
     run: async () => genPlacaMercosul()
+  },
+
+  // ========================================================================
+  // BANCÁRIO
+  // ========================================================================
+  {
+    name: 'agencia',
+    displayName: 'dados-falsos → agencia',
+    description: 'Agência bancária sintética (4 dígitos)',
+    args: [],
+    run: async () => genAgencia()
+  },
+  {
+    name: 'conta',
+    displayName: 'dados-falsos → conta',
+    description: 'Conta bancária sintética (XXXXX-X)',
+    args: [],
+    run: async () => genConta()
+  },
+  {
+    name: 'pixAleatoria',
+    displayName: 'dados-falsos → pixAleatoria',
+    description: 'Chave Pix Aleatória (UUID v4 — formato Banco Central)',
+    args: [],
+    run: async () => genPixAleatoria()
   }
 ];
