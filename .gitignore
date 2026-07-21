@@ -12,4 +12,3 @@ test/**/*.d.ts
 *.tgz
 .dev/*
 .claude/*
-.packs

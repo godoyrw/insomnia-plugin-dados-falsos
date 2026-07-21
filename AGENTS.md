@@ -355,7 +355,6 @@ Toda alteração deve manter estes arquivos sincronizados:
 
 | Métrica | Valor |
 |---|---|
-| Plugin Version | 1.5.3 |
 | Template Tags | 88 |
 | Generators | 26 |
 | Validadores exportados | 13 |
