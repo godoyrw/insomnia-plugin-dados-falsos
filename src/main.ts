@@ -5,7 +5,7 @@
  *
  * @author Roberto Godoy
  * @license MIT
- * @version 3.0.3
+ * @version 3.0.4
  *
  * Este plugin fornece 93 template tags para gerar dados sintéticos em português,
  * com suporte a validação de documentos, formatação brasileira e casos de uso

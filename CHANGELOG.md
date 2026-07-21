@@ -10,9 +10,6 @@ e este projeto segue Semantic Versioning.
 ### Added
 
 ### Changed
-- Documentação revisada e sincronizada com o catálogo atual: 93 template tags e 166 testes.
-- Instruções de listas customizadas atualizadas com os separadores suportados e as cinco listas acadêmicas.
-- Instalação local ajustada para preservar a estrutura esperada pelo campo `main` do pacote.
 
 ### Deprecated
 
@@ -21,6 +18,18 @@ e este projeto segue Semantic Versioning.
 ### Fixed
 
 ### Security
+
+## [3.0.4] - 2026-07-21
+
+### Added
+- Novas template tags para cartões de crédito sintéticos: `numeroCartao`, `bandeiraCartao`, `cvv`, `validadeCartao` e `cartaoCompleto`.
+- Gerador de cartões com suporte a Visa, Mastercard, Elo, Hipercard e American Express, incluindo validação pelo algoritmo de Luhn.
+- Versionamento dos utilitários e documentos internos da pasta `.dev/`.
+
+### Changed
+- Documentação revisada e sincronizada com o catálogo atual: 93 template tags e 166 testes.
+- Instruções de listas customizadas atualizadas com os separadores suportados e as cinco listas acadêmicas.
+- Instalação local ajustada para preservar a estrutura esperada pelo campo `main` do pacote.
 
 ## [3.0.3] - 2026-07-20
 
