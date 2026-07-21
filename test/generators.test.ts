@@ -22,6 +22,7 @@
 // ============================================================================
 
 import { STREET_TYPES, UF, TIMEZONES } from '../src/constants/locations';
+import { ACCOUNT_TYPES, BANKS } from '../src/constants/banking';
 
 // ============================================================================
 // IMPORTS — GERADORES POR DOMÍNIO
@@ -78,7 +79,16 @@ import { genProfessionalRegistration } from '../src/generators/professionalRegis
 import { genPlaca, genPlacaAntiga, genPlacaMercosul, validarPlaca } from '../src/generators/vehicle';
 
 // Bancário
-import { genAgencia, genConta, genPixAleatoria } from '../src/generators/bancario';
+import {
+  genAgencia,
+  genChavePixCpf,
+  genChavePixEmail,
+  genChavePixTelefone,
+  genCodigoBanco,
+  genConta,
+  genPixAleatoria,
+  genTipoConta
+} from '../src/generators/bancario';
 
 // Cartão de crédito
 import {
@@ -1037,7 +1047,7 @@ test('conselhoProfissional: deve funcionar sem parâmetro (qualquer conselho)', 
 // ============================================================================
 /**
  * Testes de dados bancários sintéticos.
- * Cobre agência, conta e chave Pix aleatória.
+ * Cobre agência, conta, bancos, tipos de conta e chaves Pix.
  */
 
 test('agencia: deve ter exatamente 4 dígitos numéricos', () => {
@@ -1099,6 +1109,38 @@ test('pixAleatoria: deve ser válida em 1000 iterações', () => {
     const v = genPixAleatoria();
     assert(validarUuid(v), `Pix inválida na iteração ${i}: "${v}"`);
   }
+});
+
+test('bancario: novas tags devem estar registradas no catálogo', () => {
+  const names = ['codigoBanco', 'tipoConta', 'chavePixCpf', 'chavePixEmail', 'chavePixTelefone'];
+  for (const name of names) {
+    assert(templateTags.some(tag => tag.name === name), `Tag bancária ausente: "${name}"`);
+  }
+});
+
+test('codigoBanco: deve usar código FEBRABAN/COMPE e banco conhecidos', () => {
+  const value = genCodigoBanco();
+  assert(BANKS.some(bank => value === `${bank.code} - ${bank.name}`), `Banco inválido: "${value}"`);
+});
+
+test('tipoConta: deve ser um tipo de conta aceito', () => {
+  const value = genTipoConta();
+  assert(ACCOUNT_TYPES.includes(value as typeof ACCOUNT_TYPES[number]), `Tipo de conta inválido: "${value}"`);
+});
+
+test('chavePixCpf: deve gerar CPF válido', () => {
+  const value = genChavePixCpf();
+  assert(validarCpf(value), `Chave Pix CPF inválida: "${value}"`);
+});
+
+test('chavePixEmail: deve gerar e-mail válido', () => {
+  const value = genChavePixEmail();
+  assert(validarEmail(value), `Chave Pix e-mail inválida: "${value}"`);
+});
+
+test('chavePixTelefone: deve usar o formato E.164 brasileiro', () => {
+  const value = genChavePixTelefone();
+  assert(/^\+55\d{11}$/.test(value), `Chave Pix telefone inválida: "${value}"`);
 });
 
 // ============================================================================

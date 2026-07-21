@@ -6,7 +6,7 @@ Documentação completa sobre os testes de qualidade do plugin Dados Falsos.
 
 O projeto inclui uma suite de testes de qualidade que valida todos os geradores de dados. Os testes garantem que os dados gerados seguem os padrões brasileiros e formatos esperados.
 
-A suite cobre as 93 template tags do plugin com 166 testes organizados por categoria, cobrindo validação de formato, regras de negócio e cenários de stress para os geradores.
+A suite cobre as 98 template tags do plugin com 172 testes organizados por categoria, cobrindo validação de formato, regras de negócio e cenários de stress para os geradores.
 
 | Categoria | Escopo |
 |-----------|--------|
@@ -24,7 +24,7 @@ A suite cobre as 93 template tags do plugin com 166 testes organizados por categ
 | Saúde | Tipos sanguíneos, prontuário, CNS e conselhos profissionais |
 | PIS/PASEP | PIS com validação oficial |
 | Título de Eleitor | Título com validação oficial |
-| Bancário | Agência, conta e Pix |
+| Bancário | Agência, conta, bancos, tipos de conta e chaves Pix |
 | Veicular | Placas antigas e Mercosul |
 | Cartão de Crédito | Número, bandeira, CVV e validade |
 
@@ -52,7 +52,7 @@ Recompila os testes automaticamente quando arquivos são modificados.
 
 ## Estrutura dos Testes
 
-Os testes estão em `test/generators.test.ts` e cobrem as 93 template tags com 166 testes de validação.
+Os testes estão em `test/generators.test.ts` e cobrem as 98 template tags com 172 testes de validação.
 
 ### Categorias de Testes
 
@@ -71,7 +71,7 @@ Os testes estão em `test/generators.test.ts` e cobrem as 93 template tags com 1
 - **Educação**: instituicaoEnsino, curso, nivelFormacao, statusAcademico, periodoAcademico, semestreAcademico, anoAcademico, registroAcademico
 - **PIS/PASEP**: pis
 - **Título de Eleitor**: tituloEleitor (incluindo 1000 iterações de validação)
-- **Bancário**: agencia, conta e pixAleatoria (incluindo 1000 iterações)
+- **Bancário**: agencia, conta, pixAleatoria, codigoBanco, tipoConta, chavePixCpf, chavePixEmail e chavePixTelefone (incluindo 1000 iterações para agência, conta e Pix aleatória)
 - **Veicular**: placa, placaAntiga e placaMercosul
 - **Cartão de Crédito**: numeroCartao, bandeiraCartao, cvv, validadeCartao, cartaoCompleto
 
@@ -83,8 +83,8 @@ Os testes estão em `test/generators.test.ts` e cobrem as 93 template tags com 1
 ──────────────────────────────────────────────────
   Resultados
 ──────────────────────────────────────────────────
-  Total   166 testes
-  Passou  166
+  Total   172 testes
+  Passou  172
   Score   100%
 ──────────────────────────────────────────────────
 ```
@@ -133,8 +133,9 @@ Os testes estão em `test/generators.test.ts` e cobrem as 93 template tags com 1
 - tipoSanguineo (2), numeroProntuario (1), numeroCNS (1), convenio (1), alergia (1)
 - conselhoProfissional sem parâmetro (1), CRM (1), CREA (1), OAB (1)
 
-**Bancário (10 testes)**
-- agencia (3), conta (4), pixAleatoria (3)
+**Bancário (16 testes)**
+- agencia (3), conta (4), pixAleatoria (3), registro das novas tags (1)
+- codigoBanco (1), tipoConta (1), chavePixCpf (1), chavePixEmail (1), chavePixTelefone (1)
 
 **Veicular (6 testes)**
 - placa: tamanho (1), formato geral (1)

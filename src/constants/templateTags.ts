@@ -165,8 +165,13 @@ import {
 // Importa geradores bancários
 import {
   genAgencia,
+  genChavePixCpf,
+  genChavePixEmail,
+  genChavePixTelefone,
+  genCodigoBanco,
   genConta,
-  genPixAleatoria
+  genPixAleatoria,
+  genTipoConta
 } from '../generators/bancario';
 
 // Importa geradores de educação
@@ -953,6 +958,41 @@ export const templateTags: TemplateTag[] = [
     description: 'Chave Pix Aleatória (UUID v4 — formato Banco Central)',
     args: [],
     run: async () => genPixAleatoria()
+  },
+  {
+    name: 'codigoBanco',
+    displayName: 'dados-falsos → codigoBanco',
+    description: 'Banco no formato código FEBRABAN/COMPE e nome',
+    args: [],
+    run: async () => genCodigoBanco()
+  },
+  {
+    name: 'tipoConta',
+    displayName: 'dados-falsos → tipoConta',
+    description: 'Tipo de conta bancária: corrente, poupança ou pagamento',
+    args: [],
+    run: async () => genTipoConta()
+  },
+  {
+    name: 'chavePixCpf',
+    displayName: 'dados-falsos → chavePixCpf',
+    description: 'Chave Pix CPF válida (11 dígitos)',
+    args: [],
+    run: async (context) => genChavePixCpf(context)
+  },
+  {
+    name: 'chavePixEmail',
+    displayName: 'dados-falsos → chavePixEmail',
+    description: 'Chave Pix de e-mail válida',
+    args: [],
+    run: async (context) => genChavePixEmail(context)
+  },
+  {
+    name: 'chavePixTelefone',
+    displayName: 'dados-falsos → chavePixTelefone',
+    description: 'Chave Pix de telefone no formato internacional +55',
+    args: [],
+    run: async (context) => genChavePixTelefone(context)
   },
 
   // ========================================================================

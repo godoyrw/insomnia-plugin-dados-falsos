@@ -6,12 +6,16 @@
  * Os valores gerados seguem formatos comuns utilizados por bancos
  * brasileiros, porém não representam contas reais.
  *
- * Chave Pix Aleatória segue o formato UUID v4 definido pelo Banco Central.
+ * Chaves Pix podem ser aleatórias, CPF, e-mail ou telefone no padrão E.164.
  *
  * @module generators/bancario
  */
 
-import { randInt } from '../utils';
+import { pickRandom, randInt } from '../utils';
+import { ACCOUNT_TYPES, BANKS } from '../constants/banking';
+import { InsomniaContext } from '../types';
+import { genCpf } from './cpf';
+import { genEmail, genCellphone } from './contact';
 import { genUuid } from './identifiers';
 
 /**
@@ -43,6 +47,29 @@ export function genConta(): string {
 }
 
 /**
+ * Gera banco no formato código FEBRABAN/COMPE e nome da instituição.
+ *
+ * @returns {string} Banco no formato "001 - Banco do Brasil".
+ * @example
+ * genCodigoBanco() // "341 - Itaú Unibanco"
+ */
+export function genCodigoBanco(): string {
+  const bank = pickRandom([...BANKS]);
+  return `${bank.code} - ${bank.name}`;
+}
+
+/**
+ * Gera um tipo de conta bancária aceito pelo Pix.
+ *
+ * @returns {string} Tipo de conta: corrente, poupança ou pagamento.
+ * @example
+ * genTipoConta() // "corrente"
+ */
+export function genTipoConta(): string {
+  return pickRandom([...ACCOUNT_TYPES]);
+}
+
+/**
  * Gera uma chave Pix Aleatória no formato UUID v4.
  *
  * Conforme definido pelo Banco Central do Brasil,
@@ -54,4 +81,44 @@ export function genConta(): string {
  */
 export function genPixAleatoria(): string {
   return genUuid();
+}
+
+/**
+ * Gera uma chave Pix CPF válida.
+ * Reaproveita `genCpf`, incluindo o suporte a `CPF_LIST` do Insomnia.
+ *
+ * @param {InsomniaContext} [context] - Contexto do Insomnia.
+ * @returns {string} CPF de 11 dígitos válido como chave Pix.
+ * @example
+ * genChavePixCpf() // "12345678909"
+ */
+export function genChavePixCpf(context?: InsomniaContext): string {
+  return genCpf(context);
+}
+
+/**
+ * Gera uma chave Pix de e-mail válida.
+ * Reaproveita `genEmail`, incluindo o suporte a `EMAIL_LIST` do Insomnia.
+ *
+ * @param {InsomniaContext} [context] - Contexto do Insomnia.
+ * @returns {string} E-mail válido como chave Pix.
+ * @example
+ * genChavePixEmail() // "ana.souza.1234@example.com"
+ */
+export function genChavePixEmail(context?: InsomniaContext): string {
+  return genEmail(undefined, context);
+}
+
+/**
+ * Gera uma chave Pix de telefone brasileiro no formato internacional E.164.
+ * Reaproveita `genCellphone`, incluindo o suporte a `CELULAR_LIST` do Insomnia.
+ *
+ * @param {InsomniaContext} [context] - Contexto do Insomnia.
+ * @returns {string} Telefone no formato +55XXXXXXXXXXX.
+ * @example
+ * genChavePixTelefone() // "+5511998765432"
+ */
+export function genChavePixTelefone(context?: InsomniaContext): string {
+  const digits = genCellphone(context).replace(/\D/g, '');
+  return digits.startsWith('55') && digits.length === 13 ? `+${digits}` : `+55${digits}`;
 }

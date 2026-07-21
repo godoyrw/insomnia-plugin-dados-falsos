@@ -11,10 +11,11 @@
 │   ├── constants/
 │   │   ├── names.ts                 # Nomes e sobrenomes brasileiros
 │   │   ├── locations.ts             # Cidades, estados, bairros, timezones
+│   │   ├── banking.ts               # Bancos FEBRABAN/COMPE e tipos de conta
 │   │   ├── business.ts              # Cargos, departamentos, sufixos, domínios
 │   │   ├── enums.ts                 # Status, planos, tipos, emojis
 │   │   ├── countries.ts             # Países, códigos ISO, telefones, moedas
-│   │   └── templateTags.ts          # Definição das 93 template tags
+│   │   └── templateTags.ts          # Definição das 98 template tags
 │   └── generators/
 │       ├── identity.ts              # Nomes e dados demográficos
 │       ├── cpf.ts                   # CPF — geração, validação, CPF_LIST
@@ -44,7 +45,7 @@
 │       ├── education.ts             # Dados acadêmicos (instituição, curso, nível, status)
 │       └── creditCard.ts            # Cartões de crédito sintéticos (Luhn, bandeira, CVV, validade)
 ├── test/
-│   └── generators.test.ts           # Suite de 166 testes (100%)
+│   └── generators.test.ts           # Suite de 172 testes (100%)
 ├── dist/                            # Código compilado (gerado pelo build)
 ├── .github/workflows/
 │   ├── test.yml                     # CI — executa testes em todo push/PR
@@ -78,7 +79,7 @@
 ```bash
 npm install    # instala devDependencies (typescript, tsx, @types/node)
 npm run build  # compila para dist/
-npm test       # executa os 166 testes
+npm test       # executa os 172 testes
 ```
 
 ## Comandos disponíveis
