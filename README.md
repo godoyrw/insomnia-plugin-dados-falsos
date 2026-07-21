@@ -2,7 +2,7 @@
 
 > Gere dados sintéticos brasileiros com validação oficial diretamente nas Template Tags do Insomnia.
 
-✔ CPF &nbsp;✔ CNPJ 2026 &nbsp;✔ CNH &nbsp;✔ CNS &nbsp;✔ PIS &nbsp;✔ RG &nbsp;✔ CEP &nbsp;✔ UUID &nbsp;✔ JWT &nbsp;✔ Placas Mercosul
+✔ CPF &nbsp;✔ CNPJ 2026 &nbsp;✔ CNH &nbsp;✔ CNS &nbsp;✔ PIS &nbsp;✔ RG &nbsp;✔ CEP &nbsp;✔ UUID &nbsp;✔ JWT &nbsp;✔ Placas Mercosul &nbsp;✔ Cartões de Crédito
 
 **88 Template Tags &nbsp;·&nbsp; 0 dependências de produção &nbsp;·&nbsp; 100% TypeScript**
 
@@ -227,6 +227,17 @@ Todos os geradores completam em **menos de 0,01 ms** — sem I/O, sem rede, sem 
 | `{% agencia %}` | Agência bancária sintética (4 dígitos) | 4532 |
 | `{% conta %}` | Conta bancária sintética (XXXXX-X) | 56789-3 |
 | `{% pixAleatoria %}` | Chave Pix Aleatória (UUID v4 — formato Banco Central) | 550e8400-e29b-41d4-a716-446655440000 |
+
+### Cartão de Crédito
+
+| Tag | Descrição | Exemplo |
+|---|---|---|
+| `{% numeroCartao %}` | Número de cartão válido pelo algoritmo de Luhn | 4539148803436467 |
+| `{% numeroCartao Visa %}` | Número de cartão para uma bandeira específica | 4539148803436467 |
+| `{% bandeiraCartao %}` | Bandeira do cartão | Visa |
+| `{% cvv %}` | CVV do cartão | 382 |
+| `{% validadeCartao %}` | Validade no formato MM/YY | 08/29 |
+| `{% cartaoCompleto %}` | Objeto completo com número, bandeira, CVV e validade | `{...}` |
 
 ### Educação
 

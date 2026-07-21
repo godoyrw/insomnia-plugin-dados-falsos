@@ -113,7 +113,8 @@ dist/insomnia-plugin-dados-falsos/
         ├── medicalRecordNumber.js
         ├── professionalRegistration.js
         ├── education.js
-        └── bancario.js
+        ├── bancario.js
+        └── creditCard.js
 ```
 
 ---

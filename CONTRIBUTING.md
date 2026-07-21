@@ -53,7 +53,7 @@ git push origin feature/sua-feature
 ## Tipos de Contribuição
 
 - 🐛 **Bug fixes**: Correções de erros e problemas
-- ✨ **Features**: Novos template tags ou funcionalidades
+- ✨ **Features**: Novos template tags ou funcionalidades, como cartões de crédito, educação ou novos geradores
 - 📚 **Documentação**: Melhorias no README, CONTRIBUTING ou comentários
 - 🧪 **Testes**: Adicionar testes e validações
 - 🎨 **Melhorias**: Refatoração e otimizações de código

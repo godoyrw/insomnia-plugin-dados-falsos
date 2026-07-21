@@ -67,7 +67,8 @@
 │       ├── professionalRegistration.ts  # Conselhos profissionais (CRM, CREA, OAB, CRO, COREN)
 │       ├── tituloEleitor.ts         # Título de Eleitor — genTituloEleitor, validarTituloEleitor
 │       ├── bancario.ts              # Agência, conta e Pix
-│       └── education.ts             # Instituição, curso e dados acadêmicos
+│       ├── education.ts             # Instituição, curso e dados acadêmicos
+│       └── creditCard.ts            # Cartões de crédito sintéticos (Luhn, bandeira, CVV, validade)
 ├── test/
 │   └── generators.test.ts           # Suite de 166 testes (100%)
 ├── dist/                            # Código compilado (gerado — não versionar)

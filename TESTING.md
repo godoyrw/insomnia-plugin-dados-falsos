@@ -26,6 +26,7 @@ A suite cobre as 88 template tags do plugin com 166 testes organizados por categ
 | Título de Eleitor | Título com validação oficial |
 | Bancário | Agência, conta e Pix |
 | Veicular | Placas antigas e Mercosul |
+| Cartão de Crédito | Número, bandeira, CVV e validade |
 
 ## Executando os Testes
 
@@ -72,6 +73,7 @@ Os testes estão em `test/generators.test.ts` e cobrem as 88 template tags com 1
 - **Título de Eleitor**: tituloEleitor (incluindo 1000 iterações de validação)
 - **Bancário**: agencia, conta, pixAleatoria (incluindo 1000 iterações de validação)
 - **Veicular**: placa, placaAntiga, placaMercosul (incluindo 1000 iterações de validação)
+- **Cartão de Crédito**: numeroCartao, bandeiraCartao, cvv, validadeCartao, cartaoCompleto
 
 ## Resultado dos Testes
 
@@ -153,6 +155,7 @@ A suite valida:
 - ✅ Geolocalização (latitude, longitude, IP)
 - ✅ E-commerce (SKU, EAN, pedidos)
 - ✅ Dados de saúde e conselhos profissionais
+- ✅ Cartões de crédito sintéticos com validação por Luhn
 
 ## Adicionando Novos Testes
 

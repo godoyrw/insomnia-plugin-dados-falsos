@@ -41,7 +41,8 @@
 │       ├── professionalRegistration.ts  # Conselhos profissionais (CRM, CREA, OAB...)
 │       ├── tituloEleitor.ts         # Título de Eleitor
 │       ├── bancario.ts              # Dados bancários (agência, conta, pix)
-│       └── education.ts             # Dados acadêmicos (instituição, curso, nível, status)
+│       ├── education.ts             # Dados acadêmicos (instituição, curso, nível, status)
+│       └── creditCard.ts            # Cartões de crédito sintéticos (Luhn, bandeira, CVV, validade)
 ├── test/
 │   └── generators.test.ts           # Suite de 166 testes (100%)
 ├── dist/                            # Código compilado (gerado pelo build)
@@ -122,6 +123,7 @@ Tags que suportam listas fixas via variáveis de ambiente do Insomnia:
 | `EDUCATION_LEVEL_LIST` | `{% nivelFormacao %}` |
 | `EDUCATION_STATUS_LIST` | `{% statusAcademico %}` |
 | `EDUCATION_PERIOD_LIST` | `{% periodoAcademico %}` |
+| `CREDIT_CARD_BRAND` | `{% numeroCartao %}` |
 
 ## Adicionando um Novo Template Tag
 
