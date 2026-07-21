@@ -126,7 +126,10 @@ export function genBandeiraCartao(): string {
  * genCvv('American Express') // "1234"
  */
 export function genCvv(bandeira?: string): string {
-  const brand = resolveBrand(bandeira);
+  const brand = bandeira
+    ? resolveBrand(bandeira)
+    : CARD_BRANDS.find((cardBrand) => cardBrand.name !== 'American Express') ?? CARD_BRANDS[0];
+
   const digits = Array.from({ length: brand.cvvLength }, () => randInt(0, 9));
   return digits.join('');
 }

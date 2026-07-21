@@ -1,7 +1,7 @@
 # PROJETO: insomnia-plugin-dados-falsos
 
 **VERSÃO:** v3.0.0
-**OBJETIVO:** Plugin Insomnia para gerar dados falsos realistas em português brasileiro com 88 template tags, cobrindo identidade, documentos, saúde, veicular, contato, endereço, empresa, financeiro, e-commerce, geolocalização, educação e mais.
+**OBJETIVO:** Plugin Insomnia para gerar dados falsos realistas em português brasileiro com 93 template tags, cobrindo identidade, documentos, saúde, veicular, contato, endereço, empresa, financeiro, e-commerce, geolocalização, educação, cartão de crédito e mais.
 
 ---
 
@@ -35,7 +35,7 @@
 │   │   ├── business.ts              # Departamentos, cargos, sufixos legais, domínios corporativos
 │   │   ├── enums.ts                 # Planos, status, tipos de frete, emojis, etc.
 │   │   ├── countries.ts             # Países com código ISO, DDI, moeda
-│   │   └── templateTags.ts          # Definição das 88 template tags
+│   │   └── templateTags.ts          # Definição das 93 template tags
 │   └── generators/
 │       ├── identity.ts              # Nomes, username, gênero, data de nascimento
 │       ├── cpf.ts                   # CPF — geração, validarCpf, genCpf(context) + CPF_LIST

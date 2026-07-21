@@ -68,7 +68,7 @@ Em qualquer campo de requisição use a sintaxe de template tag:
 {% uuid %}
 ```
 
-Veja o `README.md` para a lista completa de 88 tags.
+Veja o `README.md` para a lista completa de 93 tags.
 
 ---
 

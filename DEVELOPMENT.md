@@ -14,7 +14,7 @@
 │   │   ├── business.ts              # Cargos, departamentos, sufixos, domínios
 │   │   ├── enums.ts                 # Status, planos, tipos, emojis
 │   │   ├── countries.ts             # Países, códigos ISO, telefones, moedas
-│   │   └── templateTags.ts          # Definição das 88 template tags
+│   │   └── templateTags.ts          # Definição das 93 template tags
 │   └── generators/
 │       ├── identity.ts              # Nomes e dados demográficos
 │       ├── cpf.ts                   # CPF — geração, validação, CPF_LIST

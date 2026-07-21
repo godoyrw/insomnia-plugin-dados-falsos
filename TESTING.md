@@ -6,7 +6,7 @@ Documentação completa sobre os testes de qualidade do plugin Dados Falsos.
 
 O projeto inclui uma suite de testes de qualidade que valida todos os geradores de dados. Os testes garantem que os dados gerados seguem os padrões brasileiros e formatos esperados.
 
-A suite cobre as 88 template tags do plugin com 166 testes organizados por categoria, cobrindo validação de formato, regras de negócio e cenários de stress para os geradores.
+A suite cobre as 93 template tags do plugin com 166 testes organizados por categoria, cobrindo validação de formato, regras de negócio e cenários de stress para os geradores.
 
 | Categoria | Escopo |
 |-----------|--------|
@@ -52,7 +52,7 @@ Recompila os testes automaticamente quando arquivos são modificados.
 
 ## Estrutura dos Testes
 
-Os testes estão em `test/generators.test.ts` e cobrem as 88 template tags com 166 testes de validação.
+Os testes estão em `test/generators.test.ts` e cobrem as 93 template tags com 166 testes de validação.
 
 ### Categorias de Testes
 

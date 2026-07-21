@@ -4,7 +4,7 @@
 
 ✔ CPF &nbsp;✔ CNPJ 2026 &nbsp;✔ CNH &nbsp;✔ CNS &nbsp;✔ PIS &nbsp;✔ RG &nbsp;✔ CEP &nbsp;✔ UUID &nbsp;✔ JWT &nbsp;✔ Placas Mercosul &nbsp;✔ Cartões de Crédito
 
-**88 Template Tags &nbsp;·&nbsp; 0 dependências de produção &nbsp;·&nbsp; 100% TypeScript**
+**93 Template Tags &nbsp;·&nbsp; 0 dependências de produção &nbsp;·&nbsp; 100% TypeScript**
 
 ---
 
@@ -19,7 +19,7 @@
   ![LGPD Friendly](https://img.shields.io/badge/LGPD-Friendly-0052cc)
   ![Zero Dependencies](https://img.shields.io/badge/0-Production%20Dependencies-2ea44f)
   ![Official Algorithms](https://img.shields.io/badge/Algorithms-Official-6f42c1)
-  ![88 Template Tags](https://img.shields.io/badge/Template%20Tags-88-orange)
+  ![93 Template Tags](https://img.shields.io/badge/Template%20Tags-93-orange)
   ![166 Tests](https://img.shields.io/badge/Tests-166%20Passing-success)
   [![Known Vulnerabilities](https://snyk.io/test/github/godoyrw/insomnia-plugin-dados-falsos/badge.svg)](https://snyk.io/test/github/godoyrw/insomnia-plugin-dados-falsos)
   [![Tests](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/test.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/test.yml)
@@ -446,7 +446,7 @@ ABC1234 BRA1A23 XYZ9876
 │   │   ├── business.ts              # Cargos, departamentos, sufixos, domínios
 │   │   ├── enums.ts                 # Status, planos, tipos, emojis
 │   │   ├── countries.ts             # Países, códigos ISO, telefones, moedas
-│   │   └── templateTags.ts          # Definição das 88 template tags
+│   │   └── templateTags.ts          # Definição das 93 template tags
 │   └── generators/
 │       ├── identity.ts              # Nomes e dados demográficos
 │       ├── cpf.ts                   # CPF — geração, validação, CPF_LIST
