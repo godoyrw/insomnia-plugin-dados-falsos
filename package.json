@@ -2,31 +2,6 @@
   "name": "insomnia-plugin-dados-falsos",
   "version": "3.0.5",
   "description": "Gere dados sintéticos brasileiros com algoritmos oficiais (CPF, CNPJ, CNH, CNS, PIS, RG, UUID e muito mais) diretamente nas Template Tags do Insomnia.",
-  "main": "dist/insomnia-plugin-dados-falsos/src/main.js",
-  "author": "Roberto Godoy <godoyrw@github.com>",
-  "maintainers": [
-    {
-      "name": "Roberto Godoy",
-      "email": "godoyrw@github.com",
-      "url": "https://github.com/godoyrw"
-    }
-  ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/godoyrw/insomnia-plugin-dados-falsos.git"
-  },
-  "homepage": "https://github.com/godoyrw/insomnia-plugin-dados-falsos#readme",
-  "bugs": {
-    "url": "https://github.com/godoyrw/insomnia-plugin-dados-falsos/issues"
-  },
-  "funding": {
-    "type": "github",
-    "url": "https://github.com/sponsors/godoyrw"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "keywords": [
     "insomnia",
     "insomnia-plugin",
@@ -77,31 +52,60 @@
     "testing",
     "ecommerce"
   ],
+  "homepage": "https://github.com/godoyrw/insomnia-plugin-dados-falsos#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/godoyrw/insomnia-plugin-dados-falsos.git"
+  },
+  "bugs": {
+    "url": "https://github.com/godoyrw/insomnia-plugin-dados-falsos/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/godoyrw"
+  },
+  "license": "MIT",
+  "author": "Roberto Godoy <godoyrw@github.com>",
+  "maintainers": [
+    {
+      "name": "Roberto Godoy",
+      "email": "godoyrw@github.com",
+      "url": "https://github.com/godoyrw"
+    }
+  ],
+  "main": "dist/insomnia-plugin-dados-falsos/src/main.js",
   "files": [
     "dist/insomnia-plugin-dados-falsos",
     "assets",
     "README.md",
     "CHANGELOG.md",
+    "INSTALL.md",
     "LICENSE"
   ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18",
+    "npm": ">=10",
+    "insomnia": ">=2021.7.0"
+  },
+  "packageManager": "npm@11.17.0",
   "scripts": {
     "clean": "rm -rf dist && find src test -name '*.js' -delete -o -name '*.d.ts' -delete",
     "prebuild": "npm run clean",
-    "build": "npm run clean && npx tsc",
-    "lint": "tsc --noEmit",
+    "build": "npm run clean && tsc",
+    "typecheck": "tsc --noEmit",
     "dev": "tsc --watch",
     "test": "tsc test/generators.test.ts --outDir dist/insomnia-plugin-dados-falsos && node dist/insomnia-plugin-dados-falsos/test/generators.test.js",
     "test:watch": "tsc test/generators.test.ts --outDir dist/insomnia-plugin-dados-falsos --watch",
-    "test:stress": "bash -c 'success=0; fail=0; for i in {1..100}; do if npm test > /tmp/test-stress.log 2>&1; then ((success++)); else ((fail++)); echo \"❌ Falha na execução $i\"; fi; done; echo \"✅ Sucessos: $success\"; echo \"❌ Falhas: $fail\"; exit $fail'"
+    "test:stress": "tsx test/stress.test.ts"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "tsx": "^4.22.4",
     "typescript": "^5.0.0"
-  },
-  "engines": {
-    "node": ">=18",
-    "insomnia": ">=2021.7.0"
   },
   "insomnia": {
     "name": "Dados Falsos",
@@ -110,14 +114,54 @@
     "icon": "assets/icon.png",
     "category": "data-generation",
     "tags": [
+      "insomnia",
+      "insomnia-plugin",
+      "insomnia-template-tag",
+      "plugin",
       "dados-falsos",
+      "fake-data",
       "mock-data",
       "test-data",
-      "fake-data",
+      "synthetic-data",
+      "faker",
+      "faker-br",
+      "brazil",
       "brasil",
+      "brazilian",
+      "brazilian-documents",
+      "lgpd",
       "cpf",
+      "cpf-generator",
+      "cpf-validator",
       "cnpj",
-      "generator"
+      "cnpj-generator",
+      "cnpj-validator",
+      "rg",
+      "cnh",
+      "pis",
+      "cns",
+      "ean13",
+      "mercosul",
+      "endereco",
+      "telefone",
+      "email",
+      "uuid",
+      "jwt",
+      "api-key",
+      "pix",
+      "boleto",
+      "pagamento",
+      "api-testing",
+      "api-test",
+      "rest",
+      "rest-api",
+      "graphql",
+      "openapi",
+      "swagger",
+      "typescript",
+      "qa",
+      "testing",
+      "ecommerce"
     ]
   }
 }
