@@ -448,43 +448,49 @@ ABC1234 BRA1A23 XYZ9876
 │   │   ├── countries.ts             # Países, códigos ISO, telefones, moedas
 │   │   └── templateTags.ts          # Definição das 93 template tags
 │   └── generators/
-│       ├── identity.ts              # Nomes e dados demográficos
-│       ├── cpf.ts                   # CPF — geração, validação, CPF_LIST
-│       ├── cnpj.ts                  # CNPJ — geração, validação, CNPJ_LIST
-│       ├── cnh.ts                   # CNH — geração e validação
-│       ├── rg.ts                    # RG — geração e validação
-│       ├── pis.ts                   # PIS/PASEP — geração e validação
-│       ├── cns.ts                   # CNS — geração e validação
-│       ├── vehicle.ts               # Placas veiculares e listas de placas
-│       ├── contact.ts               # Email, telefone, celular, WhatsApp
 │       ├── address.ts               # CEP, logradouro, bairro, cidade, estado
-│       ├── company.ts               # Razão social, cargo, departamento
-│       ├── financial.ts             # Moeda, valor, plano, status, cupom
-│       ├── datetime.ts              # DateTime ISO e timezone
-│       ├── identifiers.ts           # UUID, ULID, API Key, JWT, senha, hash
-│       ├── content.ts               # Título, texto, emoji, cor, booleano
-│       ├── ecommerce.ts             # SKU, EAN, pedido, status, frete
-│       ├── geo.ts                   # Latitude, longitude, IPv4, IPv6
-│       ├── countries.ts             # Países, códigos ISO, moeda
-│       ├── bloodType.ts             # Tipo sanguíneo
-│       ├── healthPlan.ts            # Convênio de saúde
 │       ├── allergy.ts               # Alergias
-│       ├── medicalRecordNumber.ts   # Número de prontuário
-│       ├── professionalRegistration.ts # Conselhos profissionais
-│       ├── tituloEleitor.ts         # Título de Eleitor
 │       ├── bancario.ts              # Agência, conta e Pix
-│       └── education.ts             # Instituição, curso e dados acadêmicos
+│       ├── bloodType.ts             # Tipo sanguíneo
+│       ├── cnh.ts                   # CNH — geração e validação
+│       ├── cnpj.ts                  # CNPJ — geração, validação e CNPJ_LIST
+│       ├── cns.ts                   # CNS — geração e validação
+│       ├── company.ts               # Razão social, cargo, departamento
+│       ├── contact.ts               # Email, telefone, celular, WhatsApp
+│       ├── content.ts               # Título, texto, emoji, cor, booleano
+│       ├── countries.ts             # Países, códigos ISO, moeda
+│       ├── cpf.ts                   # CPF — geração, validação e CPF_LIST
+│       ├── creditCard.ts            # Cartões de crédito sintéticos e Luhn
+│       ├── datetime.ts              # DateTime ISO e timezone
+│       ├── ecommerce.ts             # SKU, EAN, pedido, status, frete
+│       ├── education.ts             # Instituição, curso e dados acadêmicos
+│       ├── financial.ts             # Moeda, valor, plano, status, cupom
+│       ├── geo.ts                   # Latitude, longitude, IPv4, IPv6
+│       ├── healthPlan.ts            # Convênio de saúde
+│       ├── identifiers.ts           # UUID, ULID, API Key, JWT, senha, hash
+│       ├── identity.ts              # Nomes e dados demográficos
+│       ├── medicalRecordNumber.ts   # Número de prontuário
+│       ├── pis.ts                   # PIS/PASEP — geração e validação
+│       ├── professionalRegistration.ts # Conselhos profissionais
+│       ├── rg.ts                    # RG — geração e validação
+│       ├── tituloEleitor.ts         # Título de Eleitor
+│       └── vehicle.ts               # Placas veiculares e listas de placas
 ├── test/
 │   └── generators.test.ts           # Suite de 166 testes (100%)
-├── .github/workflows/
-│   ├── test.yml                     # CI
-│   └── publish-npm.yml              # Publicação no npm
+├── .github/
+│   └── workflows/
+│       ├── test.yml                 # CI
+│       └── publish-npm.yml          # Publicação no npm
 ├── .dev/
 │   ├── implementations.md           # Backlog de funcionalidades
-│   └── publish_release.sh           # Release automatizado
+│   ├── management_branches.sh       # Gerenciamento de branches
+│   ├── publish_release.sh           # Release automatizado
+│   └── rename_file.sh              # Renomeação de arquivos
 ├── assets/
 │   └── images/
 │       └── insomnia-plugin-dados-falsos.jpg
+├── AGENTS.md
+├── CHANGELOG.md
 ├── package.json
 ├── README.md
 ├── DEVELOPMENT.md
