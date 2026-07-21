@@ -140,6 +140,14 @@ OLD=$(node -p "require('./package.json').version")
 npm version "$BUMP" --no-git-tag-version >/dev/null
 
 NEW=$(node -p "require('./package.json').version")
+
+node -e "
+const fs=require('fs');
+const pkg=require('./package.json');
+pkg.insomnia.version='${NEW}';
+fs.writeFileSync('package.json', JSON.stringify(pkg,null,2)+'\n');
+"
+
 TAG="v$NEW"
 
 ###############################################################################
