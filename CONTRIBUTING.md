@@ -132,11 +132,16 @@ export function genMeuDado(): string {
 }
 ```
 
-4. Compile: `npm run build`
+4. Adicione testes em `test/generators.test.ts` (registro, formato e regra de
+   negócio; 1.000 iterações para regras formais quando aplicável)
 
-5. Teste: `npm test`
+5. Atualize `README.md`, `TESTING.md`, `DEVELOPMENT.md` e `AGENTS.md` quando a
+   nova tag alterar tabelas, estrutura, listas ou contadores. Atualize também
+   `src/main.ts` e `package.json` se a descrição pública ou a contagem mudar.
 
-6. Atualize o README.md com documentação
+6. Compile: `npm run build`
+
+7. Teste: `npm test`
 
 ## Licença
 

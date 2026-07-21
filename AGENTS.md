@@ -362,7 +362,7 @@ Toda alteração deve manter estes arquivos sincronizados:
 | Métrica | Valor |
 |---|---|
 | Template Tags | 93 |
-| Generators | 26 |
+| Generators | 27 |
 | Validadores exportados | 13 |
 | Listas via Environment | 15 |
 | Testes | 166 |
@@ -370,4 +370,4 @@ Toda alteração deve manter estes arquivos sincronizados:
 | Dependências de produção | 0 |
 | Performance média por gerador | < 0,01 ms |
 
-**Última atualização:** 2026-07-18
+**Última atualização:** 2026-07-21

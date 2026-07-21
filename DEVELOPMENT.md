@@ -126,7 +126,12 @@ Tags que suportam listas fixas via variáveis de ambiente do Insomnia:
 
 ## Adicionando um Novo Template Tag
 
-1. Crie `src/generators/meuDado.ts`:
+O fluxo abaixo é obrigatório para toda tag pública. Antes de criar um arquivo,
+verifique se o dado pertence a um domínio já existente: quando pertencer,
+prefira estender o gerador correspondente em vez de criar outro arquivo.
+
+1. Crie ou estenda o gerador em `src/generators/`. Dados estáticos devem ficar
+   em `src/constants/`; o gerador deve conter somente a lógica:
 
 ```typescript
 import { pickRandom } from '../utils';
@@ -142,7 +147,14 @@ export function genMeuDado(): string {
 }
 ```
 
-2. Importe em `src/constants/templateTags.ts` e adicione ao array:
+Para dados com regra oficial ou dígito verificador, exporte também um
+`validarMeuDado(valor: string): boolean`. Caso a tag aceite uma lista fixa via
+Environment do Insomnia, declare `context?: InsomniaContext` e use
+`getEnvValue` com `pickRandom`, seguindo os geradores que já usam listas.
+
+2. Importe o gerador em `src/constants/templateTags.ts` e adicione a tag ao
+   array `templateTags`. Caso ela receba argumentos, declare-os em `args` e
+   repasse-os para o gerador:
 
 ```typescript
 import { genMeuDado } from '../generators/meuDado';
@@ -157,14 +169,42 @@ import { genMeuDado } from '../generators/meuDado';
 }
 ```
 
-3. Compile e teste:
+3. Adicione testes em `test/generators.test.ts`:
+
+   - toda tag: registro em `templateTags`, retorno não vazio e formato esperado;
+   - dados com regra formal: teste do validador ou da regra de negócio;
+   - geração aleatória com regra formal: 1.000 iterações, quando aplicável;
+   - listas via Environment: cobertura da lista e do fallback aleatório.
+
+4. Atualize a documentação e os metadados afetados:
+
+   - `README.md`: tabela da tag, exemplo JSON e contadores;
+   - `TESTING.md`: escopo e quantidade de testes;
+   - `DEVELOPMENT.md`, `AGENTS.md` e `CONTRIBUTING.md`: estrutura, listas ou
+     regras que tenham mudado;
+   - `src/main.ts` e `package.json`: contadores ou descrição pública, quando
+     necessários.
+
+5. Compile e valide:
 
 ```bash
 npm run build
 npm test
 ```
 
-4. Atualize `README.md` com a nova tag na tabela correta.
+Use `npm run test:stress` quando a feature introduzir aleatoriedade, limites ou
+regras que possam gerar flakiness.
+
+### Checklist de feature
+
+- [ ] Gerador implementado com retorno explícito e JSDoc
+- [ ] Constantes separadas da lógica, quando houver dados estáticos
+- [ ] Validador exportado, quando houver regra formal ou DV
+- [ ] Suporte a Environment, quando a tag precisar de valores fixos
+- [ ] Tag registrada em `templateTags.ts`, com argumentos e descrição corretos
+- [ ] Testes de registro, formato e regras de negócio adicionados
+- [ ] Documentação, metadados e contadores sincronizados
+- [ ] `npm run build` e `npm test` concluídos com sucesso
 
 ## Padrões de Código
 
@@ -177,6 +217,7 @@ npm test
 | Constantes | `UPPER_SNAKE_CASE` | `FIRST_NAMES` |
 | Interfaces | `PascalCase` | `TemplateTag` |
 | Funções internas | `camelCase` | `calcularDigito` |
+| Arquivos | `camelCase.ts` | `creditCard.ts` |
 
 ### JSDoc obrigatório
 
@@ -184,12 +225,12 @@ npm test
 /**
  * Descrição breve
  *
- * @param {type} param - Descrição
+ * @param {InsomniaContext} [context] - Contexto Insomnia (opcional)
  * @returns {type} Descrição do retorno
  * @example
  * genMeuDado() // "resultado"
  */
-export function genMeuDado(): string { ... }
+export function genMeuDado(context?: InsomniaContext): string { ... }
 ```
 
 ### Tipos explícitos
