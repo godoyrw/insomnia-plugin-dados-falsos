@@ -531,3 +531,7 @@ MIT — Veja o arquivo [LICENSE](LICENSE) para detalhes.
 
 Desenvolvido por [Roberto Godoy](https://github.com/godoyrw)  
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0003--2100--4772-green.svg)](https://orcid.org/0009-0003-2100-4772)
+
+## Apoio
+
+<iframe src="https://github.com/sponsors/godoyrw/card" title="Patrocinar - Roberto W Godoy" height="225" width="600" style="border: 0;"></iframe>
