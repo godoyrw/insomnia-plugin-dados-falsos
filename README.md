@@ -6,8 +6,6 @@
 
 **98 Template Tags &nbsp;·&nbsp; 0 dependências de produção &nbsp;·&nbsp; 100% TypeScript**
 
----
-
 <div align="center">
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -27,19 +25,16 @@
   [![Release](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-release.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-release.yml)
   ![Static Badge](https://img.shields.io/badge/Godah-Code-blue?logo=github) 
   [![ORCID](https://img.shields.io/badge/ORCID-0009--0003--2100--4772-green.svg)](https://orcid.org/0009-0003-2100-4772)
+  [![Sponsor](https://img.shields.io/badge/Patrocinador-Dados%20Falsos-pink?logo=github)](https://github.com/sponsors/godoyrw)
 
   <img src="./assets/images/insomnia-plugin-dados-falsos.jpg" alt="Dados Falsos - Plugin Insomnia">
 </div>
-
----
 
 ## Segurança e LGPD
 
 Este plugin gera dados de forma local, a partir de constantes e algoritmos internos; nenhuma informação é obtida da internet nem de bases de dados externas. Documentos e identificadores podem ser matematicamente válidos, mas são destinados exclusivamente a testes. Como todo identificador gerado aleatoriamente pode coincidir com um valor existente, não os use para representar pessoas, empresas ou contas reais.
 
 ### Não há comunicação com APIs externas durante a geração dos dados.
-
----
 
 ## Diferenciais
 
@@ -63,8 +58,6 @@ Este plugin gera dados de forma local, a partir de constantes e algoritmos inter
   "typescript": "..."
 }
 ```
----
-
 ## Documentos suportados
 
 | Documento | Gerador | Validador | Algoritmo |
@@ -80,8 +73,6 @@ Este plugin gera dados de forma local, a partir de constantes e algoritmos inter
 | UUID v4 | ✅ | ✅ | RFC 4122 / RFC 9562 |
 | Placa Antiga (AAA9999) | ✅ | ✅ | CONTRAN |
 | Placa Mercosul (AAA9A99) | ✅ | ✅ | CONTRAN |
-
----
 
 ## Instalação
 
@@ -104,8 +95,6 @@ cp -r . ~/.config/Insomnia/plugins/insomnia-plugin-dados-falsos
 
 Reinicie o Insomnia e confirme em **Preferences → Plugins**.
 
----
-
 ## Compatibilidade
 
 | Requisito | Versão mínima |
@@ -113,8 +102,6 @@ Reinicie o Insomnia e confirme em **Preferences → Plugins**.
 | Node.js | 18 ou superior |
 | Insomnia | 2021.7.0 ou superior |
 | TypeScript | 5.x (desenvolvimento) |
-
----
 
 ## Uso rápido
 
@@ -130,8 +117,6 @@ Reinicie o Insomnia e confirme em **Preferences → Plugins**.
 {% tokenJwt %}         → eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 {% datetimeIso %}      → 2026-07-16T14:35:20Z
 ```
-
----
 
 ## Algoritmos implementados
 
@@ -150,8 +135,6 @@ as regras oficiais de validação definidas pelos respectivos órgãos regulador
 - **RFC 4122 / RFC 9562** — UUID v4
 - **RFC 5737 / RFC 3849** — IPv4 e IPv6 de documentação
 
----
-
 ## Performance
 
 Benchmark realizado em 1.000 execuções consecutivas (Node.js 24, AMD Ryzen), sem warm-up.
@@ -169,8 +152,6 @@ Benchmark realizado em 1.000 execuções consecutivas (Node.js 24, AMD Ryzen), s
 | Placa veicular | 0,001 ms |
 
 Todos os geradores completam em **menos de 0,01 ms** — sem I/O, sem rede, sem dependências externas.
-
----
 
 ## Template Tags
 
@@ -362,8 +343,6 @@ Todos os geradores completam em **menos de 0,01 ms** — sem I/O, sem rede, sem 
 | `{% moedaPais %}` | Moeda ISO 4217 | BRL |
 | `{% paisCompleto %}` | JSON com todos os campos | {...} |
 
----
-
 ## Listas Customizadas via Environment
 
 Quando você precisa de valores específicos nos testes — documentos cadastrados no banco de homologação, emails com caixa real, UUIDs de registros existentes — defina listas no Environment do Insomnia. O plugin seleciona um valor aleatório da lista a cada execução. Se a variável não existir, gera um novo valor válido automaticamente.
@@ -442,8 +421,6 @@ Administração
 - As listas acadêmicas usam **vírgula** e/ou **quebra de linha**, preservando espaços dentro de cada valor
 - Se a lista estiver vazia ou a variável não existir, o gerador aleatório é usado
 - Um valor aleatório da lista é escolhido a cada execução da request
-
----
 
 ## Desenvolvimento
 
@@ -525,29 +502,37 @@ npm run build
 npm test
 ```
 
----
-
 ## Roadmap
 
 Contribuições são bem-vindas. Funcionalidades planejadas para próximas versões:
 
-### 📊 Média Prioridade
-- **Dados Pessoais**: passaporte e documentos internacionais
-- **Desenvolvimento**: MAC Address, User-Agent, Locale
+## Ordem de Implementação Sugerida
 
----
+| # | Feature | Esforço | Razão da ordem | Realizado? |
+|---|---|---|---|---|
+| 1 | **Utilitários HTTP/API** | Muito baixo | Sem validação, só listas estáticas — ganho rápido, e é o diferencial mais alinhado ao produto (Insomnia) | Não |
+| 2 | **Idade** | Trivial | Reaproveita gerador existente, zero risco | Não |
+| 3 | **Bancário Expandido** (banco, tipo conta, Pix por tipo) | Baixo | Reaproveita geradores existentes (CPF/email/celular), completa categoria já existente | v3.0.5 
+| 4 | **Cartão de Crédito** | Médio | Reaproveita algoritmo de Luhn (família dos validadores de CPF/CNPJ), alta demanda de mercado | v3.0.4 |
+| 5 | **Boleto Bancário** | Médio | Mesma família de validação (mod10/mod11), mas string mais longa e regras mais específicas | Não |
+| 6 | **Consentimento LGPD** | Baixo-médio | Não depende de nada acima, pode entrar em paralelo com qualquer item — prioridade por posicionamento estratégico, não por dependência técnica | Não |
+| 7 | **RH/Trabalho** | Médio | Novo domínio, mas sem validação complexa | Não |
+| 8 | **Processo Judicial (CNJ)** | Alto | Módulo 97 é mais complexo de implementar e testar corretamente | Não |
+| 9 | **Documentos adicionais** | Baixo | Simples, mas menor prioridade de uso real | Não |
 
 ## Licença
 
 MIT — Veja o arquivo [LICENSE](LICENSE) para detalhes.
-
----
 
 ## Autor
 
 Desenvolvido por [Roberto Godoy](https://github.com/godoyrw)  
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0003--2100--4772-green.svg)](https://orcid.org/0009-0003-2100-4772)
 
-## Apoio
+## ❤️ Patrocinador
 
-<iframe src="https://github.com/sponsors/godoyrw/card" title="Patrocinar - Roberto W Godoy" height="225" width="600" style="border: 0;"></iframe>
+Se você acha este projeto útil, considere patrocinar o seu desenvolvimento.
+
+👉 **https://github.com/sponsors/godoyrw**
+
+[![Sponsor](https://img.shields.io/badge/Patrocinador-Dados%20Falsos-pink?logo=github)](https://github.com/sponsors/godoyrw)
