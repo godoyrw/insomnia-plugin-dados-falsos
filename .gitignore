@@ -10,5 +10,4 @@ yarn-error.log*
 test/**/*.js
 test/**/*.d.ts
 *.tgz
-.dev/*
 .claude/*
