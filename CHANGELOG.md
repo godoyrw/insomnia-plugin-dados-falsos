@@ -19,6 +19,17 @@ e este projeto segue Semantic Versioning.
 
 ### Security
 
+## [3.0.5] - 2026-07-21
+
+### Added
+- Expansão dos dados bancários com as template tags `{% codigoBanco %}`, `{% tipoConta %}`, `{% chavePixCpf %}`, `{% chavePixEmail %}` e `{% chavePixTelefone %}`.
+- Catálogo de bancos e instituições de pagamento com códigos FEBRABAN/COMPE, incluindo Banco do Brasil, Santander, Caixa, Bradesco, Itaú, Nubank, PagBank, Mercado Pago, C6 Bank, Sicredi e Sicoob.
+- Geração de chaves Pix por CPF, e-mail e telefone brasileiro no padrão internacional E.164.
+
+### Changed
+- Catálogo público atualizado para 98 template tags e suíte de qualidade para 172 testes.
+- Documentação de desenvolvimento, testes e uso atualizada para cobrir o domínio bancário expandido.
+
 ## [3.0.4] - 2026-07-21
 
 ### Added
