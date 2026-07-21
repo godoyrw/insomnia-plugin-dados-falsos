@@ -25,7 +25,6 @@
   [![Tests](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/test.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/test.yml)
   [![Publish NPM](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-npm.yml)
   [![Release](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-release.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-release.yml)
-  ![Gitea Last Commit](https://img.shields.io/gitea/last-commit/godoyrw/insomnia-plugin-dados-falsos)
   ![Static Badge](https://img.shields.io/badge/Godah-Code-blue?logo=github) 
   [![ORCID](https://img.shields.io/badge/ORCID-0009--0003--2100--4772-green.svg)](https://orcid.org/0009-0003-2100-4772)
 
