@@ -79,6 +79,7 @@
   ],
   "files": [
     "dist/insomnia-plugin-dados-falsos",
+    "assets",
     "README.md",
     "CHANGELOG.md",
     "LICENSE"
