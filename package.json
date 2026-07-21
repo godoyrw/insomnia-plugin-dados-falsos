@@ -1,6 +1,6 @@
 {
   "name": "insomnia-plugin-dados-falsos",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "Gere dados sintéticos brasileiros com algoritmos oficiais (CPF, CNPJ, CNH, CNS, PIS, RG, UUID e muito mais) diretamente nas Template Tags do Insomnia.",
   "keywords": [
     "insomnia",
@@ -109,7 +109,7 @@
   },
   "insomnia": {
     "name": "Dados Falsos",
-    "version": "3.0.6",
+    "version": "3.0.7",
     "displayName": "Dados Falsos",
     "description": "Gere dados sintéticos brasileiros com algoritmos oficiais (CPF, CNPJ, CNH, CNS, PIS, RG, UUID e muito mais) diretamente nas Template Tags do Insomnia.",
     "icon": "assets/icon.png",
