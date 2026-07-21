@@ -191,8 +191,13 @@ Tags que suportam valores fixos via variáveis de ambiente do Insomnia:
 | `PIS_LIST` | `{% pis %}` |
 | `CNS_LIST` | `{% numeroCNS %}` |
 | `PLACA_LIST` | `{% placa %}` |
+| `EDUCATION_INSTITUTION_LIST` | `{% instituicaoEnsino %}` |
+| `EDUCATION_COURSE_LIST` | `{% curso %}` |
+| `EDUCATION_LEVEL_LIST` | `{% nivelFormacao %}` |
+| `EDUCATION_STATUS_LIST` | `{% statusAcademico %}` |
+| `EDUCATION_PERIOD_LIST` | `{% periodoAcademico %}` |
 
-Valores separados por espaço. Se a variável não existir, o gerador aleatório é usado.
+As listas de documentos, contato, UUID e placa usam espaço como separador. As listas acadêmicas usam vírgula e/ou quebra de linha. Se a variável não existir, o gerador aleatório é usado.
 
 ---
 
@@ -325,7 +330,7 @@ Toda alteração deve manter estes arquivos sincronizados:
 | `DEVELOPMENT.md` | Estrutura de pastas, lista de generators |
 | `TESTING.md` | Tabela de categorias/testes, detalhes por categoria |
 | `CONTRIBUTING.md` | Padrões caso mudem |
-| `src/main.ts` | `@version` no JSDoc |
+| `src/main.ts` | Descrição e contagem de tags no JSDoc |
 | `package.json` | `version` e `insomnia.version` |
 | `AGENTS.md` | Este arquivo — estrutura, contagens, regras |
 
@@ -356,10 +361,10 @@ Toda alteração deve manter estes arquivos sincronizados:
 
 | Métrica | Valor |
 |---|---|
-| Template Tags | 88 |
+| Template Tags | 93 |
 | Generators | 26 |
 | Validadores exportados | 13 |
-| Listas via Environment | 13 |
+| Listas via Environment | 15 |
 | Testes | 166 |
 | Taxa de aprovação | 100% |
 | Dependências de produção | 0 |

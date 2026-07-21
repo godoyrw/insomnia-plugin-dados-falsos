@@ -52,7 +52,7 @@ As correções de segurança serão aplicadas preferencialmente na versão mais 
 
 Caso encontre uma vulnerabilidade de segurança, **não publique detalhes em uma Issue pública**.
 
-O reporte deve ser enviado de forma privada para permitir análise e correção adequada.
+Use o recurso de reporte privado de vulnerabilidades do GitHub, quando disponível no repositório. Caso ele não esteja habilitado, não abra uma Issue pública: contate o mantenedor pelo perfil informado no `package.json` para combinar um canal privado.
 
 Inclua, quando possível:
 

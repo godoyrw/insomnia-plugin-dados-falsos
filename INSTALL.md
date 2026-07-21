@@ -42,14 +42,18 @@ npm run build
 | Linux / Mac | `~/.config/Insomnia/plugins/` |
 | Windows | `%APPDATA%\Insomnia\plugins\` |
 
-**4. Copie o plugin compilado**
+**4. Copie os arquivos do pacote e o código compilado**
 
 ```bash
 # Linux / Mac
-cp -r dist/insomnia-plugin-dados-falsos ~/.config/Insomnia/plugins/
+mkdir -p ~/.config/Insomnia/plugins/insomnia-plugin-dados-falsos
+cp package.json ~/.config/Insomnia/plugins/insomnia-plugin-dados-falsos/
+cp -r dist ~/.config/Insomnia/plugins/insomnia-plugin-dados-falsos/
 
 # Windows (PowerShell)
-Copy-Item -Path "dist/insomnia-plugin-dados-falsos" -Destination "$env:APPDATA\Insomnia\plugins\" -Recurse
+New-Item -ItemType Directory -Force -Path "$env:APPDATA\Insomnia\plugins\insomnia-plugin-dados-falsos"
+Copy-Item -Path "package.json" -Destination "$env:APPDATA\Insomnia\plugins\insomnia-plugin-dados-falsos\"
+Copy-Item -Path "dist" -Destination "$env:APPDATA\Insomnia\plugins\insomnia-plugin-dados-falsos\" -Recurse
 ```
 
 **5. Reinicie o Insomnia** e confirme em **Preferences → Plugins**.
@@ -112,6 +116,7 @@ dist/insomnia-plugin-dados-falsos/
         ├── allergy.js
         ├── medicalRecordNumber.js
         ├── professionalRegistration.js
+        ├── tituloEleitor.js
         ├── education.js
         ├── bancario.js
         └── creditCard.js

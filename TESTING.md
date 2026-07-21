@@ -69,10 +69,10 @@ Os testes estão em `test/generators.test.ts` e cobrem as 93 template tags com 1
 - **Países**: pais, codigoPais, codigoTelefonePais, moedaPais, paisCompleto
 - **Saúde**: tipoSanguineo, numeroProntuario, numeroCNS, convenio, alergia, conselhoProfissional (CRM, CREA, OAB, CRO, COREN)
 - **Educação**: instituicaoEnsino, curso, nivelFormacao, statusAcademico, periodoAcademico, semestreAcademico, anoAcademico, registroAcademico
-- **PIS/PASEP**: pis (incluindo 1000 iterações de validação)
+- **PIS/PASEP**: pis
 - **Título de Eleitor**: tituloEleitor (incluindo 1000 iterações de validação)
-- **Bancário**: agencia, conta, pixAleatoria (incluindo 1000 iterações de validação)
-- **Veicular**: placa, placaAntiga, placaMercosul (incluindo 1000 iterações de validação)
+- **Bancário**: agencia, conta e pixAleatoria (incluindo 1000 iterações)
+- **Veicular**: placa, placaAntiga e placaMercosul
 - **Cartão de Crédito**: numeroCartao, bandeiraCartao, cvv, validadeCartao, cartaoCompleto
 
 ## Resultado dos Testes
@@ -91,54 +91,58 @@ Os testes estão em `test/generators.test.ts` e cobrem as 93 template tags com 1
 
 ### Detalhes dos Testes por Categoria
 
-**Identidade (29 testes)**
+**Identidade, educação e documentos (44 testes)**
 - nomeCompleto (2), primeiroNome (2), sobrenome (1), nomeSocial (1), usuario (2), nomeUsuario (2)
-- cpf (3), cnpj (5), cnh (4), rg (4)
+- cpf (3), cnpj (5), cnh (3), rg (3)
 - dataNascimento (3), genero (1)
-- tituloEleitor: formato (1), dígito verificador (1)
+- instituicaoEnsino (2), curso (2), nivelFormacao (1), statusAcademico (1), periodoAcademico (1), semestreAcademico (1), anoAcademico (1), registroAcademico (1)
+- pis (2), tituloEleitor (4)
 
-**Contato (12 testes)**
+**Contato (10 testes)**
 - email (2), emailExemplo (2), telefone (2), celular (2), whatsapp (2)
 
-**Endereço (19 testes)**
+**Endereço (12 testes)**
 - cep (2), logradouro (2), numero (1), complemento (1), endereco (1), enderecoNumero (1)
 - bairro (1), cidade (1), estado (1), timezone (1)
 
-**Empresa (12 testes)**
+**Empresa (7 testes)**
 - razaoSocial (2), nomeFantasia (1), emailCorporativo (2), cargo (1), departamento (1)
 
-**Financeiro (15 testes)**
-- moeda (1), valor (3), plano (1), statusPagamento (1), cupom (2)
+**Financeiro (7 testes)**
+- moeda (1), valor (2), plano (1), statusPagamento (1), cupom (2)
 
 **Datas e Tempo (4 testes)**
 - datetimeIso (4)
 
-**Identificadores (16 testes)**
+**Identificadores (12 testes)**
 - uuid (2), ulid (2), chaveIdempotencia (1), chaveApi (2), tokenJwt (2), senha (2), hashSha256 (1)
 
-**Conteúdo (15 testes)**
+**Conteúdo (9 testes)**
 - corHex (2), booleano (1), titulo (2), descricao (1), textoLongo (2), emoji (1)
 
-**E-commerce (12 testes)**
+**E-commerce (9 testes)**
 - sku (1), ean (2), pedido (2), statusPedido (1), quantidade (2), frete (1)
 
 **Geo e Rede (8 testes)**
 - latitude (2), longitude (2), ipv4 (3), ipv6 (1)
 
-**Países do Mundo (12 testes)**
+**Países do Mundo (9 testes)**
 - pais (2), codigoPais (1), codigoTelefonePais (3), moedaPais (1), paisCompleto (2)
 
-**Saúde (16 testes)**
+**Saúde (10 testes)**
 - tipoSanguineo (2), numeroProntuario (1), numeroCNS (1), convenio (1), alergia (1)
 - conselhoProfissional sem parâmetro (1), CRM (1), CREA (1), OAB (1)
 
-**PIS/PASEP (3 testes)**
-- formato (1), dígito verificador (1), 1000 iterações (1)
+**Bancário (10 testes)**
+- agencia (3), conta (4), pixAleatoria (3)
 
-**Veicular (7 testes)**
-- placa: tamanho (1), formato geral (1), 1000 iterações (1)
+**Veicular (6 testes)**
+- placa: tamanho (1), formato geral (1)
 - placaAntiga: formato AAA9999 (1), letras e dígitos (1)
 - placaMercosul: formato AAA9A99 (1), letra na 5ª posição (1)
+
+**Cartão de Crédito (9 testes)**
+- numeroCartao (3), bandeiraCartao (1), cvv (2), validadeCartao (1), cartaoCompleto (1), validarCartao (1)
 
 ## Cobertura de Testes
 
@@ -197,4 +201,4 @@ npx tsx test/generators.test.ts
 
 ## Performance
 
-Os testes executam em menos de 1 segundo, incluindo 1000 iterações de stress test para CNH, RG, PIS e placas veiculares.
+Os testes executam em menos de 1 segundo e incluem verificações de 1.000 iterações para título de eleitor, agência, conta e chave Pix aleatória.

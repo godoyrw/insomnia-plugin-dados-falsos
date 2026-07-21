@@ -123,7 +123,6 @@ Tags que suportam listas fixas via variáveis de ambiente do Insomnia:
 | `EDUCATION_LEVEL_LIST` | `{% nivelFormacao %}` |
 | `EDUCATION_STATUS_LIST` | `{% statusAcademico %}` |
 | `EDUCATION_PERIOD_LIST` | `{% periodoAcademico %}` |
-| `CREDIT_CARD_BRAND` | `{% numeroCartao %}` |
 
 ## Adicionando um Novo Template Tag
 

@@ -35,7 +35,7 @@
 
 ## Segurança e LGPD
 
-Este plugin gera **apenas dados sintéticos**. Nenhuma informação é obtida da internet. Nenhum documento real é utilizado. Os documentos são matematicamente válidos, mas **não representam pessoas físicas ou jurídicas existentes**. Ideal para ambientes sujeitos à LGPD onde o uso de dados reais em testes é proibido.
+Este plugin gera dados de forma local, a partir de constantes e algoritmos internos; nenhuma informação é obtida da internet nem de bases de dados externas. Documentos e identificadores podem ser matematicamente válidos, mas são destinados exclusivamente a testes. Como todo identificador gerado aleatoriamente pode coincidir com um valor existente, não os use para representar pessoas, empresas ou contas reais.
 
 ### Não há comunicação com APIs externas durante a geração dos dados.
 
@@ -371,12 +371,17 @@ Quando você precisa de valores específicos nos testes — documentos cadastrad
 | `CNPJ_LIST` | `{% cnpj %}` | espaço | 14 caracteres (numérico ou alfanumérico) |
 | `EMAIL_LIST` | `{% email %}` | espaço | email válido |
 | `UUID_LIST` | `{% uuid %}`, `{% chaveIdempotencia %}` | espaço | UUID v4 |
-| `PHONE_LIST` | `{% telefone %}` | espaço | formato livre |
-| `CELULAR_LIST` | `{% celular %}` | espaço | formato livre |
-| `WHATSAPP_LIST` | `{% whatsapp %}` | espaço | formato livre |
+| `PHONE_LIST` | `{% telefone %}` | espaço | telefone sem espaços |
+| `CELULAR_LIST` | `{% celular %}` | espaço | celular sem espaços |
+| `WHATSAPP_LIST` | `{% whatsapp %}` | espaço | WhatsApp sem espaços |
 | `PIS_LIST` | `{% pis %}` | espaço | 11 dígitos numéricos |
 | `CNS_LIST` | `{% numeroCNS %}` | espaço | 15 dígitos numéricos |
 | `PLACA_LIST` | `{% placa %}` | espaço | AAA9999 ou AAA9A99 |
+| `EDUCATION_INSTITUTION_LIST` | `{% instituicaoEnsino %}` | vírgula ou quebra de linha | nome da instituição |
+| `EDUCATION_COURSE_LIST` | `{% curso %}` | vírgula ou quebra de linha | nome do curso |
+| `EDUCATION_LEVEL_LIST` | `{% nivelFormacao %}` | vírgula ou quebra de linha | nível de formação |
+| `EDUCATION_STATUS_LIST` | `{% statusAcademico %}` | vírgula ou quebra de linha | status acadêmico |
+| `EDUCATION_PERIOD_LIST` | `{% periodoAcademico %}` | vírgula ou quebra de linha | período de estudo |
 
 ### Exemplos de configuração
 
@@ -400,11 +405,9 @@ qa1@suaempresa.com qa2@suaempresa.com qa3@suaempresa.com
 550e8400-e29b-41d4-a716-446655440000 6ba7b810-9dad-11d1-80b4-00c04fd430c8
 ```
 
-**PHONE_LIST / CELULAR_LIST / WHATSAPP_LIST** — números cadastrados em provedores de SMS/WhatsApp de staging:
+**PHONE_LIST / CELULAR_LIST / WHATSAPP_LIST** — números cadastrados em provedores de SMS/WhatsApp de staging (sem espaços, pois o espaço separa itens):
 ```
-(11) 3333-4444
-(11) 91234-5678
-+55 11 91234-5678
+(11)3333-4444 (11)91234-5678 +551191234-5678
 ```
 
 **PIS_LIST** — PIS de funcionários fictícios cadastrados no sistema de RH de homologação:
@@ -422,9 +425,16 @@ qa1@suaempresa.com qa2@suaempresa.com qa3@suaempresa.com
 ABC1234 BRA1A23 XYZ9876
 ```
 
+**EDUCATION_COURSE_LIST** — cursos disponíveis no ambiente de homologação (vírgulas ou quebras de linha):
+```
+Ciência da Computação, Engenharia de Software
+Administração
+```
+
 ### Comportamento
 
-- Os valores são separados por **espaço** (um ou mais)
+- As listas de documentos, contato, UUID e placa usam **espaço** como separador
+- As listas acadêmicas usam **vírgula** e/ou **quebra de linha**, preservando espaços dentro de cada valor
 - Se a lista estiver vazia ou a variável não existir, o gerador aleatório é usado
 - Um valor aleatório da lista é escolhido a cada execução da request
 
