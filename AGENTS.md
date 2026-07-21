@@ -69,7 +69,7 @@
 │       ├── bancario.ts              # Agência, conta e Pix
 │       └── education.ts             # Instituição, curso e dados acadêmicos
 ├── test/
-│   └── generators.test.ts           # Suite de 157 testes (100%)
+│   └── generators.test.ts           # Suite de 166 testes (100%)
 ├── dist/                            # Código compilado (gerado — não versionar)
 ├── .github/
 │   └── workflows/
@@ -199,7 +199,7 @@ Valores separados por espaço. Se a variável não existir, o gerador aleatório
 
 - **Execução**: `npm test` (compila com `tsc` e roda com `node`)
 - **CI**: `npx tsx test/generators.test.ts` (sem compilação prévia)
-- **Cobertura atual**: 157 testes, 100% de aprovação
+- **Cobertura atual**: 166 testes, 100% de aprovação
 - **Padrão**:
 
 ```typescript
@@ -230,7 +230,7 @@ test('minhaTag: deve ser válido em 1000 iterações', () => {
 | `npm install` | Instala devDependencies |
 | `npm run build` | Compila TypeScript para `dist/` |
 | `npm run dev` | Watch mode — recompila ao salvar |
-| `npm test` | Executa os 157 testes |
+| `npm test` | Executa os 166 testes |
 | `npm run test:watch` | Recompila testes ao salvar |
 | `npm run test:stress` | 100 execuções consecutivas |
 | `npm run clean` | Remove `dist/` e arquivos compilados |
@@ -359,7 +359,7 @@ Toda alteração deve manter estes arquivos sincronizados:
 | Generators | 26 |
 | Validadores exportados | 13 |
 | Listas via Environment | 13 |
-| Testes | 157 |
+| Testes | 166 |
 | Taxa de aprovação | 100% |
 | Dependências de produção | 0 |
 | Performance média por gerador | < 0,01 ms |

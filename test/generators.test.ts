@@ -1,46 +1,96 @@
 /**
- * Testes de Qualidade - Dados Falsos
- * Suite de testes para validação de formatos e integridade de dados
+ * Testes de Qualidade — Dados Falsos
+ * ===================================
+ * Suite de testes para validação de formatos e integridade de dados.
  *
- * Objetivo: Garantir que todos os dados gerados seguem os padrões esperados,
- * validando não apenas formato mas também qualidade real dos dados gerados.
+ * Objetivo: garantir que todos os dados gerados seguem os padrões esperados,
+ * validando não apenas formato mas também qualidade real dos dados gerados
+ * (dígitos verificadores, intervalos válidos, listas de valores conhecidos).
  *
  * Execução:
  *   npm run test          # Executa uma vez
  *   npm run test:watch    # Modo watch
+ *   npm run test:stress   # 100 execuções consecutivas (detecta flakiness)
  *
  * @author Roberto Godoy
  * @license MIT
+ * @module test/generators
  */
 
-import { STREET_TYPES,UF, TIMEZONES } from '../src/constants/locations';
+// ============================================================================
+// IMPORTS — CONSTANTS
+// ============================================================================
+
+import { STREET_TYPES, UF, TIMEZONES } from '../src/constants/locations';
+
+// ============================================================================
+// IMPORTS — GERADORES POR DOMÍNIO
+// ============================================================================
+
+// Identidade e documentos
 import { genFullName, genFirstName, genLastName, genNickname, genUsername, genBirthdate, genGender } from '../src/generators/identity';
 import { genCpf, validarCpf } from '../src/generators/cpf';
 import { genCnpj, validarCnpj } from '../src/generators/cnpj';
 import { genCnh, validarCnh } from '../src/generators/cnh';
 import { genRg, validarRg } from '../src/generators/rg';
-import { genEmail, genEmailExample, genPhone, genCellphone, genWhatsapp } from '../src/generators/contact';
-import { genCep, genStreet, genAddressNumber, genComplement, genAddress, genNeighborhood, genCity, genStateUf, genTimezone } from '../src/generators/address';
-import { genCompanyName, genCompanyFantasyName, genCorporateEmail, genPosition, genDepartment } from '../src/generators/company';
-import { genCurrency, genAmount, genPaymentPlan, genPaymentStatus, genCoupon } from '../src/generators/financial';
-import { genDatetimeIso } from '../src/generators/datetime';
-import { genUuid, genUlid, genIdempotencyKey, genApiKey, genJwtToken, genPassword, genSha256Hash } from '../src/generators/identifiers';
-import { genHexColor, genBoolean, genContentTitle, genContentDescription, genLongText, genEmoji } from '../src/generators/content';
-import { genSku, genEan, genOrderId, genOrderStatus, genQuantity, genShippingType } from '../src/generators/ecommerce';
-import { genLatitude, genLongitude, genIpv4, genIpv6 } from '../src/generators/geo';
-import { genCountryName, genCountryCode, genCountryPhoneCode, genCountryCurrency, genCountryFull } from '../src/generators/countries';
-import { genBloodType } from '../src/generators/bloodType';
+import { genPIS, validarPis } from '../src/generators/pis';
+import { genTituloEleitor, validarTituloEleitor } from '../src/generators/tituloEleitor';
 
-// Importa geradores de saúde
+// Contato
+import { genEmail, genEmailExample, genPhone, genCellphone, genWhatsapp } from '../src/generators/contact';
+
+// Endereço
+import { genCep, genStreet, genAddressNumber, genComplement, genAddress, genNeighborhood, genCity, genStateUf, genTimezone } from '../src/generators/address';
+
+// Empresa e trabalho
+import { genCompanyName, genCompanyFantasyName, genCorporateEmail, genPosition, genDepartment } from '../src/generators/company';
+
+// Financeiro
+import { genCurrency, genAmount, genPaymentPlan, genPaymentStatus, genCoupon } from '../src/generators/financial';
+
+// Datas e tempo
+import { genDatetimeIso } from '../src/generators/datetime';
+
+// Identificadores e segurança
+import { genUuid, genUlid, genIdempotencyKey, genApiKey, genJwtToken, genPassword, genSha256Hash } from '../src/generators/identifiers';
+
+// Conteúdo / texto
+import { genHexColor, genBoolean, genContentTitle, genContentDescription, genLongText, genEmoji } from '../src/generators/content';
+
+// E-commerce
+import { genSku, genEan, genOrderId, genOrderStatus, genQuantity, genShippingType } from '../src/generators/ecommerce';
+
+// Geolocalização
+import { genLatitude, genLongitude, genIpv4, genIpv6 } from '../src/generators/geo';
+
+// Países do mundo
+import { genCountryName, genCountryCode, genCountryPhoneCode, genCountryCurrency, genCountryFull } from '../src/generators/countries';
+
+// Saúde
+import { genBloodType } from '../src/generators/bloodType';
 import { genHealthPlan } from '../src/generators/healthPlan';
 import { genAllergy } from '../src/generators/allergy';
 import { genMedicalRecordNumber } from '../src/generators/medicalRecordNumber';
 import { genCNS } from '../src/generators/cns';
 import { genProfessionalRegistration } from '../src/generators/professionalRegistration';
-import { genPIS, validarPis } from '../src/generators/pis';
-import { genTituloEleitor, validarTituloEleitor } from '../src/generators/tituloEleitor';
+
+// Veicular
 import { genPlaca, genPlacaAntiga, genPlacaMercosul, validarPlaca } from '../src/generators/vehicle';
+
+// Bancário
 import { genAgencia, genConta, genPixAleatoria } from '../src/generators/bancario';
+
+// Cartão de crédito
+import {
+  genNumeroCartao,
+  genBandeiraCartao,
+  genCvv,
+  genValidadeCartao,
+  genCartaoCompleto,
+  validarCartao
+} from '../src/generators/creditCard';
+
+// Educação
 import {
   genEducationInstitution,
   genEducationCourse,
@@ -51,6 +101,11 @@ import {
   genEducationYear,
   genEducation
 } from '../src/generators/education';
+
+// ============================================================================
+// IMPORTS — CATÁLOGO E UTILITÁRIOS
+// ============================================================================
+
 import { templateTags } from '../src/constants/templateTags';
 import { validarUuid, validarData, validarEmail, validarSenha, validarEan13 } from '../src/utils';
 
@@ -58,18 +113,38 @@ import { validarUuid, validarData, validarEmail, validarSenha, validarEan13 } fr
 // FRAMEWORK DE TESTES
 // ============================================================================
 
+/**
+ * Resultado individual de um teste executado.
+ */
 interface TestResult {
   name: string;
   passed: boolean;
   error?: string;
 }
 
+/** Acumula os resultados de todos os testes executados nesta run. */
 const results: TestResult[] = [];
 
+/**
+ * Verifica uma condição booleana e lança erro com mensagem descritiva
+ * caso falhe. Toda chamada de `assert` deve informar a mensagem —
+ * ela é o que aparece no console em caso de falha.
+ *
+ * @param {boolean} condition Condição que deve ser verdadeira.
+ * @param {string} message Mensagem exibida caso a condição seja falsa.
+ */
 function assert(condition: boolean, message: string): void {
   if (!condition) throw new Error(message);
 }
 
+/**
+ * Executa um caso de teste, mede o tempo de execução e registra o
+ * resultado (sucesso ou falha) em `results`, imprimindo o status no
+ * console com formatação colorida (ANSI).
+ *
+ * @param {string} name Nome descritivo do teste.
+ * @param {() => void} fn Função contendo as asserções do teste.
+ */
 function test(name: string, fn: () => void): void {
   const start = performance.now();
   try {
@@ -88,6 +163,11 @@ function test(name: string, fn: () => void): void {
 // ============================================================================
 // IDENTIDADE
 // ============================================================================
+/**
+ * Testes de identidade, documentos e dados demográficos.
+ * Cobre nomes completos, apelidos, usuário, CPF, CNPJ, CNH, RG, PIS/PASEP,
+ * Título de Eleitor, nascimento, gênero e dados acadêmicos.
+ */
 
 test('nomeCompleto: deve ter pelo menos 2 palavras', () => {
   const v = genFullName();
@@ -291,9 +371,46 @@ test('registroAcademico: deve retornar objeto completo', () => {
   assert(typeof v.period === 'string' && v.period.length > 0, 'Período ausente');
 });
 
+test('pis: deve ter exatamente 11 dígitos numéricos', () => {
+  const v = genPIS();
+  assert(/^\d{11}$/.test(v), `PIS inválido: "${v}"`);
+});
+
+test('pis: deve ter dígito verificador válido (algoritmo oficial)', () => {
+  const v = genPIS();
+  assert(validarPis(v), `PIS com DV inválido: "${v}"`);
+});
+
+test('tituloEleitor: deve ter exatamente 12 dígitos numéricos', () => {
+  const v = genTituloEleitor();
+  assert(/^\d{12}$/.test(v), `Título de Eleitor inválido: "${v}"`);
+});
+
+test('tituloEleitor: deve ter dígito verificador válido (algoritmo oficial)', () => {
+  const v = genTituloEleitor();
+  assert(validarTituloEleitor(v), `Título de Eleitor com DV inválido: "${v}"`);
+});
+
+test('tituloEleitor: deve ser válido em 1000 iterações', () => {
+  for (let i = 0; i < 1000; i++) {
+    const v = genTituloEleitor();
+    assert(validarTituloEleitor(v), `Título inválido na iteração ${i}: "${v}"`);
+  }
+});
+
+test('tituloEleitor: UF deve ser entre 01 e 28', () => {
+  const v = genTituloEleitor();
+  const uf = parseInt(v.substring(8, 10));
+  assert(uf >= 1 && uf <= 28, `UF inválida: ${uf}`);
+});
+
 // ============================================================================
 // CONTATO
 // ============================================================================
+/**
+ * Testes de contato e comunicação.
+ * Cobre e-mails, telefones, celulares e WhatsApp.
+ */
 
 test('email: deve ter formato válido (RFC 5322)', () => {
   const v = genEmail();
@@ -350,6 +467,10 @@ test('whatsapp: deve ter código +55 (Brasil)', () => {
 // ============================================================================
 // ENDEREÇO
 // ============================================================================
+/**
+ * Testes de endereços brasileiros.
+ * Cobre CEP, logradouro, número, complemento, bairro, cidade, UF e timezone.
+ */
 
 test('cep: deve ter formato XXXXX-XXX', () => {
   const v = genCep();
@@ -415,6 +536,10 @@ test('timezone: deve ser uma timezone IANA válida', () => {
 // ============================================================================
 // EMPRESA
 // ============================================================================
+/**
+ * Testes de representação e organização empresarial.
+ * Cobre razão social, nome fantasia, e-mail corporativo, cargo e departamento.
+ */
 
 test('razaoSocial: deve ter pelo menos 3 caracteres', () => {
   const v = genCompanyName();
@@ -454,6 +579,10 @@ test('departamento: deve ter pelo menos 2 caracteres', () => {
 // ============================================================================
 // FINANCEIRO
 // ============================================================================
+/**
+ * Testes financeiros e comerciais básicos.
+ * Cobre moeda, valores, planos, status de pagamento e cupons.
+ */
 
 test('moeda: deve ser BRL', () => {
   const v = genCurrency();
@@ -494,8 +623,12 @@ test('cupom: deve ser alfanumérico em maiúsculas', () => {
 });
 
 // ============================================================================
-// DATAS
+// DATAS E TEMPO
 // ============================================================================
+/**
+ * Testes de data, hora e fuso horário.
+ * Cobre timestamps ISO 8601 e a validade real dos valores gerados.
+ */
 
 test('datetimeIso: deve ter formato ISO 8601 completo', () => {
   const v = genDatetimeIso();
@@ -521,8 +654,12 @@ test('datetimeIso: minutos deve estar entre 0-59', () => {
 });
 
 // ============================================================================
-// IDENTIFICADORES
+// IDENTIFICADORES E SEGURANÇA
 // ============================================================================
+/**
+ * Testes de identificação e segurança.
+ * Cobre UUIDs, ULIDs, chaves, tokens JWT, senhas e hashes SHA256.
+ */
 
 test('uuid: deve ter formato UUID v4 válido', () => {
   const v = genUuid();
@@ -533,8 +670,10 @@ test('uuid: deve ter 5 segmentos separados por hífen', () => {
   const v = genUuid();
   const segs = v.split('-');
   assert(segs.length === 5, `Segmentos inválidos: "${v}"`);
-  assert(segs[0].length === 8 && segs[1].length === 4 && segs[2].length === 4 && segs[3].length === 4 && segs[4].length === 12,
-    `Tamanho de segmento inválido: "${v}"`);
+  assert(
+    segs[0].length === 8 && segs[1].length === 4 && segs[2].length === 4 && segs[3].length === 4 && segs[4].length === 12,
+    `Tamanho de segmento inválido: "${v}"`
+  );
 });
 
 test('ulid: deve ter 26 caracteres', () => {
@@ -589,8 +728,12 @@ test('hashSha256: deve ter exatamente 64 caracteres hexadecimais', () => {
 });
 
 // ============================================================================
-// CONTEÚDO
+// CONTEÚDO / TEXTO
 // ============================================================================
+/**
+ * Testes de geração de conteúdo textual e utilitário.
+ * Cobre títulos, descrições, textos longos, emojis, cores e booleanos.
+ */
 
 test('corHex: deve ter formato #RRGGBB válido', () => {
   const v = genHexColor();
@@ -634,12 +777,16 @@ test('textoLongo: deve ter no máximo 500 caracteres', () => {
 
 test('emoji: deve ter pelo menos 1 caractere', () => {
   const v = genEmoji();
-  assert(v.length > 0, `Emoji vazio`);
+  assert(v.length > 0, 'Emoji vazio');
 });
 
 // ============================================================================
-// E-COMMERCE
+// E-COMMERCE / PEDIDOS
 // ============================================================================
+/**
+ * Testes voltados a comércio eletrônico e pedidos.
+ * Cobre SKU, EAN, pedidos, status, quantidade e frete.
+ */
 
 test('sku: deve ter formato SKU-XXXXX', () => {
   const v = genSku();
@@ -693,8 +840,12 @@ test('frete: deve ser um dos valores válidos', () => {
 });
 
 // ============================================================================
-// GEOLOCALIZAÇÃO
+// GEOLOCALIZAÇÃO E REDE
 // ============================================================================
+/**
+ * Testes de geolocalização e rede.
+ * Cobre coordenadas geográficas e endereços IPv4/IPv6.
+ */
 
 test('latitude: deve estar entre -90 e 90', () => {
   const v = parseFloat(genLatitude());
@@ -744,6 +895,10 @@ test('ipv6: deve ter formato válido com dois pontos', () => {
 // ============================================================================
 // PAÍSES DO MUNDO
 // ============================================================================
+/**
+ * Testes de contexto internacional.
+ * Cobre nomes, códigos ISO, códigos de telefone e moedas de países.
+ */
 
 test('pais: deve ter pelo menos 3 caracteres', () => {
   const v = genCountryName();
@@ -783,8 +938,10 @@ test('moedaPais: deve ser sigla ISO 4217 (3 letras maiúsculas)', () => {
 
 test('paisCompleto: deve ter todos os campos obrigatórios', () => {
   const v = genCountryFull() as any;
-  assert(v && v.name && v.code && v.phoneCode && v.currency,
-    `Objeto país incompleto: ${JSON.stringify(v)}`);
+  assert(
+    v && v.name && v.code && v.phoneCode && v.currency,
+    `Objeto país incompleto: ${JSON.stringify(v)}`
+  );
 });
 
 test('paisCompleto: código deve bater com nome do país', () => {
@@ -796,6 +953,11 @@ test('paisCompleto: código deve bater com nome do país', () => {
 // ============================================================================
 // SAÚDE
 // ============================================================================
+/**
+ * Testes de dados de saúde.
+ * Cobre tipo sanguíneo, prontuário, CNS, convênio, alergias e conselhos
+ * profissionais (CRM, CREA, OAB, CRO, COREN).
+ */
 
 test('tipoSanguineo: deve ser um dos tipos sanguíneos válidos', () => {
   const validos = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
@@ -808,17 +970,13 @@ test('tipoSanguineo: deve seguir o formato Letra+/- ou AB+/-', () => {
   assert(/^(A|B|AB|O)[+-]$/.test(v), `Formato inválido: "${v}"`);
 });
 
-// ============================================================================
-// SAÚDE - TESTES ADICIONAIS
-// ============================================================================
-
 test('numeroProntuario: deve ter formato com prefixo e números', () => {
   const v = genMedicalRecordNumber();
   // Deve ter padrão como "PRONT 123456" ou similar
   assert(/^[A-Z]+[A-Z ]* [0-9]+$/.test(v), `Formato inválido: "${v}"`);
 });
 
-test('numeroCNS: deve ter exatamente 1550-9 digits', () => {
+test('numeroCNS: deve ter exatamente 15 dígitos', () => {
   const v = genCNS();
   assert(/^\d{15}$/.test(v), `CNS deve ter 15 dígitos: "${v}"`);
 });
@@ -826,89 +984,61 @@ test('numeroCNS: deve ter exatamente 1550-9 digits', () => {
 test('convenio: deve ser uma string não vazia', () => {
   const v = genHealthPlan();
   assert(typeof v === 'string' && v.length > 0, `Convênio inválido: "${v}"`);
+
   // Verificar se é um dos planos conhecidos
-  const planosConhecidos = ['Amil', 'SulAmérica', 'Bradesco Saúde', 'Unimed', 'NotreDame Intermédica', 'Hapvida', 'Santa Casa', 'Biomédica', 'Freedom Health', 'GNDI', 'Golden Cross', 'Filipenson', 'Qualicorp', 'Porto Seguro Saúde', 'Allianz Saúde'];
+  const planosConhecidos = [
+    'Amil', 'SulAmérica', 'Bradesco Saúde', 'Unimed', 'NotreDame Intermédica',
+    'Hapvida', 'Santa Casa', 'Biomédica', 'Freedom Health', 'GNDI', 'Golden Cross',
+    'Filipenson', 'Qualicorp', 'Porto Seguro Saúde', 'Allianz Saúde'
+  ];
   assert(planosConhecidos.includes(v), `Convênio não reconhecido: "${v}"`);
 });
 
 test('alergia: deve ser uma string não vazia', () => {
   const v = genAllergy();
   assert(typeof v === 'string' && v.length > 0, `Alergia inválida: "${v}"`);
+
   // Verificar se é uma das alergias conhecidas
-  const alergiasConhecidas = ['Penicilina', 'Lactose', 'Glúten', 'Pólen', 'Ácaro', 'Marisco (camarão, lagosta, etc.)', 'Amendoim', 'Castanhas', 'Ovos', 'Leite', 'Soja', 'Trigo', 'Peixe', 'Frutas cítricas', 'Álcool', 'Latex', 'Picada de inseto', 'Poeira', 'Mofo', 'Medicamentos à base de sulfa'];
+  const alergiasConhecidas = [
+    'Penicilina', 'Lactose', 'Glúten', 'Pólen', 'Ácaro', 'Marisco (camarão, lagosta, etc.)',
+    'Amendoim', 'Castanhas', 'Ovos', 'Leite', 'Soja', 'Trigo', 'Peixe', 'Frutas cítricas',
+    'Álcool', 'Latex', 'Picada de inseto', 'Poeira', 'Mofo', 'Medicamentos à base de sulfa'
+  ];
   assert(alergiasConhecidas.includes(v), `Alergia não reconhecida: "${v}"`);
 });
 
 test('conselhoProfissional: deve gerar CRM quando especificado', () => {
   const v = genProfessionalRegistration('CRM');
-  // Format: CRM-UF XXXXX or CRM/UF XXXXX
+  // Formato: CRM-UF XXXXX ou CRM/UF XXXXX
   assert(/^CRM-[A-Z]{2} [0-9]+$|^CRM\/[A-Z]{2} [0-9]+$/.test(v), `Formato CRM inválido: "${v}"`);
 });
 
 test('conselhoProfissional: deve gerar CREA quando especificado', () => {
   const v = genProfessionalRegistration('CREA');
-  // Format: CREA-UF XXXXX-D (com dígito verificador)
+  // Formato: CREA-UF XXXXX-D (com dígito verificador)
   assert(/^CREA-[A-Z]{2} [0-9]+-[0-9]$|^CREA\/[A-Z]{2} [0-9]+-[0-9]$/.test(v), `Formato CREA inválido: "${v}"`);
 });
 
 test('conselhoProfissional: deve gerar OAB quando especificado', () => {
   const v = genProfessionalRegistration('OAB');
-  // Format: OAB/UF XXXXX or OAB-UF XXXXX or com letra sufixo
+  // Formato: OAB/UF XXXXX ou OAB-UF XXXXX, opcionalmente com letra sufixo
   assert(/^OAB\/[A-Z]{2} [0-9]+(-[A-Z])?$|^OAB-[A-Z]{2} [0-9]+(-[A-Z])?$/.test(v), `Formato OAB inválido: "${v}"`);
 });
 
 test('conselhoProfissional: deve funcionar sem parâmetro (qualquer conselho)', () => {
   const v = genProfessionalRegistration();
-  // Deve corresponder a algum formato de conselho
+  // Deve corresponder a algum formato de conselho conhecido
   const formatoValido = /^(CRM|CREA|OAB|CRO|COREN)[\-\/][A-Z]{2} [0-9]+(-[0-9A-Z])?$/.test(v);
   assert(formatoValido, `Formato de conselho profissional inválido: "${v}"`);
 });
 
 // ============================================================================
-// PIS/PASEP
-// ============================================================================
-
-test('pis: deve ter exatamente 11 dígitos numéricos', () => {
-  const v = genPIS();
-  assert(/^\d{11}$/.test(v), `PIS inválido: "${v}"`);
-});
-
-test('pis: deve ter dígito verificador válido (algoritmo oficial)', () => {
-  const v = genPIS();
-  assert(validarPis(v), `PIS com DV inválido: "${v}"`);
-});
-
-
-// ============================================================================
-// TÍTULO DE ELEITOR
-// ============================================================================
-
-test('tituloEleitor: deve ter exatamente 12 dígitos numéricos', () => {
-  const v = genTituloEleitor();
-  assert(/^\d{12}$/.test(v), `Título de Eleitor inválido: "${v}"`);
-});
-
-test('tituloEleitor: deve ter dígito verificador válido (algoritmo oficial)', () => {
-  const v = genTituloEleitor();
-  assert(validarTituloEleitor(v), `Título de Eleitor com DV inválido: "${v}"`);
-});
-
-test('tituloEleitor: deve ser válido em 1000 iterações', () => {
-  for (let i = 0; i < 1000; i++) {
-    const v = genTituloEleitor();
-    assert(validarTituloEleitor(v), `Título inválido na iteração ${i}: "${v}"`);
-  }
-});
-
-test('tituloEleitor: UF deve ser entre 01 e 28', () => {
-  const v = genTituloEleitor();
-  const uf = parseInt(v.substring(8, 10));
-  assert(uf >= 1 && uf <= 28, `UF inválida: ${uf}`);
-});
-
-// ============================================================================
 // BANCÁRIO
 // ============================================================================
+/**
+ * Testes de dados bancários sintéticos.
+ * Cobre agência, conta e chave Pix aleatória.
+ */
 
 test('agencia: deve ter exatamente 4 dígitos numéricos', () => {
   const v = genAgencia();
@@ -958,8 +1088,10 @@ test('pixAleatoria: deve ser UUID v4 válido', () => {
 
 test('pixAleatoria: deve ter formato UUID v4', () => {
   const v = genPixAleatoria();
-  assert(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v), 
-    `Formato UUID v4 inválido para Pix: "${v}"`);
+  assert(
+    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v),
+    `Formato UUID v4 inválido para Pix: "${v}"`
+  );
 });
 
 test('pixAleatoria: deve ser válida em 1000 iterações', () => {
@@ -972,6 +1104,10 @@ test('pixAleatoria: deve ser válida em 1000 iterações', () => {
 // ============================================================================
 // VEICULAR
 // ============================================================================
+/**
+ * Testes de veículos e placas brasileiras.
+ * Cobre placas no formato antigo (AAA9999) e Mercosul (AAA9A99).
+ */
 
 test('placa: deve ter exatamente 7 caracteres', () => {
   const v = genPlaca();
@@ -1004,16 +1140,90 @@ test('placaMercosul: deve ter letra na 5ª posição (índice 4)', () => {
   assert(/[A-Z]/.test(v[4]), `5ª posição não é letra: "${v}"`);
 });
 
+// ============================================================================
+// CARTÃO DE CRÉDITO
+// ============================================================================
+/**
+ * Testes de cartão de crédito sintético.
+ * Cobre número (algoritmo de Luhn), bandeira, CVV, validade e o objeto
+ * completo gerado por `genCartaoCompleto`.
+ */
+
+test('genNumeroCartao: deve gerar número válido pelo algoritmo de Luhn', () => {
+  const numero = genNumeroCartao();
+  assert(validarCartao(numero), `Número inválido: "${numero}"`);
+});
+
+test('genNumeroCartao: Visa deve começar com 4 e ter 16 dígitos', () => {
+  const numero = genNumeroCartao('Visa');
+  assert(/^4\d{15}$/.test(numero), `Formato Visa inválido: "${numero}"`);
+  assert(validarCartao(numero), `Número Visa inválido: "${numero}"`);
+});
+
+test('genNumeroCartao: American Express deve ter 15 dígitos', () => {
+  const numero = genNumeroCartao('American Express');
+  assert(/^3[47]\d{13}$/.test(numero), `Formato Amex inválido: "${numero}"`);
+  assert(validarCartao(numero), `Número Amex inválido: "${numero}"`);
+});
+
+test('genBandeiraCartao: deve retornar uma bandeira conhecida', () => {
+  const bandeiras = ['Visa', 'Mastercard', 'Elo', 'Hipercard', 'American Express'];
+  const b = genBandeiraCartao();
+  assert(bandeiras.includes(b), `Bandeira desconhecida: "${b}"`);
+});
+
+test('genCvv: deve ter 3 dígitos por padrão', () => {
+  const cvv = genCvv();
+  assert(/^\d{3}$/.test(cvv), `CVV inválido: "${cvv}"`);
+});
+
+test('genCvv: American Express deve ter 4 dígitos', () => {
+  const cvv = genCvv('American Express');
+  assert(/^\d{4}$/.test(cvv), `CVV Amex inválido: "${cvv}"`);
+});
+
+test('genValidadeCartao: deve ter formato MM/YY com ano futuro', () => {
+  const validade = genValidadeCartao();
+  assert(/^\d{2}\/\d{2}$/.test(validade), `Formato inválido: "${validade}"`);
+
+  const [mes, ano] = validade.split('/').map(Number);
+  assert(mes >= 1 && mes <= 12, `Mês inválido: ${mes}`);
+
+  const anoAtual = new Date().getFullYear() % 100;
+  assert(ano > anoAtual, `Ano deveria ser futuro: ${ano}`);
+});
+
+test('genCartaoCompleto: deve retornar objeto coerente e válido', () => {
+  const cartao = genCartaoCompleto();
+  assert(validarCartao(cartao.numero), `Número inválido no objeto: "${cartao.numero}"`);
+  assert(typeof cartao.bandeira === 'string' && cartao.bandeira.length > 0, `Bandeira ausente ou inválida: "${cartao.bandeira}"`);
+  assert(/^\d{3,4}$/.test(cartao.cvv), `CVV inválido no objeto: "${cartao.cvv}"`);
+  assert(/^\d{2}\/\d{2}$/.test(cartao.validade), `Validade inválida no objeto: "${cartao.validade}"`);
+});
+
+test('validarCartao: deve rejeitar números inválidos', () => {
+  assert(!validarCartao('1234567890123456'), 'Deveria rejeitar número com dígito verificador inválido');
+  assert(!validarCartao('abc'), 'Deveria rejeitar entrada não numérica');
+  assert(!validarCartao('4444444444444444'), 'Deveria rejeitar sequência de dígitos repetidos'); // regra extra anti-sequência
+});
 
 // ============================================================================
+// RESUMO FINAL
+// ============================================================================
+/**
+ * Consolida os resultados de todos os testes executados e imprime um
+ * resumo formatado no console, incluindo a lista de falhas (se houver).
+ * O CI verifica a presença de "Score 100%" nesse output para decidir
+ * se o build passa ou falha.
+ */
 
 const passed = results.filter(r => r.passed).length;
 const failed = results.filter(r => !r.passed).length;
-const total  = results.length;
-const pct    = ((passed / total) * 100).toFixed(0);
+const total = results.length;
+const pct = ((passed / total) * 100).toFixed(0);
 
 console.log('\n\x1b[37m' + '─'.repeat(50) + '\x1b[0m');
-console.log(`\x1b[1;37m  Resultados\x1b[0m`);
+console.log('\x1b[1;37m  Resultados\x1b[0m');
 console.log('\x1b[37m' + '─'.repeat(50) + '\x1b[0m');
 console.log(`  \x1b[37mTotal   ${total} testes\x1b[0m`);
 console.log(`  \x1b[32mPassou  ${passed}\x1b[0m`);

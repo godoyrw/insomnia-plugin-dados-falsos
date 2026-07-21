@@ -9,10 +9,6 @@
  * Cada entrada do array define um identificador, um nome exibido, uma
  * descrição, argumentos opcionais e a função responsável por gerar o valor.
  *
- * Categorias incluídas: identidade, contato, endereço, empresa, financeiro,
- * datas, identificadores, conteúdo, e-commerce, geolocalização, países,
- * saúde, veicular e bancário.
- *
  * @module constants/templateTags
  * @description Catálogo de tags públicas do plugin.
  */
@@ -172,6 +168,8 @@ import {
   genConta,
   genPixAleatoria
 } from '../generators/bancario';
+
+// Importa geradores de educação
 import {
   genEducationInstitution,
   genEducationCourse,
@@ -183,6 +181,14 @@ import {
   genEducation
 } from '../generators/education';
 
+// Importa geradores de cartão de crédito
+import {
+  genNumeroCartao,
+  genBandeiraCartao,
+  genCvv,
+  genValidadeCartao,
+  genCartaoCompleto
+} from '../generators/creditCard';
 /**
  * Array de template tags exportado para o Insomnia
  * Contém todas as 88 tags organizadas por categoria
@@ -947,5 +953,62 @@ export const templateTags: TemplateTag[] = [
     description: 'Chave Pix Aleatória (UUID v4 — formato Banco Central)',
     args: [],
     run: async () => genPixAleatoria()
-  }
+  },
+
+  // ========================================================================
+  // CARTÃO DE CRÉDITO
+  // ========================================================================
+  /**
+   * Tags de cartão de crédito sintético.
+   * Números válidos pelo algoritmo de Luhn, com bandeira, CVV e validade.
+   */
+  {
+    name: 'numeroCartao',
+    displayName: 'dados-falsos → numeroCartao',
+    description: 'Número de cartão de crédito válido (Luhn)',
+    args: [
+      {
+        displayName: 'Bandeira',
+        type: 'enum',
+        options: [
+          { displayName: 'Qualquer (aleatório)', value: '' },
+          { displayName: 'Visa', value: 'Visa' },
+          { displayName: 'Mastercard', value: 'Mastercard' },
+          { displayName: 'Elo', value: 'Elo' },
+          { displayName: 'Hipercard', value: 'Hipercard' },
+          { displayName: 'American Express', value: 'American Express' }
+        ],
+        defaultValue: ''
+      }
+    ],
+    run: async (_context, bandeira) => genNumeroCartao(bandeira || undefined)
+  },
+  {
+    name: 'bandeiraCartao',
+    displayName: 'dados-falsos → bandeiraCartao',
+    description: 'Bandeira de cartão de crédito',
+    args: [],
+    run: async () => genBandeiraCartao()
+  },
+  {
+    name: 'cvv',
+    displayName: 'dados-falsos → cvv',
+    description: 'CVV do cartão de crédito',
+    args: [],
+    run: async () => genCvv()
+  },
+  {
+    name: 'validadeCartao',
+    displayName: 'dados-falsos → validadeCartao',
+    description: 'Validade do cartão (MM/YY)',
+    args: [],
+    run: async () => genValidadeCartao()
+  },
+  {
+    name: 'cartaoCompleto',
+    displayName: 'dados-falsos → cartaoCompleto',
+    description: 'Dados completos do cartão de crédito',
+    args: [],
+    run: async () => JSON.stringify(genCartaoCompleto())
+  },
 ];

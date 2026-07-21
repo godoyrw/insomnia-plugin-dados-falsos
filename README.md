@@ -20,7 +20,7 @@
   ![Zero Dependencies](https://img.shields.io/badge/0-Production%20Dependencies-2ea44f)
   ![Official Algorithms](https://img.shields.io/badge/Algorithms-Official-6f42c1)
   ![88 Template Tags](https://img.shields.io/badge/Template%20Tags-88-orange)
-  ![157 Tests](https://img.shields.io/badge/Tests-157%20Passing-success)
+  ![166 Tests](https://img.shields.io/badge/Tests-166%20Passing-success)
   [![Known Vulnerabilities](https://snyk.io/test/github/godoyrw/insomnia-plugin-dados-falsos/badge.svg)](https://snyk.io/test/github/godoyrw/insomnia-plugin-dados-falsos)
   [![Tests](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/test.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/test.yml)
   [![Publish NPM](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-npm.yml)
@@ -464,7 +464,7 @@ ABC1234 BRA1A23 XYZ9876
 │       ├── bancario.ts              # Agência, conta e Pix
 │       └── education.ts             # Instituição, curso e dados acadêmicos
 ├── test/
-│   └── generators.test.ts           # Suite de 157 testes (100%)
+│   └── generators.test.ts           # Suite de 166 testes (100%)
 ├── .github/workflows/
 │   ├── test.yml                     # CI
 │   └── publish-npm.yml              # Publicação no npm

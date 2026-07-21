@@ -43,7 +43,7 @@
 │       ├── bancario.ts              # Dados bancários (agência, conta, pix)
 │       └── education.ts             # Dados acadêmicos (instituição, curso, nível, status)
 ├── test/
-│   └── generators.test.ts           # Suite de 157 testes (100%)
+│   └── generators.test.ts           # Suite de 166 testes (100%)
 ├── dist/                            # Código compilado (gerado pelo build)
 ├── .github/workflows/
 │   ├── test.yml                     # CI — executa testes em todo push/PR
@@ -77,7 +77,7 @@
 ```bash
 npm install    # instala devDependencies (typescript, tsx, @types/node)
 npm run build  # compila para dist/
-npm test       # executa os 157 testes
+npm test       # executa os 166 testes
 ```
 
 ## Comandos disponíveis
