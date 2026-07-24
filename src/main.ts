@@ -7,7 +7,7 @@
  * @license MIT
  * @version 3.0.5
  *
- * Este plugin fornece 98 template tags para gerar dados sintéticos em português,
+ * Este plugin fornece 108 template tags para gerar dados sintéticos em português,
  * com suporte a validação de documentos, formatação brasileira e casos de uso
  * de e-commerce, financeiro, geolocalização, educação e bancário.
  *

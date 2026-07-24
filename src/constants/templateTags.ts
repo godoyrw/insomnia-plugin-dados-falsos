@@ -88,6 +88,20 @@ import {
   genSha256Hash
 } from '../generators/identifiers';
 
+// Importa geradores de utilitários HTTP e APIs
+import {
+  genAccept,
+  genAcceptLanguage,
+  genAuthorizationBearer,
+  genCacheControl,
+  genContentType,
+  genCorrelationId,
+  genHttpIdempotencyKey,
+  genHttpMethod,
+  genHttpStatus,
+  genUserAgent
+} from '../generators/http';
+
 // Importa geradores de conteúdo
 import {
   genHexColor,
@@ -196,7 +210,7 @@ import {
 } from '../generators/creditCard';
 /**
  * Array de template tags exportado para o Insomnia
- * Contém todas as 93 tags organizadas por categoria
+ * Contém todas as 108 tags organizadas por categoria
  */
 export const templateTags: TemplateTag[] = [
   // ========================================================================
@@ -643,6 +657,80 @@ export const templateTags: TemplateTag[] = [
     description: 'Hash SHA256',
     args: [],
     run: async () => genSha256Hash()
+  },
+
+  // ========================================================================
+  // HTTP E APIs
+  // ========================================================================
+  {
+    name: 'statusHttp',
+    displayName: 'dados-falsos → statusHttp',
+    description: 'Status HTTP comum',
+    args: [],
+    run: async () => genHttpStatus()
+  },
+  {
+    name: 'metodoHttp',
+    displayName: 'dados-falsos → metodoHttp',
+    description: 'Método HTTP',
+    args: [],
+    run: async () => genHttpMethod()
+  },
+  {
+    name: 'contentType',
+    displayName: 'dados-falsos → contentType',
+    description: 'Valor comum para Content-Type',
+    args: [],
+    run: async () => genContentType()
+  },
+  {
+    name: 'accept',
+    displayName: 'dados-falsos → accept',
+    description: 'Valor comum para Accept',
+    args: [],
+    run: async () => genAccept()
+  },
+  {
+    name: 'acceptLanguage',
+    displayName: 'dados-falsos → acceptLanguage',
+    description: 'Valor comum para Accept-Language',
+    args: [],
+    run: async () => genAcceptLanguage()
+  },
+  {
+    name: 'cacheControl',
+    displayName: 'dados-falsos → cacheControl',
+    description: 'Valor comum para Cache-Control',
+    args: [],
+    run: async () => genCacheControl()
+  },
+  {
+    name: 'userAgent',
+    displayName: 'dados-falsos → userAgent',
+    description: 'User-Agent de navegador ou cliente HTTP',
+    args: [],
+    run: async () => genUserAgent()
+  },
+  {
+    name: 'authorizationBearer',
+    displayName: 'dados-falsos → authorizationBearer',
+    description: 'Cabeçalho Authorization Bearer sintético',
+    args: [],
+    run: async () => genAuthorizationBearer()
+  },
+  {
+    name: 'correlationId',
+    displayName: 'dados-falsos → correlationId',
+    description: 'ID de correlação UUID v4',
+    args: [],
+    run: async (context?: InsomniaContext) => genCorrelationId(context)
+  },
+  {
+    name: 'idempotencyKey',
+    displayName: 'dados-falsos → idempotencyKey',
+    description: 'Chave de idempotência UUID v4',
+    args: [],
+    run: async (context?: InsomniaContext) => genHttpIdempotencyKey(context)
   },
 
   // ========================================================================
