@@ -20,9 +20,9 @@
 #
 # Uso:
 #   ./publish_release.sh                   → incrementa PATCH
-#   ./publish_release.sh patch             → incrementa PATCH
-#   ./publish_release.sh minor             → incrementa MINOR
-#   ./publish_release.sh major             → incrementa MAJOR
+#   ./publish_release.sh patch   # 1.2.3 → 1.2.4 (correção de bug)
+#   ./publish_release.sh minor   # 1.2.3 → 1.3.0 (nova funcionalidade)
+#   ./publish_release.sh major   # 1.2.3 → 2.0.0 (mudança que quebra compatibilidade)
 #   ./publish_release.sh patch --force-tag → recria tag existente
 #
 # Autor  : Roberto Wanderley Godoy
