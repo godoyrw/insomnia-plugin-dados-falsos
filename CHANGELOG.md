@@ -24,7 +24,7 @@ e este projeto segue Semantic Versioning.
 - Nenhuma
 ### Changed
 - Documentação: Atualização dos contadores de template tags (98→108) e testes (172→182) em AGENTS.md, DEVELOPMENT.md, TESTING.md e README.md
-- Changelog: Adição das entradas faltantes para versões v1.0.0, v1.0.1, v3.0.6, v3.0.7 e v3.0.8
+- Changelog: Adição das entradas faltantes para versões v1.0.0, v1.0.1, v3.0.6, v3.0.7 e v3.1.0
 - Validação: Verificação de que todos os geradores têm template tags e testes correspondentes
 ### Deprecated
 - Nenhuma
