@@ -111,7 +111,13 @@
     "version": "3.0.8",
     "displayName": "Dados Falsos",
     "description": "Gere dados sintéticos brasileiros com algoritmos oficiais (CPF, CNPJ, CNH, CNS, PIS, RG, UUID e muito mais) diretamente nas Template Tags do Insomnia.",
-    "icon": "assets/icon.png",
+    "publisher": {
+      "name": "Roberto Godoy",
+      "icon": "https://avatars.githubusercontent.com/u/7673777"
+    },
+    "images": {
+      "icon": "./assets/icon.png"
+    },
     "category": "data-generation",
     "tags": [
       "insomnia",

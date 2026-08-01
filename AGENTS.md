@@ -1,7 +1,7 @@
 # PROJETO: insomnia-plugin-dados-falsos
 
 **VERSÃO:** v3.0.8
-**OBJETIVO:** Plugin Insomnia para gerar dados falsos realistas em português brasileiro com 98 template tags, cobrindo identidade, documentos, saúde, veicular, contato, endereço, empresa, financeiro, e-commerce, geolocalização, educação, cartão de crédito e mais.
+**OBJETIVO:** Plugin Insomnia para gerar dados falsos realistas em português brasileiro com 108 template tags, cobrindo identidade, documentos, saúde, veicular, contato, endereço, empresa, financeiro, e-commerce, geolocalização, educação, cartão de crédito e mais.
 
 ---
 
@@ -36,7 +36,7 @@
 │   │   ├── business.ts              # Departamentos, cargos, sufixos legais, domínios corporativos
 │   │   ├── enums.ts                 # Planos, status, tipos de frete, emojis, etc.
 │   │   ├── countries.ts             # Países com código ISO, DDI, moeda
-│   │   └── templateTags.ts          # Definição das 98 template tags
+│   │   └── templateTags.ts          # Definição das 108 template tags
 │   └── generators/
 │       ├── identity.ts              # Nomes, username, gênero, data de nascimento
 │       ├── cpf.ts                   # CPF — geração, validarCpf, genCpf(context) + CPF_LIST
@@ -46,17 +46,17 @@
 │       ├── pis.ts                   # PIS/PASEP — genPIS(context), validarPis + PIS_LIST
 │       ├── cns.ts                   # CNS — genCNS(context), validarCns + CNS_LIST
 │       ├── vehicle.ts               # Placas — genPlaca(context), genPlacaAntiga,
-│       │                            #          genPlacaMercosul, validarPlaca + PLACA_LIST
+│   │                            #          genPlacaMercosul, validarPlaca + PLACA_LIST
 │       ├── contact.ts               # Email(+EMAIL_LIST), telefone(+PHONE_LIST),
-│       │                            # celular(+CELULAR_LIST), WhatsApp(+WHATSAPP_LIST)
+│   │                            #          celular(+CELULAR_LIST), WhatsApp(+WHATSAPP_LIST)
 │       ├── address.ts               # CEP, logradouro, número, complemento, bairro,
-│       │                            # cidade, estado, timezone
+│   │                            #          cidade, estado, timezone
 │       ├── company.ts               # Razão social, nome fantasia, email corporativo,
-│       │                            # cargo, departamento
+│   │                            #          cargo, departamento
 │       ├── financial.ts             # Moeda, valor, plano, status pagamento, cupom
 │       ├── datetime.ts              # DateTime ISO
 │       ├── identifiers.ts           # UUID(+UUID_LIST), ULID, chave idempotência,
-│       │                            # API Key, JWT, senha, hash SHA256
+│   │                            #          API Key, JWT, senha, hash SHA256
 │       ├── content.ts               # Cor hex, booleano, título, descrição, texto longo, emoji
 │       ├── ecommerce.ts             # SKU, EAN, pedido, status pedido, quantidade, frete
 │       ├── geo.ts                   # Latitude, longitude, IPv4, IPv6
@@ -71,7 +71,7 @@
 │       ├── education.ts             # Instituição, curso e dados acadêmicos
 │       └── creditCard.ts            # Cartões de crédito sintéticos (Luhn, bandeira, CVV, validade)
 ├── test/
-│   └── generators.test.ts           # Suite de 172 testes (100%)
+│   └── generators.test.ts           # Suite de 182 testes (100%)
 ├── dist/                            # Código compilado (gerado — não versionar)
 ├── .github/
 │   └── workflows/
@@ -206,7 +206,7 @@ As listas de documentos, contato, UUID e placa usam espaço como separador. As l
 
 - **Execução**: `npm test` (compila com `tsc` e roda com `node`)
 - **CI**: `npx tsx test/generators.test.ts` (sem compilação prévia)
-- **Cobertura atual**: 172 testes, 100% de aprovação
+- **Cobertura atual**: 182 testes, 100% de aprovação
 - **Padrão**:
 
 ```typescript
@@ -237,7 +237,7 @@ test('minhaTag: deve ser válido em 1000 iterações', () => {
 | `npm install` | Instala devDependencies |
 | `npm run build` | Compila TypeScript para `dist/` |
 | `npm run dev` | Watch mode — recompila ao salvar |
-| `npm test` | Executa os 172 testes |
+| `npm test` | Executa os 182 testes |
 | `npm run test:watch` | Recompila testes ao salvar |
 | `npm run test:stress` | 100 execuções consecutivas |
 | `npm run clean` | Remove `dist/` e arquivos compilados |
@@ -362,13 +362,13 @@ Toda alteração deve manter estes arquivos sincronizados:
 
 | Métrica | Valor |
 |---|---|
-| Template Tags | 98 |
+| Template Tags | 108 |
 | Generators | 27 |
 | Validadores exportados | 13 |
 | Listas via Environment | 15 |
-| Testes | 172 |
+| Testes | 182 |
 | Taxa de aprovação | 100% |
 | Dependências de produção | 0 |
 | Performance média por gerador | < 0,01 ms |
 
-**Última atualização:** 2026-07-21
+**Última atualização:** 2026-07-31

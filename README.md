@@ -4,7 +4,7 @@
 
 ✔ CPF &nbsp;✔ CNPJ 2026 &nbsp;✔ CNH &nbsp;✔ CNS &nbsp;✔ PIS &nbsp;✔ RG &nbsp;✔ CEP &nbsp;✔ UUID &nbsp;✔ JWT &nbsp;✔ Placas Mercosul &nbsp;✔ Cartões de Crédito
 
-**98 Template Tags &nbsp;·&nbsp; 0 dependências de produção &nbsp;·&nbsp; 100% TypeScript**
+**108 Template Tags &nbsp;·&nbsp; 0 dependências de produção &nbsp;·&nbsp; 100% TypeScript**
 
 <div align="center">
 
@@ -17,8 +17,8 @@
   ![LGPD Friendly](https://img.shields.io/badge/LGPD-Friendly-0052cc)
   ![Zero Dependencies](https://img.shields.io/badge/0-Production%20Dependencies-2ea44f)
   ![Official Algorithms](https://img.shields.io/badge/Algorithms-Official-6f42c1)
-  ![98 Template Tags](https://img.shields.io/badge/Template%20Tags-98-orange)
-  ![172 Tests](https://img.shields.io/badge/Tests-172%20Passing-success)
+  ![108 Template Tags](https://img.shields.io/badge/Template%20Tags-108-orange)
+  ![182 Tests](https://img.shields.io/badge/Tests-182%20Passing-success)
   [![Known Vulnerabilities](https://snyk.io/test/github/godoyrw/insomnia-plugin-dados-falsos/badge.svg)](https://snyk.io/test/github/godoyrw/insomnia-plugin-dados-falsos)
   [![Tests](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/test.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/test.yml)
   [![Publish NPM](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-npm.yml/badge.svg)](https://github.com/godoyrw/insomnia-plugin-dados-falsos/actions/workflows/publish-npm.yml)
@@ -439,7 +439,7 @@ Administração
 │   │   ├── enums.ts                 # Status, planos, tipos, emojis
 │   │   ├── countries.ts             # Países, códigos ISO, telefones, moedas
 │   │   ├── banking.ts                # Bancos FEBRABAN/COMPE e tipos de conta
-│   │   └── templateTags.ts           # Definição das 98 template tags
+│   │   └── templateTags.ts           # Definição das 108 template tags
 │   └── generators/
 │       ├── address.ts               # CEP, logradouro, bairro, cidade, estado
 │       ├── allergy.ts               # Alergias
@@ -469,7 +469,7 @@ Administração
 │       ├── tituloEleitor.ts         # Título de Eleitor
 │       └── vehicle.ts               # Placas veiculares e listas de placas
 ├── test/
-│   └── generators.test.ts           # Suite de 172 testes (100%)
+│   └── generators.test.ts           # Suite de 182 testes (100%)
 ├── .github/
 │   └── workflows/
 │       ├── test.yml                 # CI

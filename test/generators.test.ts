@@ -7,6 +7,11 @@
  * validando não apenas formato mas também qualidade real dos dados gerados
  * (dígitos verificadores, intervalos válidos, listas de valores conhecidos).
  *
+ * Asserções usam o módulo nativo `node:assert` (modo strict) — não há mais
+ * uma função `assert` customizada. O runner (`test`) e o relatório de
+ * resultados continuam sendo um wrapper local, responsável por agrupar,
+ * cronometrar e imprimir cada caso de teste no formato usado pelo CI.
+ *
  * Execução:
  *   npm run test          # Executa uma vez
  *   npm run test:watch    # Modo watch
@@ -18,11 +23,26 @@
  */
 
 // ============================================================================
+// IMPORTS — NODE NATIVO
+// ============================================================================
+
+import { strict as assert } from 'node:assert';
+
+// ============================================================================
 // IMPORTS — CONSTANTS
 // ============================================================================
 
 import { STREET_TYPES, UF, TIMEZONES } from '../src/constants/locations';
 import { ACCOUNT_TYPES, BANKS } from '../src/constants/banking';
+import {
+  ACCEPT_HEADERS,
+  ACCEPT_LANGUAGES,
+  CACHE_CONTROLS,
+  CONTENT_TYPES,
+  HTTP_METHODS,
+  HTTP_STATUS,
+  USER_AGENTS
+} from '../src/constants/http';
 
 // ============================================================================
 // IMPORTS — GERADORES POR DOMÍNIO
@@ -100,6 +120,20 @@ import {
   validarCartao
 } from '../src/generators/creditCard';
 
+// HTTP / API
+import {
+  genAccept,
+  genAcceptLanguage,
+  genAuthorizationBearer,
+  genCacheControl,
+  genContentType,
+  genCorrelationId,
+  genHttpIdempotencyKey,
+  genHttpMethod,
+  genHttpStatus,
+  genUserAgent
+} from '../src/generators/http';
+
 // Educação
 import {
   genEducationInstitution,
@@ -136,21 +170,11 @@ interface TestResult {
 const results: TestResult[] = [];
 
 /**
- * Verifica uma condição booleana e lança erro com mensagem descritiva
- * caso falhe. Toda chamada de `assert` deve informar a mensagem —
- * ela é o que aparece no console em caso de falha.
- *
- * @param {boolean} condition Condição que deve ser verdadeira.
- * @param {string} message Mensagem exibida caso a condição seja falsa.
- */
-function assert(condition: boolean, message: string): void {
-  if (!condition) throw new Error(message);
-}
-
-/**
  * Executa um caso de teste, mede o tempo de execução e registra o
  * resultado (sucesso ou falha) em `results`, imprimindo o status no
- * console com formatação colorida (ANSI).
+ * console com formatação colorida (ANSI). As asserções dentro de `fn`
+ * usam o módulo nativo `node:assert` — qualquer `AssertionError`
+ * lançado é capturado e tratado como falha do teste.
  *
  * @param {string} name Nome descritivo do teste.
  * @param {() => void} fn Função contendo as asserções do teste.
@@ -1247,6 +1271,87 @@ test('validarCartao: deve rejeitar números inválidos', () => {
   assert(!validarCartao('1234567890123456'), 'Deveria rejeitar número com dígito verificador inválido');
   assert(!validarCartao('abc'), 'Deveria rejeitar entrada não numérica');
   assert(!validarCartao('4444444444444444'), 'Deveria rejeitar sequência de dígitos repetidos'); // regra extra anti-sequência
+});
+
+// ============================================================================
+// HTTP / API
+// ============================================================================
+/**
+ * Testes dos geradores HTTP/API — módulo pensado especificamente para o
+ * contexto de testes de API dentro do Insomnia.
+ * Cobre status HTTP, método, Content-Type, Accept, Accept-Language,
+ * Cache-Control, User-Agent, Authorization Bearer, Correlation ID e
+ * Idempotency Key.
+ */
+
+test('genHttpStatus: deve gerar um status HTTP numérico conhecido', () => {
+  const value = genHttpStatus();
+  assert(typeof value === 'number', `Esperado number, recebido ${typeof value}`);
+  assert(HTTP_STATUS.includes(value), `Status HTTP desconhecido: ${value}`);
+});
+
+test('genHttpMethod: deve gerar um método HTTP conhecido', () => {
+  const value = genHttpMethod();
+  assert(typeof value === 'string', `Esperado string, recebido ${typeof value}`);
+  assert(HTTP_METHODS.includes(value), `Método HTTP desconhecido: "${value}"`);
+});
+
+test('genContentType: deve gerar um Content-Type conhecido', () => {
+  const value = genContentType();
+  assert(typeof value === 'string', `Esperado string, recebido ${typeof value}`);
+  assert(CONTENT_TYPES.includes(value), `Content-Type desconhecido: "${value}"`);
+});
+
+test('genAccept: deve gerar um header Accept conhecido', () => {
+  const value = genAccept();
+  assert(typeof value === 'string', `Esperado string, recebido ${typeof value}`);
+  assert(ACCEPT_HEADERS.includes(value), `Accept desconhecido: "${value}"`);
+});
+
+test('genAcceptLanguage: deve gerar um Accept-Language conhecido', () => {
+  const value = genAcceptLanguage();
+  assert(typeof value === 'string', `Esperado string, recebido ${typeof value}`);
+  assert(ACCEPT_LANGUAGES.includes(value), `Accept-Language desconhecido: "${value}"`);
+});
+
+test('genCacheControl: deve gerar um Cache-Control conhecido', () => {
+  const value = genCacheControl();
+  assert(typeof value === 'string', `Esperado string, recebido ${typeof value}`);
+  assert(CACHE_CONTROLS.includes(value), `Cache-Control desconhecido: "${value}"`);
+});
+
+test('genUserAgent: deve gerar um User-Agent conhecido', () => {
+  const value = genUserAgent();
+  assert(typeof value === 'string', `Esperado string, recebido ${typeof value}`);
+  assert(USER_AGENTS.includes(value), `User-Agent desconhecido: "${value}"`);
+});
+
+test('genAuthorizationBearer: deve gerar um Bearer Token com 3 partes JWT', () => {
+  const value = genAuthorizationBearer();
+  assert(typeof value === 'string', `Esperado string, recebido ${typeof value}`);
+  assert(value.startsWith('Bearer '), `Deveria começar com "Bearer ": "${value}"`);
+
+  const token = value.substring(7);
+  assert(token.length > 20, `Token muito curto: "${token}"`);
+  assert(token.split('.').length === 3, `Token deveria ter 3 partes separadas por ponto: "${token}"`);
+});
+
+test('genCorrelationId: deve gerar UUID v4 válido', () => {
+  const value = genCorrelationId();
+  assert(typeof value === 'string', `Esperado string, recebido ${typeof value}`);
+  assert(
+    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value),
+    `Correlation ID não é um UUID v4 válido: "${value}"`
+  );
+});
+
+test('genHttpIdempotencyKey: deve gerar UUID v4 válido', () => {
+  const value = genHttpIdempotencyKey();
+  assert(typeof value === 'string', `Esperado string, recebido ${typeof value}`);
+  assert(
+    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value),
+    `Idempotency Key não é um UUID v4 válido: "${value}"`
+  );
 });
 
 // ============================================================================

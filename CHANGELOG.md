@@ -19,8 +19,101 @@ e este projeto segue Semantic Versioning.
 
 ### Security
 
-## [3.0.5] - 2026-07-21
+## [3.0.9] - 2026-07-31
+### Added
+- Nenhuma
+### Changed
+- Documentação: Atualização dos contadores de template tags (98→108) e testes (172→182) em AGENTS.md, DEVELOPMENT.md, TESTING.md e README.md
+- Changelog: Adição das entradas faltantes para versões v1.0.0, v1.0.1, v3.0.6, v3.0.7 e v3.0.8
+- Validação: Verificação de que todos os geradores têm template tags e testes correspondentes
+### Deprecated
+- Nenhuma
+### Removed
+- Nenhuma
+### Fixed
+- Nenhuma
+### Security
+- Nenhuma
 
+## [3.0.8] - 2026-07-21
+### Added
+- Nenhuma
+
+### Changed
+- Versão aumentada para 3.0.8 (chore de release)
+
+### Deprecated
+- Nenhuma
+
+### Removed
+- Nenhuma
+
+### Fixed
+- Nenhuma
+
+### Security
+- Nenhuma
+
+## [3.0.7] - 2026-07-21
+### Added
+- Nenhuma
+
+### Changed
+- Documentação: Correção da seção "Patrocinadores" no README.md
+  - Removida linha horizontal desnecessária antes de várias seções
+  - Movido a seção "Patrocinadores" para o final do README
+  - Adicionado badge de patrocinador
+  - Atualizado links e formatação
+
+### Deprecated
+- Nenhuma
+
+### Removed
+- Nenhuma
+
+### Fixed
+- Nenhuma
+
+### Security
+- Nenhuma
+
+## [3.0.6] - 2026-07-21
+### Added
+- **Tags de Utilitários HTTP/API** (10 novas tags):
+  - `{% statusHttp %}` - Código de status HTTP comum
+  - `{% metodoHttp %}` - Método HTTP (GET, POST, etc.)
+  - `{% contentType %}` - Valor de Content-Type
+  - `{% accept %}` - Valor do cabeçalho Accept
+  - `{% acceptLanguage %}` - Valor do cabeçalho Accept-Language
+  - `{% cacheControl %}` - Valor do cabeçalho Cache-Control
+  - `{% userAgent %}` - User-Agent representativo de navegador/cliente HTTP
+  - `{% authorizationBearer %}` - Cabeçalho Authorization com JWT estrutural
+  - `{% correlationId %}` - ID de correlação UUID v4 (suporta UUID_LIST)
+  - `{% httpIdempotencyKey %}` - Chave de idempotência UUID v4 (suporta UUID_LIST)
+- Novo utilitário de teste de estresse em TypeScript (`test/stress.test.ts`)
+- Suporte para definir a quantidade de execuções via parâmetro de linha de comando
+- Relatório detalhado com progresso, ETA, tempo médio e resumo final no teste de estresse
+
+### Changed
+- Estrutura do `package.json` padronizada conforme práticas recomendadas do ecossistema Node.js
+- Adicionado campo `packageManager` para documentar a versão utilizada durante o desenvolvimento
+- Revisados metadados do pacote (autor, mantenedores, licenciamento, etc.)
+- Mantida compatibilidade com Insomnia através de `peerDependencies` (sem alteração nas dependências de desenvolvimento)
+- Script de teste de estresse refatorado de Bash para TypeScript multiplataforma
+
+### Deprecated
+- Nenhuma
+
+### Removed
+- Nenhuma
+
+### Fixed
+- Nenhuma
+
+### Security
+- Nenhuma
+
+## [3.0.5] - 2026-07-21
 ### Added
 - Expansão dos dados bancários com as template tags `{% codigoBanco %}`, `{% tipoConta %}`, `{% chavePixCpf %}`, `{% chavePixEmail %}` e `{% chavePixTelefone %}`.
 - Catálogo de bancos e instituições de pagamento com códigos FEBRABAN/COMPE, incluindo Banco do Brasil, Santander, Caixa, Bradesco, Itaú, Nubank, PagBank, Mercado Pago, C6 Bank, Sicredi e Sicoob.

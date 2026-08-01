@@ -42,12 +42,12 @@ export function randInt(min: number, max: number): number {
  * Retorna string vazia se array vazio (fail-safe)
  *
  * @template T
- * @param {T[]} arr - Array de elementos
+ * @param {readonly T[]} arr - Array de elementos
  * @returns {T} Elemento aleatório ou string vazia
  * @example
  * pickRandom(['a', 'b', 'c']) // "b"
  */
-export function pickRandom<T>(arr: T[]): T {
+export function pickRandom<T>(arr: readonly T[]): T {
   if (!arr || arr.length === 0) return '' as any;
   return arr[randInt(0, arr.length - 1)];
 }
